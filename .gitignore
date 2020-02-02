@@ -1,0 +1,16 @@
+.classpath
+.project
+.settings/
+*.class
+*.zip
+*.jar
+*.tar.gz
+/target/
+/src/test/data/*~
+/src/test/data/*.log
+/src/test/data/cameradata/
+/src/test/data/output
+nbbuild.xml
+nbactions.xml
+Thumbs.db
+/nbproject/
