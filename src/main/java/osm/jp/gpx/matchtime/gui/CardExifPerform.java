@@ -17,7 +17,8 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
  * @author yuu
  */
 public class CardExifPerform extends Card  implements PanelAction {
-    ParameterPanelTime arg_basetime;        // 画像の基準時刻:
+	private static final long serialVersionUID = 8902284630791931118L;
+	ParameterPanelTime arg_basetime;        // 画像の基準時刻:
     ParameterPanelGpx arg_gpxFile;          // GPX file or Folder
     ParameterPanelOutput arg_output;        // EXIF & 書き出しフォルダ
     JButton doButton;       // [処理実行]ボタン
@@ -139,7 +140,6 @@ public class CardExifPerform extends Card  implements PanelAction {
      * [実行]ボタンをクリックしたときの動作
      * @param event
      */
-    @SuppressWarnings("UseSpecificCatch")
     void doButton_Action(java.awt.event.ActionEvent event) {
     	doButton.setEnabled(false);
         
@@ -149,7 +149,6 @@ public class CardExifPerform extends Card  implements PanelAction {
         try {
             AppParameters params = new AppParameters();
 
-            String[] argv = new String[0];
             params.setProperty(AppParameters.GPX_NO_FIRST_NODE, String.valueOf(arg_gpxFile.isNoFirstNodeSelected()));
             params.setProperty(AppParameters.GPX_REUSE, String.valueOf(arg_gpxFile.isGpxReuseSelected()));
             params.setProperty(AppParameters.GPX_SOURCE_FOLDER, arg_gpxFile.getText());
@@ -192,7 +191,6 @@ public class CardExifPerform extends Card  implements PanelAction {
     }
     
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

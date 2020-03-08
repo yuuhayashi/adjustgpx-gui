@@ -35,7 +35,6 @@ public class AboutDialog extends Dialog
         }
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public AboutDialog(Frame parent, boolean modal) {
         super(parent, modal);
 
@@ -71,7 +70,6 @@ public class AboutDialog extends Dialog
         //}}
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public AboutDialog(Frame parent, String title, boolean modal) {
         this(parent, modal);
         setTitle(title);

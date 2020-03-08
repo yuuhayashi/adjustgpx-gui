@@ -49,7 +49,6 @@ public class RestampDialog extends JDialog
         }
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public RestampDialog(Frame parent, boolean modal) throws IOException {
         super(parent, modal);
 
@@ -221,7 +220,6 @@ public class RestampDialog extends JDialog
         }
     }
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public RestampDialog(Frame parent, String title, boolean modal) throws IOException {
         this(parent, modal);
         setTitle(title);

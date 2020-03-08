@@ -19,7 +19,7 @@ import osm.jp.gpx.matchtime.gui.ParameterPanelTime;
  * @author yuu
  */
 public class CardPerformFile extends Card  implements PanelAction {
-    //JPanel argsPanel;		// パラメータ設定パネル	(上部)
+	private static final long serialVersionUID = -4796133437768564759L;
     ParameterPanelTime arg1_basetime;
     ParameterPanelTime arg2_basetime;
     JButton doButton;       // [処理実行]ボタン
@@ -72,7 +72,6 @@ public class CardPerformFile extends Card  implements PanelAction {
      * [実行]ボタンをクリックしたときの動作
      * @param event
      */
-    @SuppressWarnings("UseSpecificCatch")
     void doButton_Action(java.awt.event.ActionEvent event) {
         ArrayList<String> arry = new ArrayList<>();
         File file = arg1_basetime.getImageFile().getImageFile();
@@ -97,7 +96,6 @@ public class CardPerformFile extends Card  implements PanelAction {
     }
     
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

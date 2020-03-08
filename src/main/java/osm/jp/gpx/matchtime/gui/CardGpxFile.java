@@ -10,10 +10,11 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 /**
  * [GPXファイル]選択パネル
- * @author yuu
+ * @author haya4
  */
 public class CardGpxFile extends Card  implements PanelAction {
-    ParameterPanelGpx arg_gpxFile;
+	private static final long serialVersionUID = -6130918418152241845L;
+	ParameterPanelGpx arg_gpxFile;
     
     /**
      * コンストラクタ
@@ -67,7 +68,6 @@ public class CardGpxFile extends Card  implements PanelAction {
     }
     
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

@@ -24,7 +24,8 @@ import osm.jp.gpx.matchtime.gui.ParameterPanelTime;
  * @author yuu
  */
 public class DialogCorectTime extends JDialog implements PanelAction {
-    public JPanel mainPanel;
+	private static final long serialVersionUID = -3573167730473345932L;
+	public JPanel mainPanel;
     ParameterPanelTime arg_basetime;	// 開始画像の基準時刻(parent)
     ParameterPanelTime basetime;	// 開始画像の基準時刻(tempolarry)
     java.awt.Button closeButton;
@@ -39,7 +40,6 @@ public class DialogCorectTime extends JDialog implements PanelAction {
      * @param arg3_basetime       開始画像の基準時刻:
      * @param owner
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public DialogCorectTime(ParameterPanelTime arg3_basetime, Window owner) {
         super(owner, AdjustTerra.i18n.getString("tab.restamp.300"), Dialog.ModalityType.DOCUMENT_MODAL);
         this.arg_basetime = arg3_basetime;
@@ -152,7 +152,6 @@ public class DialogCorectTime extends JDialog implements PanelAction {
      * 選択された画像ファイルを表示する
      * 基準画像ボタンがクリックされた時に、基準時刻フィールドに基準画像の作成日時を設定する。
      */
-    @SuppressWarnings("UseSpecificCatch")
     public void imageView_Action() {
         try {
             String path = basetime.getImageFile().getImageFile().getAbsolutePath();
@@ -214,7 +213,6 @@ public class DialogCorectTime extends JDialog implements PanelAction {
     }
 
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

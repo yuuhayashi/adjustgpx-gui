@@ -431,7 +431,6 @@ public class ImportPicture extends Thread {
                 result.control = Discripter.CONTINUE;
                 return result;
             }
-            @SuppressWarnings("LocalVariableHidesMemberVariable")
             TiffImageMetadata exif = jpegMetadata.getExif();
             if (exif == null) {
                 // "'%s'にEXIF情報がありません"
@@ -539,7 +538,6 @@ public class ImportPicture extends Thread {
         ImageMetadata meta = Imaging.getMetadata(imageFile);
         JpegImageMetadata jpegMetadata = (JpegImageMetadata)meta;
         if (jpegMetadata != null) {
-            @SuppressWarnings("LocalVariableHidesMemberVariable")
             TiffImageMetadata exif = jpegMetadata.getExif();
             if (exif != null) {
                 outputSet = exif.getOutputSet();
@@ -624,7 +622,6 @@ public class ImportPicture extends Thread {
                 );
                 return null;
             }
-            @SuppressWarnings("LocalVariableHidesMemberVariable")
             TiffImageMetadata exif = jpegMetadata.getExif();
             if (exif == null) {
                 // "'%s'にEXIF情報がありません"

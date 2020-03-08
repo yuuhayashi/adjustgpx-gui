@@ -15,10 +15,11 @@ import osm.jp.gpx.matchtime.gui.ParameterPanelTime;
 
 /**
  * [基準画像（開始/終了）]選択パネル
- * @author yuu
+ * @author haya4
  */
 public class CardImageFile extends Card  implements PanelAction {
-    ParameterPanelImageFile arg_baseTimeImg;
+	private static final long serialVersionUID = 1L;
+	ParameterPanelImageFile arg_baseTimeImg;
     ParameterPanelTime arg_basetime;
     
     /**
@@ -82,7 +83,6 @@ public class CardImageFile extends Card  implements PanelAction {
     }
     
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

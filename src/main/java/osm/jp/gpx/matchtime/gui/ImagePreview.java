@@ -45,7 +45,7 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
     static int IMAGE_SIZE_X = 320;
     static int IMAGE_SIZE_Y = 240;
 
-    @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
+    @SuppressWarnings({})
     public ImagePreview(JFileChooser fc) {
         setPreferredSize(new Dimension(IMAGE_SIZE_X + 10, IMAGE_SIZE_Y + 10));
         fc.addPropertyChangeListener(this);

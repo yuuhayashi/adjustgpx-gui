@@ -173,7 +173,6 @@ public class Restamp extends Thread {
     public ArrayList<File> jpgFiles = new ArrayList<>();
     public static ResourceBundle i18n = ResourceBundle.getBundle("i18n");
 	
-    @SuppressWarnings("Convert2Lambda")
     public void setUp(File imgDir, File baseFile1, Date baseTime1,  File baseFile2, Date baseTime2) throws Exception {
     	// 指定されたディレクトリ内のGPXファイルすべてを対象とする
         File[] files = imgDir.listFiles();
@@ -208,7 +207,6 @@ public class Restamp extends Thread {
             DateFormat df2 = new SimpleDateFormat(TIME_PATTERN);
             
             // imgDir内の画像ファイルを処理する
-            @SuppressWarnings("LocalVariableHidesMemberVariable")
             long span = baseTime2.getTime() - baseTime1.getTime();
             span = span / (bCount2 - bCount1);
             int i = 0;

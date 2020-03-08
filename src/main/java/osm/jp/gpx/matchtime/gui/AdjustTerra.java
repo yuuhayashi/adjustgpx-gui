@@ -94,7 +94,6 @@ public class AdjustTerra extends JFrame
      * データベース内のテーブルを一覧で表示するFrame
      * @throws IOException 
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public AdjustTerra() throws IOException
     {
         dfjp.setTimeZone(TimeZone.getTimeZone("JST"));
@@ -337,7 +336,6 @@ public class AdjustTerra extends JFrame
      * コマンドラインの引数はありません。
      * @param args
      */    
-    @SuppressWarnings("UseSpecificCatch")
     static public void main(String args[]) {
     	SwingUtilities.invokeLater(() -> {
             try {

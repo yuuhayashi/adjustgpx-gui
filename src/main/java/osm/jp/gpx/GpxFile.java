@@ -30,7 +30,6 @@ public class GpxFile extends File {
     ElementMapTRKSEG mapTRKSEG = null;
     Document document;
 
-    @SuppressWarnings("LeakingThisInConstructor")
     public GpxFile(File file) throws ParserConfigurationException, DOMException, SAXException, IOException, ParseException {
         super(file.getParentFile(), file.getName());
 

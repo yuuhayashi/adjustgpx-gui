@@ -16,7 +16,8 @@ import osm.jp.gpx.matchtime.gui.ParameterPanelFolder;
  * @author yuu
  */
 public class CardSourceFolder extends Card implements PanelAction {
-    ParameterPanelFolder arg_srcFolder;    // 対象フォルダ
+	private static final long serialVersionUID = -5496892696559069841L;
+	ParameterPanelFolder arg_srcFolder;    // 対象フォルダ
     
     /**
      * コンストラクタ
@@ -44,7 +45,6 @@ public class CardSourceFolder extends Card implements PanelAction {
     }
 
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

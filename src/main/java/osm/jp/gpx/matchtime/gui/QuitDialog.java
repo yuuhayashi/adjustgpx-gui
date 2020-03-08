@@ -20,7 +20,6 @@ public class QuitDialog extends JDialog implements WindowListener
     JButton noButton;
     JLabel label1;
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public QuitDialog(JFrame parent, boolean modal) {
         super(parent, modal);
         

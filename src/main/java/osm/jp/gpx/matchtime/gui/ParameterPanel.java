@@ -18,7 +18,6 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
     public JLabel argLabel;
     public ResourceBundle i18n = ResourceBundle.getBundle("i18n");
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ParameterPanel(String label, String text) {
         this();
         this.argLabel.setText(label);

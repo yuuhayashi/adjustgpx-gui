@@ -22,7 +22,6 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
      * @param label
      * @param text 
      */
-    @SuppressWarnings({"OverridableMethodCallInConstructor", "LeakingThisInConstructor"})
     public ParameterPanelGpx(String label, String text) {
         super(label, text);
 

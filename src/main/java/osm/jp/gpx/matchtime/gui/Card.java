@@ -13,7 +13,8 @@ import javax.swing.JTabbedPane;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 public class Card extends JPanel {
-    JTabbedPane tabbe;
+	private static final long serialVersionUID = 9050047381377607421L;
+	JTabbedPane tabbe;
     public JPanel mainPanel;
     String title;
     int backNumber = -1;

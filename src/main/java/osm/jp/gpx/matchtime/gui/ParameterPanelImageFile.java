@@ -12,7 +12,6 @@ public class ParameterPanelImageFile extends ParameterPanel {
     public JButton openButton;
     public ParameterPanelFolder paramDir;
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ParameterPanelImageFile(
             String label, String text, 
             ParameterPanelFolder paramDir
@@ -31,7 +30,6 @@ public class ParameterPanelImageFile extends ParameterPanel {
     
     class SelectButtonAction implements java.awt.event.ActionListener
     {
-        @SuppressWarnings("override")
         public void actionPerformed(ActionEvent e) {
             selectImage_Action(e);
         }

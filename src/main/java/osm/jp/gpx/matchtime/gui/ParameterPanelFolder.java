@@ -24,7 +24,6 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
         this(label, text, JFileChooser.DIRECTORIES_ONLY);
     }
 
-    @SuppressWarnings({"OverridableMethodCallInConstructor", "LeakingThisInConstructor"})
     public ParameterPanelFolder(String label, String text, int chooser) {
         super(label, text);
 

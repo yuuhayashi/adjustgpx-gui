@@ -27,7 +27,8 @@ import osm.jp.gpx.matchtime.gui.restamp.DialogCorectTime;
  * この１インスタンスで、１パラメータをあらわす。
  */
 public class ParameterPanelTime extends ParameterPanel {
-    SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
+	private static final long serialVersionUID = 1683226418990348336L;
+	SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
     
     
@@ -40,7 +41,6 @@ public class ParameterPanelTime extends ParameterPanel {
     public JButton resetButton;
     Window owner;
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ParameterPanelTime(
             String label, 
             String text, 
@@ -112,7 +112,6 @@ public class ParameterPanelTime extends ParameterPanel {
             this.param = param;
         }
         
-        @SuppressWarnings("override")
         public void actionPerformed(ActionEvent e) {
             fileSelect_Action(param);
             (new DialogCorectTime(param, owner)).setVisible(true);
@@ -130,7 +129,6 @@ public class ParameterPanelTime extends ParameterPanel {
             this.paramPanelTime = param;
         }
         
-        @SuppressWarnings("override")
         public void actionPerformed(ActionEvent e) {
             fileSelect_Action(paramPanelTime);
         }
