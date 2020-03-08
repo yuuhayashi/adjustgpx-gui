@@ -10,7 +10,6 @@
 /src/test/data/*.log
 /src/test/data/cameradata/
 /src/test/data/output
-nbbuild.xml
-nbactions.xml
+nb*.xml
 Thumbs.db
 /nbproject/
