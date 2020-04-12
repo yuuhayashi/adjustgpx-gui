@@ -84,11 +84,6 @@ public class CardExifPerform extends Card  implements PanelAction {
             argsPanel.add(arg_output.exifON);
         }
 
-        // チェックボックス "ポイントマーカー<WPT>をGPXファイルに出力する"
-        if (arg_output.gpxOutputWpt != null) {
-            argsPanel.add(arg_output.gpxOutputWpt);
-        }
-        
         // チェックボックス "ソースGPXの<MAGVAR>を無視する"
         if (arg_output.gpxOverwriteMagvar != null) {
             argsPanel.add(arg_output.gpxOverwriteMagvar);
@@ -150,7 +145,6 @@ public class CardExifPerform extends Card  implements PanelAction {
             AppParameters params = new AppParameters();
 
             params.setProperty(AppParameters.GPX_NO_FIRST_NODE, String.valueOf(arg_gpxFile.isNoFirstNodeSelected()));
-            params.setProperty(AppParameters.GPX_REUSE, String.valueOf(arg_gpxFile.isGpxReuseSelected()));
             params.setProperty(AppParameters.GPX_SOURCE_FOLDER, arg_gpxFile.getText());
             if ((arg_basetime.exifBase != null) && arg_basetime.exifBase.isSelected()) {
                 params.setProperty(AppParameters.GPX_BASETIME, "EXIF_TIME");
@@ -169,7 +163,6 @@ public class CardExifPerform extends Card  implements PanelAction {
             params.setProperty(AppParameters.IMG_OUTPUT_EXIF, String.valueOf(arg_output.exifON.isSelected()));
             params.setProperty(AppParameters.GPX_OVERWRITE_MAGVAR, String.valueOf(arg_output.gpxOverwriteMagvar.isSelected()));
             params.setProperty(AppParameters.GPX_OUTPUT_SPEED, String.valueOf(arg_output.gpxOutputSpeed.isSelected()));
-            params.setProperty(AppParameters.GPX_OUTPUT_WPT, String.valueOf(arg_output.gpxOutputWpt.isSelected()));
             params.store();
         }
         catch(Exception e) {

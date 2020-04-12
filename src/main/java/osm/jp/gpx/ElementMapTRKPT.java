@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.TreeMap;
 
-import org.w3c.dom.DOMException;
-
 @SuppressWarnings("serial")
 public class ElementMapTRKPT extends TreeMap<Date, TagTrkpt> {
     public static final long DIFF_MAE_TIME = 3000L;	// before 3 secound
@@ -27,12 +25,10 @@ public class ElementMapTRKPT extends TreeMap<Date, TagTrkpt> {
      * </trkpt>
      * }
      * @return	keyとして登録したtime:Date
-     * @throws ParseException 
-     * @throws DOMException 
      */
-    public Date put(TagTrkpt tag) throws DOMException, ParseException {
-        this.put(tag.time, tag);
-    	return tag.time;
+    public Date put(TagTrkpt tag) {
+        this.put(tag.getTime(), tag);
+    	return tag.getTime();
     }
 
     /**

@@ -218,9 +218,6 @@ public class AdjustTerra extends JFrame
             // "セグメント'trkseg'の最初の１ノードは無視する。"
             arg3_gpxFile.addNoFirstNode(i18n.getString("label.420"), params);
 
-            // "生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も変換の対象にする"
-            arg3_gpxFile.addGpxReuse(i18n.getString("label.430"), params);
-            
             // 3. GPXファイルを選択
             CardGpxFile card = new CardGpxFile(
                     cardPanel, arg3_gpxFile,
@@ -257,9 +254,6 @@ public class AdjustTerra extends JFrame
 
             // "EXIFの変換をする"
             arg4_output.addCheckOutputExif(i18n.getString("label.540"), params);
-
-            // "ポイントマーカー<WPT>をGPXファイルに出力する"
-            arg4_output.addCheckOutputWpt(i18n.getString("label.550"), params);
 
             // "ソースGPXの<MAGVAR>を無視する"
             arg4_output.addCheckIgnoreMagvar(i18n.getString("label.560"), params);

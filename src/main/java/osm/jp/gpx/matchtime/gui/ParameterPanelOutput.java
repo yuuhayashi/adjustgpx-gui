@@ -10,7 +10,6 @@ public class ParameterPanelOutput extends ParameterPanelFolder
     JCheckBox outputIMG;	// IMGの変換 する／しない
     JCheckBox outputIMG_all;	// 'out of GPX time'でもIMGの変換をする　{ON | OFF}
     JCheckBox exifON;		// EXIF 書き出しモード ／ !(EXIFの書き換えはしない)
-    JCheckBox gpxOutputWpt;	// GPXに<WPT>を書き出す
     JCheckBox gpxOverwriteMagvar;	// ソースGPXの<MAGVAR>を無視する
     JCheckBox gpxOutputSpeed;	// GPXに<SPEED>を書き出す
     
@@ -61,20 +60,6 @@ public class ParameterPanelOutput extends ParameterPanelFolder
             selected = true;
         }
         exifON = new JCheckBox(label, selected);
-    }
-
-    /**
-     * チェックボックス "ポイントマーカー[WPT]をGPXファイルに出力する"
-     * @param label
-     * @param params 
-     */
-    public void addCheckOutputWpt(String label, AppParameters params) {
-        boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_OUTPUT_WPT).equals("true")) {
-            selected = true;
-        }
-        gpxOutputWpt = new JCheckBox(label, selected);
-        gpxOutputWpt.setEnabled(true);
     }
 
     /**

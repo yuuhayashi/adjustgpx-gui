@@ -1,20 +1,20 @@
 package osm.jp.gpx;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 public class ElementMapTRKSEGTest {
 
@@ -42,27 +42,56 @@ public class ElementMapTRKSEGTest {
         public static Fixture[] datas = {
             new Fixture("src/test/data/20170517.gpx", 1),
             new Fixture("src/test/data/20170518.gpx", 1),
-            new Fixture("src/test/data/muiltiTRK.GarminColorado.gpx.xml", 3),
-            new Fixture("src/test/data/muiltiTRKSEG.GarminColorado.gpx.xml", 3),
-            new Fixture("src/test/data/muiltiTRKSEG.noNameSpace.gpx.xml", 3),
-            new Fixture("src/test/data/multiTRKSEG.eTrex_20J.gpx.xml", 3),
-            new Fixture("src/test/data/multiTRKSEGreverse.eTrex_20J.gpx.xml", 3),
+            new Fixture("src/test/data/2019-09-07 16.17.12 Day.gpx", 1),
+            new Fixture("src/test/data/2019-12-29 06.50.19 Day.gpx", 1),
+            new Fixture("src/test/data/2020-02-29 13.35.58 Day.gpx", 1),
+            //new Fixture("src/test/data/muiltiTRK.GarminColorado.gpx.xml", 3),
+            //new Fixture("src/test/data/muiltiTRKSEG.GarminColorado.gpx.xml", 3),
+            //new Fixture("src/test/data/muiltiTRKSEG.noNameSpace.gpx.xml", 3),
+            //new Fixture("src/test/data/multiTRKSEG.eTrex_20J.gpx.xml", 3),
+            //new Fixture("src/test/data/multiTRKSEGreverse.eTrex_20J.gpx.xml", 3),
         };
 
         @Theory
         public void TRKSEGを読み込む(Fixture dataset) {
             try {
-                ElementMapTRKSEG mapTRKSEG = new ElementMapTRKSEG();
-                mapTRKSEG.parse(new File(dataset.gpxSourcePath));
-                mapTRKSEG.printinfo();
                 System.out.println("GPX file: "+ dataset.gpxSourcePath);
-                assertThat(mapTRKSEG.size(), is(dataset.segCount));
-                for (Date key : mapTRKSEG.keySet()) {
+                GpxFile gpx = new GpxFile(new File(dataset.gpxSourcePath));
+                gpx.parse();
+                assertThat(gpx.gpx.trkseg.size(), is(dataset.segCount));
+                for (Date key : gpx.gpx.trkseg.keySet()) {
                     assertThat(key, is(notNullValue()));
                 }
             }
-            catch (IOException | ParseException | ParserConfigurationException | DOMException | SAXException e) {
+            catch (IOException | ParseException | ParserConfigurationException | SAXException e) {
                 fail();
+            }
+        }
+        
+        @Test
+        public void test整形されていないGPX() {
+        	String gpxSourcePath = "src/test/data/2020-02-29 13.35.58 Day.gpx";
+            try {
+                System.out.println("GPX file: "+ gpxSourcePath);
+                GpxFile gpx = new GpxFile(new File(gpxSourcePath));
+                gpx.parse();
+                ElementMapTRKSEG seg = gpx.gpx.trkseg;
+                assertTrue(seg.size() == 1);
+                for (Date key : seg.keySet()) {
+                    assertThat(key, notNullValue());
+                }
+            }
+            catch (IOException e) {
+                fail();
+            }
+            catch (ParseException e) {
+                fail();
+            }
+            catch (ParserConfigurationException e) {
+                fail();
+            }
+            catch (SAXException e) {
+            	// 整形されていないXML
             }
         }
     }

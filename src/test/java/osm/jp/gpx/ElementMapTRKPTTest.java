@@ -8,15 +8,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 @RunWith(Enclosed.class)
 public class ElementMapTRKPTTest {
@@ -91,17 +86,11 @@ public class ElementMapTRKPTTest {
             {"2017-05-29T01:23:27Z", "35.881072646", "137.9951728508", "615.03"}
         };
 
-        Element createElement(Document document, String[] values) {
-            Element trkpt = document.createElement("trkpt");
-            trkpt.setAttribute("lat", values[1]);
-            trkpt.setAttribute("lon", values[2]);
-            Element timeE = document.createElement("time");
-            timeE.appendChild(document.createTextNode(values[0]));
-            trkpt.appendChild(timeE);
+        TagTrkpt createElement(String[] values) throws ParseException {
+        	TagTrkpt trkpt = new TagTrkpt(new Double(values[1]), new Double(values[2]));
+            trkpt.setTime(ImportPicture.toUTCDate(values[0]));
             if (values[3] != null) {
-                Element eleE = document.createElement("ele");
-                eleE.appendChild(document.createTextNode(values[3]));
-                trkpt.appendChild(eleE);
+                trkpt.setEle(values[3]);
             }
             return trkpt;
         }
@@ -110,14 +99,9 @@ public class ElementMapTRKPTTest {
         public void setUp() throws Exception {
             Complementation.param_GpxOverwriteMagvar = true;
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            DOMImplementation domImpl=builder.getDOMImplementation();
-            Document document = domImpl.createDocument("","trkpt",null);
-
             map = new ElementMapTRKPT();
-            for (int cnt = 4; cnt > 0; cnt--) {
-                map.put(new TagTrkpt(createElement(document, values[cnt - 1])));
+            for (int cnt = values.length; cnt > 0; cnt--) {
+                map.put(createElement(values[cnt - 1]));
             }
         }
 

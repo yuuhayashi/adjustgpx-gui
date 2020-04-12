@@ -17,9 +17,6 @@ public class AppParameters extends Properties {
     // GPX: <trkseg>セグメントの最初の１ノードは無視する。 {ON | OFF}
     public static String GPX_NO_FIRST_NODE = "GPX.noFirstNode";
 
-    // GPX: 生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も対象にする。 {ON | OFF}
-    public static String GPX_REUSE = "GPX.REUSE";
-
     // GPX: 基準時刻 {FILE_UPDATE | EXIF_TIME}
     public static String GPX_BASETIME = "GPX.BASETIME";
 
@@ -35,7 +32,7 @@ public class AppParameters extends Properties {
     // 対象GPXフォルダ:(GPXファイルが格納されているフォルダ)
     public static String GPX_SOURCE_FOLDER = "GPX.SOURCE_FOLDER";
 
-    // 出力フォルダ:(変換した画像ファイルとGPXファイルを出力するフォルダ)
+    // 出力フォルダ:(変換した画像ファイルを出力するフォルダ)
     public static String IMG_OUTPUT_FOLDER = "IMG.OUTPUT_FOLDER";
 
     // 出力IMG: IMG出力をする  {ON | OFF}
@@ -53,9 +50,6 @@ public class AppParameters extends Properties {
 
     // 出力GPX: ソースGPXの<MAGVER>を無視する {ON | OFF}
     public static String GPX_OVERWRITE_MAGVAR = "GPX.OVERWRITE_MAGVAR";
-
-    // 出力GPX: マーカー<wpt>を出力する {ON | OFF}
-    public static String GPX_OUTPUT_WPT = "GPX.OUTPUT_WPT";
 
     File file;
 
@@ -164,14 +158,6 @@ public class AppParameters extends Properties {
         }
 
         //------------------------------------------------
-        // GPX出力: ポイントマーカー<WPT>を出力する {ON | OFF}
-        valueStr = this.getProperty(GPX_OUTPUT_WPT);
-        if (valueStr == null) {
-            update = true;
-            this.setProperty(GPX_OUTPUT_WPT, String.valueOf(false));
-        }
-
-        //------------------------------------------------
         // GPX出力: ソースGPXの<MAGVAR>を無視する {ON | OFF}
         valueStr = this.getProperty(GPX_OVERWRITE_MAGVAR);
         if (valueStr == null) {
@@ -185,14 +171,6 @@ public class AppParameters extends Properties {
         if (valueStr == null) {
             update = true;
             this.setProperty(GPX_OUTPUT_SPEED, String.valueOf(false));
-        }
-
-        //------------------------------------------------
-        // GPX出力: 生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も対象にする。 {ON | OFF}
-        valueStr = this.getProperty(GPX_REUSE);
-        if (valueStr == null) {
-            update = true;
-            this.setProperty(GPX_REUSE, String.valueOf(false));
         }
 
         //------------------------------------------------

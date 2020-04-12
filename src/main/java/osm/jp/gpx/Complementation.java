@@ -27,9 +27,9 @@ public class Complementation {
      * @throws ParseException
      */
     public Complementation(TagTrkpt imaE, TagTrkpt maeE) throws ParseException {
-        this.imaTag = new TagTrkpt(imaE.trkpt);
+        this.imaTag = imaE.clone();
         if (maeE != null) {
-    		this.maeTag = new TagTrkpt(maeE.trkpt);
+    		this.maeTag = maeE.clone();
         }
     }
     
@@ -44,7 +44,6 @@ public class Complementation {
             }
             catch (NumberFormatException e) {
                 // 数字以外なら<speed>エレメントを削除する
-                imaTag.removeElement("speed");
                 imaTag.speedStr = null;
             }
     	}
@@ -56,7 +55,6 @@ public class Complementation {
             if (iDot > 0) {
                 str = str.substring(0, iDot+2);
             }
-            imaTag.appendElement("speed", str);
             imaTag.speedStr = str;
     	}
     }
@@ -72,7 +70,6 @@ public class Complementation {
             }
             catch (NumberFormatException e) {
                 // 数字以外なら<magvar>エレメントを削除する
-                imaTag.removeElement("magvar");
                 imaTag.magvarStr = null;
             }
     	}
@@ -105,7 +102,6 @@ public class Complementation {
             if (iDot > 0) {
                 str = str.substring(0, iDot);
             }
-            imaTag.appendElement("magvar", str);
             imaTag.magvarStr = str;
     	}
     }

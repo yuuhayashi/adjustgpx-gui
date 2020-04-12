@@ -32,7 +32,6 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.GpsTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
-import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 public class ImportPicture extends Thread {
@@ -56,9 +55,7 @@ public class ImportPicture extends Thread {
      */
     public static final Logger LOGGER = Logger.getLogger("CommandLogging");
     static {
-        InputStream inStream = null;
-        try {
-            inStream = new ByteArrayInputStream(LOGGING_PROPERTIES_DATA.getBytes("UTF-8"));
+        try (InputStream inStream = new ByteArrayInputStream(LOGGING_PROPERTIES_DATA.getBytes("UTF-8"))) {
             try {
                 LogManager.getLogManager().readConfiguration(inStream);
                 // "ログ設定: LogManagerを設定しました。"
@@ -73,17 +70,9 @@ public class ImportPicture extends Thread {
         catch (UnsupportedEncodingException e) {
             String str = "LoggerSettings: Not supported 'UTF-8' encoding: " + e.toString();
             LOGGER.severe(str);
-        }
-        finally {
-            try {
-                if (inStream != null) {
-                    inStream.close();
-                }
-            } catch (IOException e) {
-                String str = "LoggerSettings: Exception occored: "+ e.toString();
-                LOGGER.warning(str);
-            }
-        }
+        } catch (IOException e1) {
+            LOGGER.severe(e1.toString());
+		}
     }
     
     /** メイン
@@ -100,13 +89,6 @@ public class ImportPicture extends Thread {
      *
      * @param argv
      * argv[0] = INIファイルのパス名
-     * 
-     * argv[-] = dummy
-     * argv[0] = 画像ファイルが格納されているディレクトリ		--> imgDir
-     * argv[1] = 時刻補正の基準とする画像ファイル				--> baseFile
-     * argv[2] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd'T'HH:mm:ss"	--> timeStr
-     * argv[3] = 出力先フォルダ								--> outDir
-     * argv[4] = 撮影位置をロギングしたGPXファイル				--> gpxDir
      * 
      * @throws IOException
      * @throws ImageReadException 
@@ -150,13 +132,11 @@ public class ImportPicture extends Thread {
         System.out.println(" - param： "+ AppParameters.IMG_OUTPUT +"="+ this.params.getProperty(AppParameters.IMG_OUTPUT));     
         System.out.println(" - param： "+ AppParameters.IMG_OUTPUT_ALL +"="+ this.param_ImgOutputAll);
         System.out.println(" - param： "+ AppParameters.IMG_OUTPUT_EXIF +"= "+ String.valueOf(this.exif));
-        System.out.println(" - param： "+ AppParameters.GPX_SOURCE_FOLDER +"="+ this.param_GpxSourceFolder);
-        System.out.println(" - param： "+ AppParameters.GPX_OUTPUT_WPT +"="+ this.param_GpxOutputWpt);
+        System.out.println(" - param： "+ AppParameters.GPX_SOURCE_FOLDER +"="+ this.params.getProperty(AppParameters.GPX_SOURCE_FOLDER) );
         System.out.println(" - param： "+ AppParameters.GPX_OVERWRITE_MAGVAR +"="+ Complementation.param_GpxOverwriteMagvar);
         System.out.println(" - param： "+ AppParameters.GPX_OUTPUT_SPEED +"="+ Complementation.param_GpxOutputSpeed);
         System.out.println(" - param： "+ AppParameters.GPX_GPXSPLIT +"="+ this.param_GpxSplit);
         System.out.println(" - param： "+ AppParameters.GPX_NO_FIRST_NODE +"="+ ImportPicture.param_GpxNoFirstNode);        
-        System.out.println(" - param： "+ AppParameters.GPX_REUSE +"="+ this.param_GpxReuse);
 
         this.ex = null;
         // argv[0] --> AppParameters.IMG_SOURCE_FOLDER に置き換え
@@ -184,21 +164,11 @@ public class ImportPicture extends Thread {
             ImportPicture.param_GpxNoFirstNode = true;
     	}
     	
-    	paramStr = this.params.getProperty(AppParameters.GPX_REUSE);
-    	if ((paramStr != null) && (paramStr.equals(Boolean.toString(true)))) {
-            this.param_GpxReuse = true;
-    	}
-        
     	paramStr = this.params.getProperty(AppParameters.IMG_OUTPUT_ALL);
     	if ((paramStr != null) && (paramStr.equals(Boolean.toString(true)))) {
             this.param_ImgOutputAll = true;
     	}
 
-    	paramStr = this.params.getProperty(AppParameters.GPX_OUTPUT_WPT);
-    	if ((paramStr != null) && (paramStr.equals(Boolean.toString(true)))) {
-            this.param_GpxOutputWpt = true;
-    	}
-    	
     	paramStr = this.params.getProperty(AppParameters.GPX_OVERWRITE_MAGVAR);
     	if ((paramStr != null) && (paramStr.equals(Boolean.toString(true)))) {
             Complementation.param_GpxOverwriteMagvar = true;
@@ -325,7 +295,7 @@ public class ImportPicture extends Thread {
             	procGPXfile(new GpxFile(gpxFile));
             }
         }
-        catch(ParserConfigurationException | DOMException | SAXException | IOException | ParseException | ImageReadException | ImageWriteException | IllegalArgumentException | TransformerException e) {
+        catch(ParserConfigurationException | SAXException | IOException | ParseException | ImageReadException | ImageWriteException | IllegalArgumentException | TransformerException e) {
             e.printStackTrace();
             this.ex = new Exception(e);
         }
@@ -344,6 +314,8 @@ public class ImportPicture extends Thread {
      */
     void procGPXfile(GpxFile gpxFile) throws ParserConfigurationException, SAXException, IOException, ParseException, ImageReadException, ImageWriteException, TransformerException {
         System.gc();
+        
+        ElementMapTRKSEG seg = gpxFile.parse();
 
         System.out.println("time difference: "+ (delta / 1000) +"(sec)");
         System.out.println("     Target GPX: ["+ gpxFile.getAbsolutePath() +"]");
@@ -354,12 +326,8 @@ public class ImportPicture extends Thread {
         System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
         System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
         System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
-        boolean out = proc(imgDir, delta, gpxFile.mapTRKSEG, exif, gpxFile);
+        proc(imgDir, delta, seg, exif, gpxFile);
         System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
-        if (out) {
-            // GPX出力
-            gpxFile.output(outDir);
-        }
     }
 	
     /**
@@ -369,11 +337,11 @@ public class ImportPicture extends Thread {
      * @throws ImageReadException 
      * @throws ImageWriteException 
      */
-    boolean proc(File dir, long delta, ElementMapTRKSEG mapTRKSEG, boolean exifWrite, GpxFile gpxFile) throws ParseException, ImageReadException, IOException, ImageWriteException {
+    boolean proc(File imgDir, long delta, ElementMapTRKSEG mapTRKSEG, boolean exifWrite, GpxFile gpxFile) throws ParseException, ImageReadException, IOException, ImageWriteException {
         boolean ret = false;
-        File[] files = dir.listFiles(new JpegFileFilter());
-        Arrays.sort(files, new FileSort());
-        for (File image : files) {
+        File[] imgfiles = imgDir.listFiles(new JpegFileFilter());
+        Arrays.sort(imgfiles, new FileSort());
+        for (File image : imgfiles) {
             System.out.print(String.format("|%-32s|", image.getName()));
             if (image.isDirectory()) {
                 ret = proc(image, delta, mapTRKSEG, exifWrite, gpxFile);
@@ -498,13 +466,6 @@ public class ImportPicture extends Thread {
 
         if (exifWrite) {
             exifWrite(imageFile, correctedtime, trkptT);
-
-            if (Boolean.parseBoolean(params.getProperty(AppParameters.GPX_OUTPUT_WPT))) {
-            	if (trkptT != null) {
-                	Element temp = gpxFile.createWptTag(imageFile, imgDir, itime.getTime(), trkptT.trkpt);
-                    gpxFile.gpx.appendChild(temp);
-            	}
-            }
         }
         else {
             if (this.param_ImgOutputAll) {

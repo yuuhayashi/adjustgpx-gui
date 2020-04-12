@@ -1,13 +1,6 @@
 package osm.jp.gpx;
 
-import java.text.ParseException;
 import java.util.Date;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * @code{
@@ -20,8 +13,7 @@ import org.w3c.dom.NodeList;
  * }
  *
  */
-public class TagTrkpt {
-    public Element trkpt = null;
+public class TagTrkpt implements Cloneable {
     public Double lat = null;
     public Double lon = null;
     public String eleStr = null;
@@ -29,93 +21,74 @@ public class TagTrkpt {
     public String magvarStr = null;
     public String speedStr = null;
 
-    public TagTrkpt(Element trkpt) {
-        this.trkpt = (Element) trkpt.cloneNode(true);
-		
-        NamedNodeMap nodeMap = trkpt.getAttributes();
-        for (int j=0; j < nodeMap.getLength(); j++ ) {
-            switch (nodeMap.item(j).getNodeName()) {
-                case "lat":
-                    String latStr = nodeMap.item(j).getNodeValue();
-                    this.lat = new Double(latStr);
-                    break;
-                case "lon":
-                    String lonStr = nodeMap.item(j).getNodeValue();
-                    this.lon = new Double(lonStr);
-                    break;
-            }
-        }
-		
-        NodeList nodes1 = trkpt.getChildNodes();
-        for (int i1=0; i1 < nodes1.getLength(); i1++) {
-            Node node1 = nodes1.item(i1);
-            NodeList nodes2 = node1.getChildNodes();
-            switch (node1.getNodeName()) {
-            case "ele":
-                for (int i2=0; i2 < nodes2.getLength(); i2++) {
-                    Node node2 = nodes2.item(i2);
-                    if (node2 != null) {
-                        if (node2.getNodeType() == Node.TEXT_NODE) {
-                            this.eleStr = node2.getNodeValue();
-                        }
-                    }
-                }
-                break;
-            case "time":
-                for (int i2=0; i2 < nodes2.getLength(); i2++) {
-                    Node node2 = nodes2.item(i2);
-                    if (node2 != null) {
-                        if (node2.getNodeType() == Node.TEXT_NODE) {
-                            try {
-                                this.time = ImportPicture.toUTCDate(node2.getNodeValue());
-                            } catch (ParseException e) {
-                                this.time = null;
-                            }
-                        }
-                    }
-                }
-                break;
-            case "magvar":
-                for (int i2=0; i2 < nodes2.getLength(); i2++) {
-                    Node node2 = nodes2.item(i2);
-                    if (node2 != null) {
-                        if (node2.getNodeType() == Node.TEXT_NODE) {
-                            this.magvarStr = node2.getNodeValue();
-                        }
-                    }
-                }
-                break;
-            case "speed":
-                for (int i2=0; i2 < nodes2.getLength(); i2++) {
-                    Node node2 = nodes2.item(i2);
-                    if (node2 != null) {
-                        if (node2.getNodeType() == Node.TEXT_NODE) {
-                            this.speedStr = node2.getNodeValue();
-                        }
-                    }
-                }
-                break;
-            }
-        }
+    public TagTrkpt(Double lat, Double lon) {
+    	this.lat = lat;
+    	this.lon = lon;
     }
-	
-    public void removeElement(String eleName) {
-        Node child;
-        for (child = trkpt.getFirstChild(); child != null; child = child.getNextSibling()) {
-            NodeList nodeList = child.getChildNodes();
-            for(int i = 0; i < nodeList.getLength(); i++) {
-                Node grandChild = child.getChildNodes().item(i);
-                if (grandChild.getNodeName().equals(eleName)) {
-                    child.removeChild(grandChild);
-                }
-            }
-        }
+
+    @Override
+	public TagTrkpt clone() { //基本的にはpublic修飾子を付け、自分自身の型を返り値とする
+    	TagTrkpt b = null;
+		
+		// ObjectクラスのcloneメソッドはCloneNotSupportedExceptionを投げる可能性があるので、try-catch文で記述(呼び出し元に投げても良い)
+		try {
+			//親クラスのcloneメソッドを呼び出す(親クラスの型で返ってくるので、自分自身の型でのキャストを忘れないようにする)
+			b =(TagTrkpt)super.clone();
+			//親クラスのcloneメソッドで深いコピー(複製先のクラス型変数と複製元のクラス型変数で指しているインスタンスの中身が違うコピー)がなされていないクラス型変数をその変数のcloneメソッドで複製し、複製先のクラス型変数に代入
+			b.lat = this.lat;
+			b.lon = this.lon;
+			b.eleStr = this.eleStr.toString();
+			b.time = (Date) this.time.clone();
+			b.magvarStr = (this.magvarStr==null ? null : this.magvarStr.toString());
+			b.speedStr = (this.speedStr == null ? null : this.speedStr.toString());
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return b;
+	}
+    
+    public void setEle(String ele) {
+    	this.eleStr = ele;
     }
     
-    public void appendElement(String eleName, String valueStr) {
-        Document doc = trkpt.getOwnerDocument();
-        Element newElement = doc.createElement(eleName);
-        newElement.setTextContent(valueStr);
-        trkpt.appendChild(newElement);
+    public void setTime(Date time) {
+    	this.time = time;
+    }
+    
+    public Date getTime() {
+    	return this.time;
+    }
+    
+    public void setMagvar(String magvar) {
+    	this.magvarStr = magvar;
+    }
+    
+    public void setSpeed(String speed) {
+    	this.speedStr = speed;
+    }
+    
+    public String toString() {
+    	String ret = "<trkpt";
+    	if (lat != null) {
+    		ret += " lat="+ lat;
+    	}
+    	if (lon != null) {
+    		ret += " lon="+ lon;
+    	}
+    	if (eleStr != null) {
+    		ret += " ele="+ eleStr;
+    	}
+    	if (time != null) {
+    		ret += " time="+ time;
+    	}
+    	if (this.magvarStr != null) {
+    		ret += " magvar="+ magvarStr;
+    	}
+    	if (this.speedStr != null) {
+    		ret += " speed="+ speedStr;
+    	}
+    	ret += ">";
+    	System.out.println(ret);
+    	return ret;
     }
 }

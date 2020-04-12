@@ -93,7 +93,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/20170518.gpx",
                 "src/test/data/AdjustTime.20170518.A1.ini",
                 new Expecter[] {
-                    new Expecter("10170518/20170518_.gpx", true, null, 90.0D, 180.0D, false),
                     new Expecter("10170518/DSC05183.JPG", false, null, 90.0D, 180.0D, false),
                     new Expecter("10170518/DSC05184.JPG", true, "2017:05:18 09:34:44", 35.4367520000D, 139.4082730000D, true),
                     new Expecter("10170518/DSC05196.JPG", true, "2017:05:18 09:37:32", 35.4376820000D, 139.4085150000D, true),
@@ -109,7 +108,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/20170518.gpx",
                 "src/test/data/AdjustTime.20170518.A2.ini",
                 new Expecter[] {
-                    new Expecter("10170518/20170518_.gpx", true, null, 90.0D, 180.0D, false),
                     new Expecter("10170518/DSC05183.JPG", true, "2017:05:18 09:16:48", 90.0D, 180.0D, true),
                     new Expecter("10170518/DSC05184.JPG", true, "2017:05:18 09:34:44", 35.4367520000D, 139.4082730000D, true),
                     new Expecter("10170518/DSC05196.JPG", true, "2017:05:18 09:37:32", 35.4376820000D, 139.4085150000D, true),
@@ -125,7 +123,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/20170518.gpx",
                 "src/test/data/AdjustTime.20170518.B1.ini",
                 new Expecter[] {
-                    new Expecter("cameradata/20170518_.gpx", true, null, 90.0D, 180.0D, false),
                     new Expecter("cameradata/20170518_092031A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("cameradata/20170518_094226A_snap.jpg", true, "2017:05:18 09:42:26", 35.4366860000D, 139.4082650000D, true),
                     new Expecter("cameradata/20170518_094737A.jpg", true, "2017:05:18 09:47:36", 35.4368200000D, 139.4082810000D, true),
@@ -140,7 +137,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/20170518.gpx",
                 "src/test/data/AdjustTime.20170518.B2.ini",
                 new Expecter[] {
-                    new Expecter("cameradata/20170518_.gpx", true, null, 90.0D, 180.0D, false),
                     new Expecter("cameradata/20170518_092031A.jpg", true, "2017:05:18 09:20:30", 90.0D, 180.0D, true),
                     new Expecter("cameradata/20170518_094226A_snap.jpg", true, "2017:05:18 09:42:26", 35.4366860000D, 139.4082650000D, true),
                     new Expecter("cameradata/20170518_094737A.jpg", true, "2017:05:18 09:47:36", 35.4368200000D, 139.4082810000D, true),
@@ -155,9 +151,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M1a.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
@@ -192,9 +185,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M1b.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, true),
                     new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
@@ -229,9 +219,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M1c.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
@@ -266,9 +253,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M1d.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, true),
                     new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
@@ -304,9 +288,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2a.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
@@ -341,9 +322,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2b.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, true),
                     new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
@@ -378,9 +356,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2c.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
@@ -415,9 +390,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2d.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, true),
                     new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
@@ -452,9 +424,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2a.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
@@ -489,9 +458,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2b.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, true),
                     new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
@@ -526,9 +492,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2c.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", false, null, 90.0D, 180.0D, false),
                     new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
@@ -563,9 +526,6 @@ public class ImportPictureTest {
                 "src/test/data/cameradata/separate.gpx",
                 "src/test/data/AdjustTime.M2d.separate.ini",
                 new Expecter[] {
-                    // GPX file
-                    new Expecter("separate/separate_.gpx", true, null, 90.0D, 180.0D, false),
-
                     // out of time ( - 2017-05-29T01:23:18)
                     new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, true),
                     new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
@@ -598,7 +558,6 @@ public class ImportPictureTest {
         public void パラメータテスト(Fixture dataset) throws Exception {
             ImportPictureTest.setup(dataset);
             ImportPictureTest.testdo(dataset.iniFilePath);
-            //SimpleDateFormat format = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.UK);
 
             Expecter[] es = dataset.expecters;
             AppParameters params = new AppParameters(dataset.iniFilePath);

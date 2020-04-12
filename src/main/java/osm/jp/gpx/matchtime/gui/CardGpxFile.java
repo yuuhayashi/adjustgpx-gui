@@ -45,11 +45,6 @@ public class CardGpxFile extends Card  implements PanelAction {
             argsPanel.add(arg_gpxFile.noFirstNode);
         }
 
-        // "生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も変換の対象にする"
-        if (arg_gpxFile.gpxReuse != null) {
-            argsPanel.add(arg_gpxFile.gpxReuse);
-        }
-        
         JPanel space = new JPanel();
         space.setMinimumSize(new Dimension(40, 20));
         space.setMaximumSize(new Dimension(40, Short.MAX_VALUE));

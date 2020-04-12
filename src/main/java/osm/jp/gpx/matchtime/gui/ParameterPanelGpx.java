@@ -15,7 +15,6 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
     JFileChooser fc;
     JButton selectButton;
     public JCheckBox noFirstNode;      // CheckBox: "セグメント'trkseg'の最初の１ノードは無視する。"
-    public JCheckBox gpxReuse;         // CheckBox: "生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も変換の対象にする"
     
     /**
      * コンストラクタ
@@ -82,23 +81,6 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
         return (noFirstNode != null) && noFirstNode.isSelected();
     }
     
-    /**
-     * "生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も変換の対象にする"
-     * @param label         テキスト
-     * @param params        プロパティ
-     */
-    public void addGpxReuse(String label, AppParameters params) {
-        boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_REUSE).equals("true")) {
-            selected = true;
-        }
-        gpxReuse = new JCheckBox(label, selected);
-    }
-    
-    public boolean isGpxReuseSelected() {
-        return (gpxReuse != null) && gpxReuse.isSelected();
-    }
-        
     /**
      * このフィールドに有効な値が設定されているかどうか
      * @return 
