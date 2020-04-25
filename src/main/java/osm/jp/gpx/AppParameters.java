@@ -10,7 +10,7 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class AppParameters extends Properties {
     static final String FILE_PATH = "AdjustTime.ini";
-
+    
     // GPX: 時間的に間隔が開いたGPXログを別の<trkseg>セグメントに分割する。 {ON | OFF}
     public static String GPX_GPXSPLIT = "GPX.gpxSplit";
 
@@ -50,6 +50,13 @@ public class AppParameters extends Properties {
 
     // 出力GPX: ソースGPXの<MAGVER>を無視する {ON | OFF}
     public static String GPX_OVERWRITE_MAGVAR = "GPX.OVERWRITE_MAGVAR";
+    
+    public static String GPX_REUSE = "GPX.REUSE";
+
+    //public boolean param_ImgOutputAll = false;
+    //public boolean exif = false;
+    //public boolean param_GpxSplit = false;
+    //public boolean param_GpxReuse = false;
 
     File file;
 
@@ -178,9 +185,48 @@ public class AppParameters extends Properties {
         valueStr = this.getProperty(GPX_BASETIME);
         if (valueStr == null) {
             update = true;
-            this.setProperty(GPX_BASETIME, "FILE_UPDATE");
+            setProperty(AppParameters.GPX_BASETIME, "FILE_UPDATE");
         }
 
+        // その他のパラメータを読み取る
+    	valueStr = getProperty(AppParameters.GPX_GPXSPLIT);
+    	if (valueStr == null) {
+            update = true;
+            setProperty(AppParameters.GPX_GPXSPLIT, Boolean.toString(false));
+    	}
+
+    	valueStr = getProperty(AppParameters.GPX_NO_FIRST_NODE);
+    	if (valueStr == null) {
+            update = true;
+            setProperty(AppParameters.GPX_NO_FIRST_NODE, Boolean.toString(false));
+    	}
+    	
+    	valueStr = getProperty(AppParameters.IMG_OUTPUT_ALL);
+    	if (valueStr == null) {
+            update = true;
+            setProperty(AppParameters.IMG_OUTPUT_ALL, Boolean.toString(false));
+    	}
+
+    	valueStr = getProperty(AppParameters.GPX_OVERWRITE_MAGVAR);
+    	if (valueStr == null) {
+            update = true;
+            setProperty(AppParameters.GPX_OVERWRITE_MAGVAR, Boolean.toString(false));
+    	}
+
+    	
+    	valueStr = getProperty(AppParameters.GPX_OUTPUT_SPEED);
+    	if (valueStr == null) {
+            update = true;
+            setProperty(AppParameters.GPX_OUTPUT_SPEED, Boolean.toString(false));
+    	}
+    	
+    	valueStr = getProperty(AppParameters.GPX_REUSE);
+    	if (valueStr == null) {
+            update = true;
+            setProperty(AppParameters.GPX_REUSE, Boolean.toString(false));
+    	}
+    	
+        
         if (update) {
             // ・ファイルがなければ新たに作る
             // ・項目が足りない時は書き足す。
@@ -191,4 +237,108 @@ public class AppParameters extends Properties {
     public void store() throws FileNotFoundException, IOException {
         this.store(new FileOutputStream(this.file), "by AdjustTime");
     }
+    
+    public void printout() {
+        System.out.println(" - param： "+ AppParameters.IMG_TIME +"="+ getProperty(AppParameters.IMG_TIME) );
+        System.out.println(" - param： "+ AppParameters.IMG_BASE_FILE +"="+ getProperty(AppParameters.IMG_BASE_FILE) );
+        System.out.println(" - param： "+ AppParameters.GPX_BASETIME +"="+ getProperty(AppParameters.GPX_BASETIME) );
+        System.out.println(" - param： "+ AppParameters.IMG_SOURCE_FOLDER +"="+ getProperty(AppParameters.IMG_SOURCE_FOLDER) );
+        System.out.println(" - param： "+ AppParameters.IMG_OUTPUT_FOLDER +"="+ getProperty(AppParameters.IMG_OUTPUT_FOLDER) );
+        System.out.println(" - param： "+ AppParameters.IMG_OUTPUT +"="+ getProperty(AppParameters.IMG_OUTPUT));     
+        System.out.println(" - param： "+ AppParameters.IMG_OUTPUT_ALL +"="+ isImgOutputAll());
+        System.out.println(" - param： "+ AppParameters.IMG_OUTPUT_EXIF +"= "+ isImgOutputExif());
+        System.out.println(" - param： "+ AppParameters.GPX_SOURCE_FOLDER +"="+ getProperty(AppParameters.GPX_SOURCE_FOLDER));
+        System.out.println(" - param： "+ AppParameters.GPX_OVERWRITE_MAGVAR +"="+ getProperty(AppParameters.GPX_OVERWRITE_MAGVAR));
+        System.out.println(" - param： "+ AppParameters.GPX_OUTPUT_SPEED +"="+ getProperty(AppParameters.GPX_OUTPUT_SPEED));
+        System.out.println(" - param： "+ AppParameters.GPX_GPXSPLIT +"="+ isGpxSplit());
+        System.out.println(" - param： "+ AppParameters.GPX_NO_FIRST_NODE +"="+ isGpxNoFirstNode());        
+        System.out.println(" - param： "+ AppParameters.GPX_REUSE +"="+ isGpxReuse());        
+    }
+    
+    /**
+     * 基準時刻（ファイル更新日時 | EXIF撮影日時)
+     * @return boolean exifBase = false;
+     */
+    public boolean isExifBase() {
+    	return (getProperty(AppParameters.GPX_BASETIME).equals("EXIF_TIME"));
+    }
+    
+    /**
+     * IMG出力: IMGを出力する
+     * @return
+     */
+    public boolean isImgOutput() {
+    	String valueStr = getProperty(AppParameters.IMG_OUTPUT);
+    	if ((valueStr != null) && valueStr.equals(Boolean.toString(true))) {
+    		return true;
+    	}
+    	return false;
+    }
+
+    public boolean isImgOutputExif() {
+    	String valueStr = getProperty(AppParameters.IMG_OUTPUT_EXIF);
+    	if ((valueStr != null) && valueStr.equals(Boolean.toString(true))) {
+    		return true;
+    	}
+    	return false;
+    }
+    
+    /**
+     * AppParameters.IMG_SOURCE_FOLDER
+     * @return new File(getProperty(AppParameters.IMG_SOURCE_FOLDER));
+     */
+    public File getImgSourceFolder() {
+    	return new File(getProperty(AppParameters.IMG_SOURCE_FOLDER));
+    }
+    
+    public File getGpxSourceFolder() {
+    	String str = getProperty(AppParameters.GPX_SOURCE_FOLDER);
+    	if (str == null) {
+    		return null;
+    	}
+    	if (str.isEmpty()) {
+    		return null;
+    	}
+    	return new File(str);
+    }
+
+    /**
+     * AppParameters.GPX_GPXSPLIT
+     * @return
+     */
+    public boolean isGpxSplit() {
+    	return isParam(AppParameters.GPX_GPXSPLIT);
+    }
+
+    public boolean isGpxNoFirstNode() {
+    	return isParam(AppParameters.GPX_NO_FIRST_NODE);
+    }
+	
+	public boolean isImgOutputAll() {
+    	return isParam(AppParameters.IMG_OUTPUT_ALL);
+	}
+
+	public boolean isGpxOverwriteMagvar() {
+    	return isParam(AppParameters.GPX_OVERWRITE_MAGVAR);
+	}
+
+	public void setGpxOverwriteMagvar(boolean v) {
+        this.setProperty(GPX_OVERWRITE_MAGVAR, String.valueOf(v));
+	}
+
+	public boolean isGpxOutputSpeed() {
+    	return isParam(AppParameters.GPX_OUTPUT_SPEED);
+	}
+    
+	public boolean isGpxReuse() {
+    	return isParam(AppParameters.GPX_REUSE);
+	}
+    
+	boolean isParam(String item) {
+    	String valueStr = getProperty(item);
+    	if ((valueStr != null) && valueStr.equals(Boolean.toString(true))) {
+    		return true;
+    	}
+    	return false;
+	}
 }

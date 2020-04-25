@@ -13,10 +13,13 @@ import org.xml.sax.SAXParseException;
 
 @SuppressWarnings("serial")
 public class GpxFile extends File {
-	GpxParser gpx = new GpxParser();
-	
-    public GpxFile(File file) throws ParserConfigurationException, SAXException, IOException, ParseException {
+	GpxParser gpx;	
+    AppParameters params;
+
+    public GpxFile(AppParameters params, File file) throws ParserConfigurationException, SAXException, IOException, ParseException {
         super(file.getParentFile(), file.getName());
+        this.params = params;
+        this.gpx = new GpxParser(params);
     }
     
     public ElementMapTRKSEG parse() throws ParserConfigurationException, SAXException, IOException {

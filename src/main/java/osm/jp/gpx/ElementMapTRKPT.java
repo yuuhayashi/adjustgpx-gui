@@ -7,9 +7,11 @@ import java.util.TreeMap;
 @SuppressWarnings("serial")
 public class ElementMapTRKPT extends TreeMap<Date, TagTrkpt> {
     public static final long DIFF_MAE_TIME = 3000L;	// before 3 secound
+    AppParameters params;
 
-    public ElementMapTRKPT() {
+    public ElementMapTRKPT(AppParameters params) {
         super(new TimeComparator());
+        this.params = params;
     }
 
     /**
@@ -48,12 +50,12 @@ public class ElementMapTRKPT extends TreeMap<Date, TagTrkpt> {
                 // <MAGVAR>がなければ、
                 // 直前の位置と、現在地から進行方向を求める
             	// 経度(longitude)と経度から進行方向を求める
-                if (Complementation.param_GpxOverwriteMagvar) {
+                if (params.isGpxOverwriteMagvar()) {
                     comp.complementationMagvar();
                 }
 
                 // 緯度・経度と時間差から速度(km/h)を求める
-                if (Complementation.param_GpxOutputSpeed) {
+                if (params.isGpxOutputSpeed()) {
                     comp.complementationSpeed();
                 }
                 //return (TagTrkpt)(comp.imaTag.trkpt.cloneNode(true));

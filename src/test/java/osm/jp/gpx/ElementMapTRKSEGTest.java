@@ -56,7 +56,7 @@ public class ElementMapTRKSEGTest {
         public void TRKSEGを読み込む(Fixture dataset) {
             try {
                 System.out.println("GPX file: "+ dataset.gpxSourcePath);
-                GpxFile gpx = new GpxFile(new File(dataset.gpxSourcePath));
+                GpxFile gpx = new GpxFile(new AppParameters(AppParameters.FILE_PATH), new File(dataset.gpxSourcePath));
                 gpx.parse();
                 assertThat(gpx.gpx.trkseg.size(), is(dataset.segCount));
                 for (Date key : gpx.gpx.trkseg.keySet()) {
@@ -73,7 +73,7 @@ public class ElementMapTRKSEGTest {
         	String gpxSourcePath = "src/test/data/2020-02-29 13.35.58 Day.gpx";
             try {
                 System.out.println("GPX file: "+ gpxSourcePath);
-                GpxFile gpx = new GpxFile(new File(gpxSourcePath));
+                GpxFile gpx = new GpxFile(new AppParameters(AppParameters.FILE_PATH), new File(gpxSourcePath));
                 gpx.parse();
                 ElementMapTRKSEG seg = gpx.gpx.trkseg;
                 assertTrue(seg.size() == 1);

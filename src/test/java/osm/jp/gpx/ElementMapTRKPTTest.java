@@ -32,7 +32,7 @@ public class ElementMapTRKPTTest {
         @Before
         public void setUp() throws Exception {
             timeL = (sdf.parse("2018-10-25 08:00:00.000")).getTime();
-            map = new ElementMapTRKPT();
+            map = new ElementMapTRKPT(new AppParameters(AppParameters.FILE_PATH));
             map.put(new Date(timeL), null);			// 5-6: 2018-10-25 08:00:00.000
             map.put(new Date(timeL + 1L), null);	// 7: 2018-10-25 08:00:00.001
             map.put(new Date(timeL - 1L), null);	// 4: 2018-10-25 07:59:59.999
@@ -97,9 +97,10 @@ public class ElementMapTRKPTTest {
 
         @Before
         public void setUp() throws Exception {
-            Complementation.param_GpxOverwriteMagvar = true;
+            AppParameters params = new AppParameters(AppParameters.FILE_PATH);
+            params.setGpxOverwriteMagvar(true);
 
-            map = new ElementMapTRKPT();
+            map = new ElementMapTRKPT(params);
             for (int cnt = values.length; cnt > 0; cnt--) {
                 map.put(createElement(values[cnt - 1]));
             }

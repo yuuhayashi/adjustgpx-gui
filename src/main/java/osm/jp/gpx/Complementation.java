@@ -7,8 +7,8 @@ public class Complementation {
     
     public TagTrkpt imaTag = null;
     public TagTrkpt maeTag = null;
-    public static boolean param_GpxOutputSpeed = false;
-    public static boolean param_GpxOverwriteMagvar = false;
+    //public static boolean param_GpxOutputSpeed = false;
+    //public static boolean param_GpxOverwriteMagvar = false;
     
     /**
      * @param imaE
