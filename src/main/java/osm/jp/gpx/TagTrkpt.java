@@ -37,7 +37,7 @@ public class TagTrkpt implements Cloneable {
 			//親クラスのcloneメソッドで深いコピー(複製先のクラス型変数と複製元のクラス型変数で指しているインスタンスの中身が違うコピー)がなされていないクラス型変数をその変数のcloneメソッドで複製し、複製先のクラス型変数に代入
 			b.lat = this.lat;
 			b.lon = this.lon;
-			b.eleStr = this.eleStr.toString();
+			b.eleStr = (this.eleStr == null ? null : this.eleStr.toString());
 			b.time = (Date) this.time.clone();
 			b.magvarStr = (this.magvarStr==null ? null : this.magvarStr.toString());
 			b.speedStr = (this.speedStr == null ? null : this.speedStr.toString());
