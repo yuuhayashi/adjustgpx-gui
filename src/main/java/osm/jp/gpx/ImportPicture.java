@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -85,8 +84,7 @@ public class ImportPicture extends Thread {
     
     public File gpxDir;
     public ImgFolder imgFolder;
-    //public File outDir;
-    public ArrayList<File> gpxFiles = new ArrayList<>();
+    public GpxFolder gpxFolder;
     public AppParameters params;
     
     private static final String EXIF_DATE_TIME_FORMAT_STRING = "yyyy:MM:dd HH:mm:ss";
@@ -101,61 +99,7 @@ public class ImportPicture extends Thread {
         
         // AppParameters.IMG_SOURCE_FOLDER に置き換え
         imgFolder = new ImgFolder(params);
-        
-        this.gpxDir = params.getGpxSourceFolder();
-    	if (this.gpxDir != null) {
-            if (!this.gpxDir.exists()) {
-            	// GPXファイルまたはディレクトリが存在しません。('%s')
-                System.out.println(
-                    String.format(i18n.getString("msg.100"), gpxDir.getAbsolutePath())
-                );
-            	return;
-            }
-    	}
-        else {
-            this.gpxDir = imgFolder.getImgDir();
-        }
-
-    	// 指定されたディレクトリ内のGPXファイルすべてを対象とする
-        if (this.gpxDir.isDirectory()) {
-            File[] files = this.gpxDir.listFiles();
-            if (files == null) {
-            	// 対象となるGPXファイルがありませんでした。('%s')
-            	System.out.println(
-                    String.format(i18n.getString("msg.110"), this.gpxDir.getAbsolutePath())
-                );
-            	return;
-            }
-            if (params.isImgOutputAll() && (files.length > 1)) {
-                // "複数のGPXファイルがあるときには、'IMG.OUTPUT_ALL'オプションは指定できません。"
-            	System.out.println(
-                    i18n.getString("msg.120")
-                );
-            	return;
-            }
-            
-            java.util.Arrays.sort(
-                files, new java.util.Comparator<File>() {
-                    @Override
-                    public int compare(File file1, File file2){
-                        return file1.getName().compareTo(file2.getName());
-                    }
-                }
-            );
-            for (File file : files) {
-                if (file.isFile()) {
-                    String filename = file.getName().toUpperCase();
-                    if (filename.toUpperCase().endsWith(".GPX")) {
-                        if (!filename.toUpperCase().endsWith("_.GPX") || params.isGpxReuse()) {
-                            this.gpxFiles.add(file);
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            this.gpxFiles.add(this.gpxDir);
-        }
+        gpxFolder = new GpxFolder(params);
         
         // 出力ファイル
         // AppParameters.IMG_OUTPUT に置き換え
@@ -195,15 +139,47 @@ public class ImportPicture extends Thread {
     @Override
     public void run() {
         try {
-            for (File gpxFile : this.gpxFiles) {
-            	imgFolder.procGPXfile(new GpxFile(params, gpxFile));
+            long delta = 0;
+            String timeStr = params.getProperty(AppParameters.IMG_TIME);
+            try {
+                Date t = ImportPicture.toUTCDate(timeStr);
+
+                // 基準時刻ファイルの「更新日時」を使って時刻合わせを行う。
+                // argv[1] --> AppParameters.IMG_BASE_FILE に置き換え
+            	Date imgtime = ImgFile.getDate(params, getImgBaseFile());
+                delta = t.getTime() - imgtime.getTime();
             }
+            catch (ParseException e) {
+                // "'%s'の書式が違います(%s)"0
+                System.out.println(
+                    String.format(
+                        ImportPicture.i18n.getString("msg.130"),
+                        timeStr,
+                        ImportPicture.TIME_FORMAT_STRING
+                    )
+                );
+                return;
+            }
+
+            for (File gpxFile : gpxFolder) {
+            	imgFolder.procGPXfile(new GpxFile(params, gpxFile), delta);
+            }
+            
+            // imgDir内の画像ファイルを処理する
+            System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+            System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
+            System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+            for (ImgFile image : imgFolder) {
+            	System.out.println(image.toText());
+            }
+            System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
         }
         catch(ParserConfigurationException | SAXException | IOException | ParseException | ImageReadException | ImageWriteException | IllegalArgumentException | TransformerException e) {
             e.printStackTrace();
             this.ex = new Exception(e);
         }
     }
+    
     
 	
     
@@ -246,6 +222,10 @@ public class ImportPicture extends Thread {
     	//dfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
     	return dfUTC.parse(timeStr);
     }
+    
+	public File getImgBaseFile() {
+		return new File(imgFolder.getImgDir(), params.getProperty(AppParameters.IMG_BASE_FILE));
+	}
 	
     static String getShortPathName(File dir, File iFile) {
         String dirPath = dir.getAbsolutePath();

@@ -1,7 +1,6 @@
 package osm.jp.gpx;
 
 import java.text.ParseException;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
