@@ -158,18 +158,18 @@ public class ImportPicture extends Thread {
                 return;
             }
 
-            for (File gpxFile : gpxFolder) {
-            	imgFolder.procGPXfile(new GpxFile(params, gpxFile), delta);
+            for (GpxFile gpxFile : gpxFolder) {
+            	gpxFile.parse();
+            	gpxFile.printinfo();
+            	imgFolder.procGPXfile(gpxFile, delta);
             }
             
             // imgDir内の画像ファイルを処理する
-            System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
-            System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
-            System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+            ImgFile.printheader();
             for (ImgFile image : imgFolder) {
-            	System.out.println(image.toText());
+            	image.printinfo();
             }
-            System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+            ImgFile.printfooter();
         }
         catch(ParserConfigurationException | SAXException | IOException | ParseException | ImageReadException | ImageWriteException | IllegalArgumentException | TransformerException e) {
             e.printStackTrace();

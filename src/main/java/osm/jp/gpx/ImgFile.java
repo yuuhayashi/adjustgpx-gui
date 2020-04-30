@@ -130,25 +130,6 @@ public class ImgFile extends File {
         return true;
     }
     
-    String toText() {
-    	String ret = "";
-    	if (isDone()) {
-            ret += (String.format("|%-32s|", this.getName()));
-            ret += (String.format("%20s|", (imgtime==null ? "" : ImportPicture.toUTCString(imgtime))));
-            ret += (String.format("%20s|", (gpstime==null ? "" : ImportPicture.toUTCString(gpstime))));
-            ret += (String.format("%14.10f|%14.10f|", latitude, longitude));
-            ret += (String.format("%8s|%6s|%6s|", eleStr, magvarStr, speedStr));
-    	}
-    	else {
-            ret += (String.format("|%-32s|", this.getName()));
-            ret += (String.format("%20s|", (imgtime==null ? "" : ImportPicture.toUTCString(imgtime))));
-            ret += (String.format("%20s|", (gpstime==null ? "" : ImportPicture.toUTCString(gpstime))));
-            ret += (String.format("%-14s|%-14s|", "", ""));
-            ret += (String.format("%8s|%6s|%6s|", "", "", ""));
-    	}
-        return ret;
-    }
-    
     void exifWrite(File imageFile, Date correctedtime, TagTrkpt trkptT, File outDir) throws ImageReadException, IOException, ImageWriteException {
         DecimalFormat yearFormatter = new DecimalFormat("0000");
         DecimalFormat monthFormatter = new DecimalFormat("00");
@@ -279,4 +260,41 @@ public class ImgFile extends File {
         }
     }
     
+    /**
+     * ImgFileインスタンスの状態をTEXT化
+     * @return	１行
+     */
+    String toText() {
+    	String ret = "";
+    	if (isDone()) {
+            ret += (String.format("|%-32s|", this.getName()));
+            ret += (String.format("%20s|", (imgtime==null ? "" : ImportPicture.toUTCString(imgtime))));
+            ret += (String.format("%20s|", (gpstime==null ? "" : ImportPicture.toUTCString(gpstime))));
+            ret += (String.format("%14.10f|%14.10f|", latitude, longitude));
+            ret += (String.format("%8s|%6s|%6s|", eleStr, magvarStr, speedStr));
+    	}
+    	else {
+            ret += (String.format("|%-32s|", this.getName()));
+            ret += (String.format("%20s|", (imgtime==null ? "" : ImportPicture.toUTCString(imgtime))));
+            ret += (String.format("%20s|", (gpstime==null ? "" : ImportPicture.toUTCString(gpstime))));
+            ret += (String.format("%-14s|%-14s|", "", ""));
+            ret += (String.format("%8s|%6s|%6s|", "", "", ""));
+    	}
+        return ret;
+    }
+    
+    public void printinfo() {
+        System.out.println(toText());
+    }
+    
+    public static void printheader() {
+        System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+        System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
+        System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+    }
+    
+    public static void printfooter() {
+        System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+        System.out.println();
+    }
 }

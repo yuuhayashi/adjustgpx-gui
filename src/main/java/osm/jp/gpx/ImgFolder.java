@@ -56,16 +56,16 @@ public class ImgFolder extends ArrayList<ImgFile> {
         System.out.println();
 
         // imgDir内の画像ファイルを処理する
-        System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
-        System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
-        System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+        //System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+        //System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
+        //System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
         
         //ElementMapTRKSEG seg = gpxFile.parse();
         for (ImgFile image : this) {
         	try {
         		if (!image.isDone()) {
                     if(image.procImageFile(params, delta, gpxFile, outDir)) {
-                    	System.out.println(image.toText());
+                    	//System.out.println(image.toText());
                     	image.setDone(true);
                     }
         		}
@@ -76,7 +76,7 @@ public class ImgFolder extends ArrayList<ImgFile> {
         	}
         }
 
-        System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
+        //System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
     }
 
     /**
