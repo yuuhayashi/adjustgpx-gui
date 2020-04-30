@@ -82,7 +82,7 @@ public class ImportPicture extends Thread {
         obj.setUp(((argv.length < 1) ? AppParameters.FILE_PATH : argv[0]));
     }
     
-    public File gpxDir;
+    //public File gpxDir;
     public ImgFolder imgFolder;
     public GpxFolder gpxFolder;
     public AppParameters params;
@@ -103,14 +103,11 @@ public class ImportPicture extends Thread {
         
         // 出力ファイル
         // AppParameters.IMG_OUTPUT に置き換え
-        File outDir = new File(params.getProperty(AppParameters.IMG_OUTPUT_FOLDER));
         if (params.isImgOutput()) {
+            File outDir = new File(params.getProperty(AppParameters.IMG_OUTPUT_FOLDER));
             outDir = new File(outDir, imgFolder.getImgDir().getName());
+            imgFolder.setOutDir(outDir);
         }
-        else {
-            outDir = gpxDir;
-        }
-        imgFolder.setOutDir(outDir);
 
         this.start();
         try {

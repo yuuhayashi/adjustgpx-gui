@@ -134,15 +134,15 @@ public class ImgFile extends File {
     	String ret = "";
     	if (isDone()) {
             ret += (String.format("|%-32s|", this.getName()));
-            ret += (String.format("%20s|", ImportPicture.toUTCString(imgtime)));
-            ret += (String.format("%20s|", ImportPicture.toUTCString(gpstime)));
+            ret += (String.format("%20s|", (imgtime==null ? "" : ImportPicture.toUTCString(imgtime))));
+            ret += (String.format("%20s|", (gpstime==null ? "" : ImportPicture.toUTCString(gpstime))));
             ret += (String.format("%14.10f|%14.10f|", latitude, longitude));
             ret += (String.format("%8s|%6s|%6s|", eleStr, magvarStr, speedStr));
     	}
     	else {
             ret += (String.format("|%-32s|", this.getName()));
-            ret += (String.format("%20s|", ImportPicture.toUTCString(imgtime)));
-            ret += (String.format("%20s|", ImportPicture.toUTCString(gpstime)));
+            ret += (String.format("%20s|", (imgtime==null ? "" : ImportPicture.toUTCString(imgtime))));
+            ret += (String.format("%20s|", (gpstime==null ? "" : ImportPicture.toUTCString(gpstime))));
             ret += (String.format("%-14s|%-14s|", "", ""));
             ret += (String.format("%8s|%6s|%6s|", "", "", ""));
     	}
