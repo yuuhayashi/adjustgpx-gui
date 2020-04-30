@@ -33,6 +33,10 @@ public class ImgFolder extends ArrayList<ImgFile> {
 	public void setOutDir(File outDir) {
 		this.outDir = outDir;
 	}
+	
+	public File getOutDir() {
+		return this.outDir;
+	}
 
 	public File getImgDir() {
 		return this.imgDir;
@@ -50,11 +54,6 @@ public class ImgFolder extends ArrayList<ImgFile> {
      * @throws TransformerException 
      */
     void procGPXfile(GpxFile gpxFile, long delta) throws ParserConfigurationException, SAXException, IOException, ParseException, ImageReadException, ImageWriteException, TransformerException {
-        System.out.println("time difference: "+ (delta / 1000) +"(sec)");
-        System.out.println("     Target GPX: ["+ gpxFile.getAbsolutePath() +"]");
-        System.out.println("           EXIF: "+ (params.isImgOutputExif() ? ("convert to '" + outDir.getAbsolutePath() +"'") : "off"));
-        System.out.println();
-
         // imgDir内の画像ファイルを処理する
         //System.out.println("|--------------------------------|--------------------|--------------------|--------------|--------------|--------|------|------|");
         //System.out.println("| name                           | Camera Time        | GPStime            |   Latitude   |   Longitude  | ele    |magvar| km/h |");
@@ -65,7 +64,6 @@ public class ImgFolder extends ArrayList<ImgFile> {
         	try {
         		if (!image.isDone()) {
                     if(image.procImageFile(params, delta, gpxFile, outDir)) {
-                    	//System.out.println(image.toText());
                     	image.setDone(true);
                     }
         		}

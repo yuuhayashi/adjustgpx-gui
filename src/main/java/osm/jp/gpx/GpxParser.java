@@ -109,7 +109,6 @@ public class GpxParser extends DefaultHandler {
     public void endElement(String uri,String localName,String qName) {
         if(qName.equals("trkseg")){
 			if (trkpt.size() > 0) {
-				trkpt.printinfo();
 				trkseg.put((ElementMapTRKPT) trkpt.clone());
 				trkpt.clear();
 			}

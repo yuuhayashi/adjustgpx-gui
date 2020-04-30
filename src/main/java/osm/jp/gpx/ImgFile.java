@@ -62,7 +62,7 @@ public class ImgFile extends File {
     }
     
     public boolean procImageFile(AppParameters params, long delta, GpxFile gpxFile, File outDir) throws ParseException, ImageReadException, IOException, ImageWriteException, ParserConfigurationException, SAXException {
-    	ElementMapTRKSEG mapTRKSEG = gpxFile.parse();
+    	//ElementMapTRKSEG mapTRKSEG = gpxFile.parse();
     	boolean exifWrite = params.isImgOutputExif();
         
         // itime <-- 画像ファイルの撮影時刻
@@ -75,7 +75,7 @@ public class ImgFile extends File {
         // 時刻uktimeにおける<magver>をtrkptに追加する
         TagTrkpt trkptT = null;
 
-        for (Map.Entry<Date,ElementMapTRKPT> map : mapTRKSEG.entrySet()) {
+        for (Map.Entry<Date,ElementMapTRKPT> map : gpxFile.getTrksegMap().entrySet()) {
             ElementMapTRKPT mapTRKPT = map.getValue();
             trkptT = mapTRKPT.getValue(gpstime);
             if (trkptT != null) {

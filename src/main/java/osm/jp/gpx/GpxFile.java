@@ -26,7 +26,7 @@ public class GpxFile extends File {
      * XMLパースを実行する
      * 
      */
-    public ElementMapTRKSEG parse() throws ParserConfigurationException, SAXException, IOException {
+    public void parse() throws ParserConfigurationException, SAXException, IOException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setValidating(false);
         
@@ -47,7 +47,10 @@ public class GpxFile extends File {
 			gpx.trkseg.put((ElementMapTRKPT)gpx.trkpt.clone());
 			gpx.trkpt.clear();
 		}
-		return gpx.trkseg;
+    }
+    
+    public ElementMapTRKSEG getTrksegMap() {
+    	return this.gpx.trkseg;
     }
     
     /**

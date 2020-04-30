@@ -160,6 +160,12 @@ public class ImportPicture extends Thread {
 
             for (GpxFile gpxFile : gpxFolder) {
             	gpxFile.parse();
+            	
+                System.out.println("time difference: "+ (delta / 1000) +"(sec)");
+                System.out.println("     Target GPX: ["+ gpxFile.getAbsolutePath() +"]");
+                System.out.println("           EXIF: "+ (params.isImgOutputExif() ? ("convert to '" + imgFolder.getOutDir().getAbsolutePath() +"'") : "off"));
+                System.out.println();
+
             	gpxFile.printinfo();
             	imgFolder.procGPXfile(gpxFile, delta);
             }
