@@ -19,7 +19,6 @@ import org.junit.experimental.runners.*;
 public class AppParametersTest {
 
     public static class 定義ファイルが存在しない場合 {
-        AppParameters params;
 
         @Before
         public void setUp() throws Exception {
@@ -49,7 +48,7 @@ public class AppParametersTest {
         @Test
         public void IMG_OUTPUT_ALLが定義されていない時() {
             try {
-                params = new AppParameters("src/test/data/AdjustTime.off.ini");
+            	AppParameters params = new AppParameters("target/test-classes/AdjustTime.off.ini");
                 String valueStr = params.getProperty(AppParameters.IMG_OUTPUT_ALL);
                 assertThat(valueStr, is("false"));
             }
@@ -65,7 +64,7 @@ public class AppParametersTest {
         public void setUp() throws Exception {
             File iniFile = new File("AdjustTime.ini");
             File orgFile = new File("AdjustTime.ini.org");
-            File testFile = new File("src/test/data", "AdjustTime.on.ini");
+            File testFile = new File("target/test-classes", "AdjustTime.on.ini");
 
             if (orgFile.exists()) {
                 orgFile.delete();
@@ -104,8 +103,7 @@ public class AppParametersTest {
         @Test
         public void IMG_OUTPUT_ALLがtureに定義されているとき() {
             try {
-                AppParameters params;
-                params = new AppParameters();
+                AppParameters params = new AppParameters();
                 String valueStr = params.getProperty(AppParameters.IMG_OUTPUT_ALL);
                 assertThat(valueStr, is("true"));
             }
@@ -136,7 +134,7 @@ public class AppParametersTest {
         public void setUp() throws Exception {
             File iniFile = new File("AdjustTime.ini");
             File orgFile = new File("AdjustTime.ini.org");
-            File testFile = new File("src/test/data", "AdjustTime.off.ini");
+            File testFile = new File("target/test-classes", "AdjustTime.off.ini");
 
             if (orgFile.exists()) {
                 orgFile.delete();
