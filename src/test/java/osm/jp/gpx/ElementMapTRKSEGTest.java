@@ -40,16 +40,16 @@ public class ElementMapTRKSEGTest {
 
         @DataPoints
         public static Fixture[] datas = {
-            new Fixture("target/test-classes/20170517.gpx", 1),
-            new Fixture("target/test-classes/20170518.gpx", 1),
-            new Fixture("target/test-classes/2019-09-07 16.17.12 Day.gpx", 1),
-            new Fixture("target/test-classes/2019-12-29 06.50.19 Day.gpx", 1),
-            new Fixture("target/test-classes/2020-02-29 13.35.58 Day.gpx", 1),
-            //new Fixture("target/test-classes/muiltiTRK.GarminColorado.gpx.xml", 3),
-            //new Fixture("target/test-classes/muiltiTRKSEG.GarminColorado.gpx.xml", 3),
-            //new Fixture("target/test-classes/muiltiTRKSEG.noNameSpace.gpx.xml", 3),
-            //new Fixture("target/test-classes/multiTRKSEG.eTrex_20J.gpx.xml", 3),
-            //new Fixture("target/test-classes/multiTRKSEGreverse.eTrex_20J.gpx.xml", 3),
+            new Fixture("target/test-classes/gpx/20170517.gpx", 1),
+            new Fixture("target/test-classes/gpx/20170518.gpx", 1),
+            new Fixture("target/test-classes/gpx/2019-09-07 16.17.12 Day.gpx", 1),
+            new Fixture("target/test-classes/gpx/2019-12-29 06.50.19 Day.gpx", 1),
+            new Fixture("target/test-classes/gpx/2020-02-29 13.35.58 Day.gpx", 1),
+            //new Fixture("target/test-classes/gpx/muiltiTRK.GarminColorado.gpx.xml", 3),
+            //new Fixture("target/test-classes/gpx/muiltiTRKSEG.GarminColorado.gpx.xml", 3),
+            //new Fixture("target/test-classes/gpx/muiltiTRKSEG.noNameSpace.gpx.xml", 3),
+            //new Fixture("target/test-classes/gpx/multiTRKSEG.eTrex_20J.gpx.xml", 3),
+            //new Fixture("target/test-classes/gpx/multiTRKSEGreverse.eTrex_20J.gpx.xml", 3),
         };
 
         @Theory
@@ -70,7 +70,7 @@ public class ElementMapTRKSEGTest {
         
         @Test
         public void test整形されていないGPX() {
-        	String gpxSourcePath = "target/test-classes/2020-02-29 13.35.58 Day.gpx";
+        	String gpxSourcePath = "target/test-classes/gpx/2020-02-29 13.35.58 Day.gpx";
             try {
                 System.out.println("GPX file: "+ gpxSourcePath);
                 GpxFile gpx = new GpxFile(new AppParameters(AppParameters.FILE_PATH), new File(gpxSourcePath));

@@ -64,7 +64,7 @@ public class AppParametersTest {
         public void setUp() throws Exception {
             File iniFile = new File("AdjustTime.ini");
             File orgFile = new File("AdjustTime.ini.org");
-            File testFile = new File("target/test-classes", "AdjustTime.on.ini");
+            File testFile = new File("target/test-classes/ini", "AdjustTime.on.ini");
 
             if (orgFile.exists()) {
                 orgFile.delete();
@@ -134,7 +134,7 @@ public class AppParametersTest {
         public void setUp() throws Exception {
             File iniFile = new File("AdjustTime.ini");
             File orgFile = new File("AdjustTime.ini.org");
-            File testFile = new File("target/test-classes", "AdjustTime.off.ini");
+            File testFile = new File("target/test-classes/ini", "AdjustTime.off.ini");
 
             if (orgFile.exists()) {
                 orgFile.delete();
