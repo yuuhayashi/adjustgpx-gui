@@ -21,59 +21,6 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 
 public class ImportPictureTest {
-    static class Expecter {
-        String value;
-        boolean expect;
-        String timeStr;
-        double latD;
-        double lonD;
-        boolean magvar;
-
-        public Expecter(String value, boolean expect, String timeStr, double latD, double lonD, boolean magvar) {
-            this.value = value;
-            this.expect = expect;
-            this.timeStr = timeStr;
-            this.latD = latD;
-            this.lonD = lonD;
-            this.magvar = magvar;
-        }
-    }
-
-    static class Fixture {
-        String comment;				// テスト概要（コメント）
-        String tarFilePath;			// TARデータ
-        String gpxSourcePath;		// GPXファイル（オリジナル）
-        String gpxDestinationPath;	// GPXファイル（配置先）
-        String iniFilePath;			// iniファイル
-        Expecter[] expecters;
-
-        public Fixture(
-            String comment,
-            String tarFilePath,
-            String gpxSourcePath,
-            String gpxDestinationPath,
-            String iniFilePath,
-            Expecter[] expecters
-        ) {
-            this.comment = comment;
-            this.tarFilePath = tarFilePath;
-            this.gpxSourcePath = gpxSourcePath;
-            this.gpxDestinationPath = gpxDestinationPath;
-            this.iniFilePath = iniFilePath;
-            this.expecters = expecters;
-        }
-
-        @Override
-        public String toString() {
-            String msg = "テストパターン : "+ comment + "\n";
-            msg += "\ttarFilePath = "+ tarFilePath +"\n";
-            msg += "\tgpxSourcePath = "+ gpxSourcePath +"\n";
-            msg += "\tgpxDestinationPath = "+ gpxDestinationPath +"\n";
-            msg += "\tiniFilePath = "+ iniFilePath;
-            return msg;
-        }
-    }
-
 
     @RunWith(Theories.class)
     public static class 各種カメラGPXファイル {
