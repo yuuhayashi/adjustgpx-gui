@@ -40,6 +40,56 @@ public class Fixture {
     
 
     /**
+     * ユニットテスト用データ
+     * [Canonカメラ]
+     */
+    @DataPoints
+    public static Fixture[] stddatas = {
+		new Fixture(
+		    "[std0].Canonカメラの場合.FILE_UPDATE時間を基準にして時間外のファイルはコピー対象外の時",
+		    "target/test-classes/imgdata/Canon20200426.tar.gz", 
+		    "target/test-classes/cameradata/",
+		    "target/test-classes/cameradata/",
+		    "target/test-classes/cameradata/AdjustTime.ini",
+		    new Expecter[] {
+		        new Expecter("109_0426/IMG_0001.JPG", false, null, 90.0D, 180.0D, false),
+		        new Expecter("109_0426/IMG_0004.JPG", true, "2020:04:26 10:58:18", 35.4393043555D, 139.4478441775D, false),
+		        new Expecter("109_0426/IMG_0007.JPG", true, "2020:04:26 11:17:48", 35.4382312205D, 139.4584579300D, false),
+		        new Expecter("109_0426/IMG_0010.JPG", true, "2020:04:26 11:20:42", 35.4374477640D, 139.4604294375D, false),
+		        new Expecter("109_0426/IMG_0013.JPG", true, "2020:04:26 12:11:28", 35.4209551122D, 139.4677959569D, false),
+		        new Expecter("109_0426/IMG_0016.JPG", true, "2020:04:26 12:19:42", 35.4202432372D, 139.4685635716D, false),
+		        new Expecter("109_0426/IMG_0019.JPG", true, "2020:04:26 12:21:48", 35.4181452468D, 139.4684348255D, false),
+		        new Expecter("109_0426/IMG_0022.JPG", false, null, 90.0D, 180.0D, false),
+		        new Expecter("109_0426/IMG_0025.JPG", false, null, 90.0D, 180.0D, false),
+		        new Expecter("109_0426/IMG_0028.JPG", false, null, 90.0D, 180.0D, false),
+		        new Expecter("109_0426/IMG_0031.JPG", false, null, 90.0D, 180.0D, false),
+		        new Expecter("109_0426/IMG_0034.JPG", false, null, 90.0D, 180.0D, false),
+		    }
+		),
+		new Fixture(
+			    "[std1].Canonカメラの場合.FILE_UPDATE時間を基準,MAGVARをONの時",
+			    "target/test-classes/imgdata/Canon20200426.tar.gz", 
+			    "target/test-classes/cameradata/",
+			    "target/test-classes/cameradata/",
+			    "target/test-classes/cameradata/AdjustTime.magvar.ini",
+			    new Expecter[] {
+			        new Expecter("109_0426/IMG_0001.JPG", false, null, 90.0D, 180.0D, false),
+			        new Expecter("109_0426/IMG_0004.JPG", true, "2020:04:26 10:58:18", 35.4393043555D, 139.4478441775D, true),
+			        new Expecter("109_0426/IMG_0007.JPG", true, "2020:04:26 11:17:48", 35.4382312205D, 139.4584579300D, true),
+			        new Expecter("109_0426/IMG_0010.JPG", true, "2020:04:26 11:20:42", 35.4374477640D, 139.4604294375D, true),
+			        new Expecter("109_0426/IMG_0013.JPG", true, "2020:04:26 12:11:28", 35.4209551122D, 139.4677959569D, true),
+			        new Expecter("109_0426/IMG_0016.JPG", true, "2020:04:26 12:19:42", 35.4202432372D, 139.4685635716D, true),
+			        new Expecter("109_0426/IMG_0019.JPG", true, "2020:04:26 12:21:48", 35.4181452468D, 139.4684348255D, true),
+			        new Expecter("109_0426/IMG_0022.JPG", false, null, 90.0D, 180.0D, false),
+			        new Expecter("109_0426/IMG_0025.JPG", false, null, 90.0D, 180.0D, false),
+			        new Expecter("109_0426/IMG_0028.JPG", false, null, 90.0D, 180.0D, false),
+			        new Expecter("109_0426/IMG_0031.JPG", false, null, 90.0D, 180.0D, false),
+			        new Expecter("109_0426/IMG_0034.JPG", false, null, 90.0D, 180.0D, false),
+			    }
+			),
+    };
+
+    /**
      * 各種カメラGPXファイル
      */
     @DataPoints
@@ -53,9 +103,9 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.20170518.A1.ini",
             new Expecter[] {
                 new Expecter("10170518/DSC05183.JPG", false, null, 90.0D, 180.0D, false),
-                new Expecter("10170518/DSC05184.JPG", true, "2017:05:18 09:34:44", 35.4367520000D, 139.4082730000D, true),
-                new Expecter("10170518/DSC05196.JPG", true, "2017:05:18 09:37:32", 35.4376820000D, 139.4085150000D, true),
-                new Expecter("10170518/DSC05204.JPG", true, "2017:05:18 09:46:48", 35.4368560000D, 139.4082190000D, true),
+                new Expecter("10170518/DSC05184.JPG", true, "2017:05:18 09:34:44", 35.4367520000D, 139.4082730000D, false),
+                new Expecter("10170518/DSC05196.JPG", true, "2017:05:18 09:37:32", 35.4376820000D, 139.4085150000D, false),
+                new Expecter("10170518/DSC05204.JPG", true, "2017:05:18 09:46:48", 35.4368560000D, 139.4082190000D, false),
                 new Expecter("10170518/DSC05205.JPG", false, null, 90.0D, 180.0D, false),
             }
         ),
@@ -67,11 +117,11 @@ public class Fixture {
             "target/test-classes/cameradata/20170518.gpx",
             "target/test-classes/ini/AdjustTime.20170518.A2.ini",
             new Expecter[] {
-                new Expecter("10170518/DSC05183.JPG", true, "2017:05:18 09:16:48", 90.0D, 180.0D, true),
-                new Expecter("10170518/DSC05184.JPG", true, "2017:05:18 09:34:44", 35.4367520000D, 139.4082730000D, true),
-                new Expecter("10170518/DSC05196.JPG", true, "2017:05:18 09:37:32", 35.4376820000D, 139.4085150000D, true),
-                new Expecter("10170518/DSC05204.JPG", true, "2017:05:18 09:46:48", 35.4368560000D, 139.4082190000D, true),
-                new Expecter("10170518/DSC05205.JPG", true, "2017:05:18 09:48:04", 90.0D, 180.0D, true),
+                new Expecter("10170518/DSC05183.JPG", true, "2017:05:18 09:16:48", 90.0D, 180.0D, false),
+                new Expecter("10170518/DSC05184.JPG", true, "2017:05:18 09:34:44", 35.4367520000D, 139.4082730000D, false),
+                new Expecter("10170518/DSC05196.JPG", true, "2017:05:18 09:37:32", 35.4376820000D, 139.4085150000D, false),
+                new Expecter("10170518/DSC05204.JPG", true, "2017:05:18 09:46:48", 35.4368560000D, 139.4082190000D, false),
+                new Expecter("10170518/DSC05205.JPG", true, "2017:05:18 09:48:04", 90.0D, 180.0D, false),
             }
         ),
         // 3.
@@ -83,8 +133,8 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.20170518.B1.ini",
             new Expecter[] {
                 new Expecter("cameradata/20170518_092031A.jpg", false, null, 90.0D, 180.0D, false),
-                new Expecter("cameradata/20170518_094226A_snap.jpg", true, "2017:05:18 09:42:26", 35.4366860000D, 139.4082650000D, true),
-                new Expecter("cameradata/20170518_094737A.jpg", true, "2017:05:18 09:47:36", 35.4368200000D, 139.4082810000D, true),
+                new Expecter("cameradata/20170518_094226A_snap.jpg", true, "2017:05:18 09:42:26", 35.4366860000D, 139.4082650000D, false),
+                new Expecter("cameradata/20170518_094737A.jpg", true, "2017:05:18 09:47:36", 35.4368200000D, 139.4082810000D, false),
                 new Expecter("cameradata/20170518_094827A.jpg", false, null, 90.0D, 180.0D, false),
             }
         ),
@@ -96,10 +146,10 @@ public class Fixture {
             "target/test-classes/cameradata/20170518.gpx",
             "target/test-classes/ini/AdjustTime.20170518.B2.ini",
             new Expecter[] {
-                new Expecter("cameradata/20170518_092031A.jpg", true, "2017:05:18 09:20:30", 90.0D, 180.0D, true),
-                new Expecter("cameradata/20170518_094226A_snap.jpg", true, "2017:05:18 09:42:26", 35.4366860000D, 139.4082650000D, true),
-                new Expecter("cameradata/20170518_094737A.jpg", true, "2017:05:18 09:47:36", 35.4368200000D, 139.4082810000D, true),
-                new Expecter("cameradata/20170518_094827A.jpg", true, "2017:05:18 09:48:26", 90.0D, 180.0D, true),
+                new Expecter("cameradata/20170518_092031A.jpg", true, "2017:05:18 09:20:30", 90.0D, 180.0D, false),
+                new Expecter("cameradata/20170518_094226A_snap.jpg", true, "2017:05:18 09:42:26", 35.4366860000D, 139.4082650000D, false),
+                new Expecter("cameradata/20170518_094737A.jpg", true, "2017:05:18 09:47:36", 35.4368200000D, 139.4082810000D, false),
+                new Expecter("cameradata/20170518_094827A.jpg", true, "2017:05:18 09:48:26", 90.0D, 180.0D, false),
             }
         ),
         // 5.
@@ -115,7 +165,7 @@ public class Fixture {
                 new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:04", 35.8808881603D, 137.9979396332D, true),
 
@@ -145,25 +195,25 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.M1b.separate.ini",
             new Expecter[] {
                 // out of time ( - 2017-05-29T01:23:18)
-                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:04", 35.8808881603D, 137.9979396332D, true),
 
                 // out of time (2017-05-29T01:24:05 - 2017-05-29T01:24:37)
-                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:10", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:10", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, false),
 
                 // in TRKSEG(2) (2017-05-29T01:24:37 - 2017-05-29T01:33:03)
                 new Expecter("separate/20170529_102448A.jpg", true, "2017:05:29 10:24:48", 35.8788877353D, 138.0039562471D, true),
                 new Expecter("separate/20170529_103246A.jpg", true, "2017:05:29 10:32:46", 35.8405660931D, 138.0353022180D, true),
 
                 // out of time (2017-05-29T01:33:03 - 2017-05-29T01:35:53)
-                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:14", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:44", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:14", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:44", 90.0D, 180.0D, false),
 
                 // in TRKSEG(3) (2017-05-29T01:35:53 - 2017-05-29T01:47:35)
                 new Expecter("separate/20170529_103615A.jpg", true, "2017:05:29 10:36:14", 35.8359798510D, 138.0600296706D, true),
@@ -183,7 +233,7 @@ public class Fixture {
                 new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:05", 35.8808641881D, 137.9981065169D, true),
 
@@ -213,25 +263,25 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.M1d.separate.ini",
             new Expecter[] {
                 // out of time ( - 2017-05-29T01:23:18)
-                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:05", 35.8808641881D, 137.9981065169D, true),
 
                 // out of time (2017-05-29T01:24:05 - 2017-05-29T01:24:37)
-                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:09", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:09", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, false),
 
                 // in TRKSEG(2) (2017-05-29T01:24:37 - 2017-05-29T01:33:03)
                 new Expecter("separate/20170529_102448A.jpg", true, "2017:05:29 10:24:48", 35.8788877353D, 138.0039562471D, true),
                 new Expecter("separate/20170529_103246A.jpg", true, "2017:05:29 10:32:46", 35.8405660931D, 138.0353022180D, true),
 
                 // out of time (2017-05-29T01:33:03 - 2017-05-29T01:35:53)
-                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:15", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:45", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:15", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:45", 90.0D, 180.0D, false),
 
                 // in TRKSEG(3) (2017-05-29T01:35:53 - 2017-05-29T01:47:35)
                 new Expecter("separate/20170529_103615A.jpg", true, "2017:05:29 10:36:14", 35.8359798510D, 138.0600296706D, true),
@@ -252,7 +302,7 @@ public class Fixture {
                 new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:04", 35.8808881603D, 137.9979396332D, true),
 
@@ -282,25 +332,25 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.M2b.separate.ini",
             new Expecter[] {
                 // out of time ( - 2017-05-29T01:23:18)
-                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:04", 35.8808881603D, 137.9979396332D, true),
 
                 // out of time (2017-05-29T01:24:05 - 2017-05-29T01:24:37)
-                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:10", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:10", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, false),
 
                 // in TRKSEG(2) (2017-05-29T01:24:37 - 2017-05-29T01:33:03)
                 new Expecter("separate/20170529_102448A.jpg", true, "2017:05:29 10:24:48", 35.8788877353D, 138.0039562471D, true),
                 new Expecter("separate/20170529_103246A.jpg", true, "2017:05:29 10:32:46", 35.8405660931D, 138.0353022180D, true),
 
                 // out of time (2017-05-29T01:33:03 - 2017-05-29T01:35:53)
-                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:14", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:44", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:14", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:44", 90.0D, 180.0D, false),
 
                 // in TRKSEG(3) (2017-05-29T01:35:53 - 2017-05-29T01:47:35)
                 new Expecter("separate/20170529_103615A.jpg", true, "2017:05:29 10:36:14", 35.8359798510D, 138.0600296706D, true),
@@ -320,7 +370,7 @@ public class Fixture {
                 new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:05", 35.8808641881D, 137.9981065169D, true),
 
@@ -350,25 +400,25 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.M2d.separate.ini",
             new Expecter[] {
                 // out of time ( - 2017-05-29T01:23:18)
-                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:05", 35.8808641881D, 137.9981065169D, true),
 
                 // out of time (2017-05-29T01:24:05 - 2017-05-29T01:24:37)
-                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:09", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:09", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, false),
 
                 // in TRKSEG(2) (2017-05-29T01:24:37 - 2017-05-29T01:33:03)
                 new Expecter("separate/20170529_102448A.jpg", true, "2017:05:29 10:24:48", 35.8788877353D, 138.0039562471D, true),
                 new Expecter("separate/20170529_103246A.jpg", true, "2017:05:29 10:32:46", 35.8405660931D, 138.0353022180D, true),
 
                 // out of time (2017-05-29T01:33:03 - 2017-05-29T01:35:53)
-                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:15", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:45", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:15", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:45", 90.0D, 180.0D, false),
 
                 // in TRKSEG(3) (2017-05-29T01:35:53 - 2017-05-29T01:47:35)
                 new Expecter("separate/20170529_103615A.jpg", true, "2017:05:29 10:36:14", 35.8359798510D, 138.0600296706D, true),
@@ -388,7 +438,7 @@ public class Fixture {
                 new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:04", 35.8808881603D, 137.9979396332D, true),
 
@@ -418,25 +468,25 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.M2b.separate.ini",
             new Expecter[] {
                 // out of time ( - 2017-05-29T01:23:18)
-                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:06", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:04", 35.8808881603D, 137.9979396332D, true),
 
                 // out of time (2017-05-29T01:24:05 - 2017-05-29T01:24:37)
-                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:10", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:10", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, false),
 
                 // in TRKSEG(2) (2017-05-29T01:24:37 - 2017-05-29T01:33:03)
                 new Expecter("separate/20170529_102448A.jpg", true, "2017:05:29 10:24:48", 35.8788877353D, 138.0039562471D, true),
                 new Expecter("separate/20170529_103246A.jpg", true, "2017:05:29 10:32:46", 35.8405660931D, 138.0353022180D, true),
 
                 // out of time (2017-05-29T01:33:03 - 2017-05-29T01:35:53)
-                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:14", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:44", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:14", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:44", 90.0D, 180.0D, false),
 
                 // in TRKSEG(3) (2017-05-29T01:35:53 - 2017-05-29T01:47:35)
                 new Expecter("separate/20170529_103615A.jpg", true, "2017:05:29 10:36:14", 35.8359798510D, 138.0600296706D, true),
@@ -456,7 +506,7 @@ public class Fixture {
                 new Expecter("separate/20170529_102314A.jpg", false, null, 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:05", 35.8808641881D, 137.9981065169D, true),
 
@@ -486,25 +536,25 @@ public class Fixture {
             "target/test-classes/ini/AdjustTime.M2d.separate.ini",
             new Expecter[] {
                 // out of time ( - 2017-05-29T01:23:18)
-                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102305A.jpg", true, "2017:05:29 10:23:05", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102314A.jpg", true, "2017:05:29 10:23:14", 90.0D, 180.0D, false),
 
                 // in TRKSEG(1) (2017-05-29T01:23:18 - 2017-05-29T01:24:05)
-                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, true),
+                new Expecter("separate/20170529_102318A.jpg", true, "2017:05:29 10:23:18", 35.8812697884D, 137.9952202085D, false),
                 new Expecter("separate/20170529_102322A.jpg", true, "2017:05:29 10:23:22", 35.8810500987D, 137.9951669835D, true),
                 new Expecter("separate/20170529_102405A.jpg", true, "2017:05:29 10:24:05", 35.8808641881D, 137.9981065169D, true),
 
                 // out of time (2017-05-29T01:24:05 - 2017-05-29T01:24:37)
-                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:09", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_102409A.jpg", true, "2017:05:29 10:24:09", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_102418A.jpg", true, "2017:05:29 10:24:18", 90.0D, 180.0D, false),
 
                 // in TRKSEG(2) (2017-05-29T01:24:37 - 2017-05-29T01:33:03)
                 new Expecter("separate/20170529_102448A.jpg", true, "2017:05:29 10:24:48", 35.8788877353D, 138.0039562471D, true),
                 new Expecter("separate/20170529_103246A.jpg", true, "2017:05:29 10:32:46", 35.8405660931D, 138.0353022180D, true),
 
                 // out of time (2017-05-29T01:33:03 - 2017-05-29T01:35:53)
-                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:15", 90.0D, 180.0D, true),
-                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:45", 90.0D, 180.0D, true),
+                new Expecter("separate/20170529_103315A.jpg", true, "2017:05:29 10:33:15", 90.0D, 180.0D, false),
+                new Expecter("separate/20170529_103545A.jpg", true, "2017:05:29 10:35:45", 90.0D, 180.0D, false),
 
                 // in TRKSEG(3) (2017-05-29T01:35:53 - 2017-05-29T01:47:35)
                 new Expecter("separate/20170529_103615A.jpg", true, "2017:05:29 10:36:14", 35.8359798510D, 138.0600296706D, true),

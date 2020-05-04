@@ -105,6 +105,14 @@ public class ImportPicture extends Thread {
         // AppParameters.IMG_OUTPUT に置き換え
         if (params.isImgOutput()) {
             File outDir = new File(params.getProperty(AppParameters.IMG_OUTPUT_FOLDER));
+            if (!outDir.exists()) {
+            	// 出力ディレクトリが存在しないときは作成する
+            	outDir.mkdir();
+            }
+            else if (outDir.isFile()) {
+            	// 出力ディレクトリがFILEのときはERROR
+            	throw new FileNotFoundException(String.format("OUTPUT directory '%s' is a File!", outDir.getAbsolutePath()));
+            }
             outDir = new File(outDir, imgFolder.getImgDir().getName());
             imgFolder.setOutDir(outDir);
         }
