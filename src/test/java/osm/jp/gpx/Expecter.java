@@ -11,16 +11,11 @@ import java.util.List;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.common.ImageMetadata.ImageMetadataItem;
-import org.apache.commons.imaging.common.RationalNumber;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffImageMetadata.GPSInfo;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.constants.GpsTagConstants;
-import org.apache.commons.imaging.formats.tiff.taginfos.TagInfoRational;
-import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
-import org.apache.commons.imaging.formats.tiff.write.TiffOutputField;
-import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 
 public class Expecter {
     String value;
@@ -28,9 +23,9 @@ public class Expecter {
     String timeStr;
     double latD;
     double lonD;
-    boolean magvar;
+    String magvar;
 
-    public Expecter(String value, boolean expect, String timeStr, double latD, double lonD, boolean magvar) {
+    public Expecter(String value, boolean expect, String timeStr, double latD, double lonD, String magvar) {
         this.value = value;
         this.expect = expect;
         this.timeStr = timeStr;
@@ -85,31 +80,7 @@ public class Expecter {
 	                //RationalNumber[] ele = (RationalNumber[]) exif.getFieldValue(GpsTagConstants.GPS_TAG_GPS_ALTITUDE);
 	                
 	                // MAGVAR
-	                if (e.magvar) {
-	                	boolean ismagvar = false;
-	                	List<? extends ImageMetadataItem> dirs = exif.getDirectories();
-	                	for (ImageMetadataItem dir : dirs) {
-	                		if (dir instanceof TiffImageMetadata.Directory) {
-	                			List<? extends ImageMetadataItem> items = ((TiffImageMetadata.Directory)dir).getItems();
-	                			for (ImageMetadataItem item : items) {
-		                			if (item instanceof TiffImageMetadata.TiffMetadataItem) {
-		                				String str = item.toString();
-		                				assertNotNull(str);
-		                				TiffImageMetadata.TiffMetadataItem tiffitem = (TiffImageMetadata.TiffMetadataItem)item;
-		                				String name = GpsTagConstants.GPS_TAG_GPS_IMG_DIRECTION.name;
-		                				if (tiffitem.getKeyword() == name) {
-		                					str = tiffitem.getText();
-			                				assertNotNull(str);
-			                				ismagvar = true;	// MAGVARが設定されている
-		                				}
-		                			}
-	                			}
-	                		}
-	                	}
-	                	if (!ismagvar) {
-	                		fail("MAGVARが設定されていない");
-	                	}
-	                }
+                	checkItem(exif, GpsTagConstants.GPS_TAG_GPS_IMG_DIRECTION.name, e.magvar);
 	                
 	                // SPEED
 	                
@@ -118,5 +89,71 @@ public class Expecter {
 		} catch (Exception e1) {
 			fail("予期しない例外: "+ e1.toString());
 		}
+    }
+    
+    /**
+     * 指定のEXIFアイテムが設定されているかどうかのテスト
+     * @param exif
+     * @param keyword	例：GpsTagConstants.GPS_TAG_GPS_IMG_DIRECTION.name;
+     */
+    static void checkItem(TiffImageMetadata exif, String keyword) {
+    	boolean ismagvar = false;
+    	List<? extends ImageMetadataItem> dirs = exif.getDirectories();
+    	for (ImageMetadataItem dir : dirs) {
+    		if (dir instanceof TiffImageMetadata.Directory) {
+    			List<? extends ImageMetadataItem> items = ((TiffImageMetadata.Directory)dir).getItems();
+    			for (ImageMetadataItem item : items) {
+        			if (item instanceof TiffImageMetadata.TiffMetadataItem) {
+        				String str = item.toString();
+        				assertNotNull(str);
+        				TiffImageMetadata.TiffMetadataItem tiffitem = (TiffImageMetadata.TiffMetadataItem)item;
+        				if (tiffitem.getKeyword() == keyword) {
+        					str = tiffitem.getText();
+            				assertNotNull(str);
+            				ismagvar = true;	// MAGVARが設定されている
+        				}
+        			}
+    			}
+    		}
+    	}
+    	if (!ismagvar) {
+    		fail("MAGVARが設定されていない");
+    	}
+    	
+    }
+    
+    /**
+     * 指定のEXIFアイテムが設定されているかどうかのテスト
+     * @param exif
+     * @param keyword	例：GpsTagConstants.GPS_TAG_GPS_IMG_DIRECTION.name;
+     * @param value		期待する値（nullの場合はアイテムが設定されていないことを期待する）
+     */
+    static void checkItem(TiffImageMetadata exif, String keyword, String value) {
+    	boolean is = false;
+    	List<? extends ImageMetadataItem> dirs = exif.getDirectories();
+    	for (ImageMetadataItem dir : dirs) {
+    		if (dir instanceof TiffImageMetadata.Directory) {
+    			List<? extends ImageMetadataItem> items = ((TiffImageMetadata.Directory)dir).getItems();
+    			for (ImageMetadataItem item : items) {
+        			if (item instanceof TiffImageMetadata.TiffMetadataItem) {
+        				String str = item.toString();
+        				assertNotNull(str);
+        				TiffImageMetadata.TiffMetadataItem tiffitem = (TiffImageMetadata.TiffMetadataItem)item;
+        				if (tiffitem.getKeyword() == keyword) {
+        					if (value == null) {
+        			    		fail("MAGVARが設定されている");
+        					}
+        					str = tiffitem.getText();
+            				assertNotNull(str);
+            				assertThat(str, is(value));
+            				is = true;	// MAGVARが設定されている
+        				}
+        			}
+    			}
+    		}
+    	}
+    	if (!is && (value != null)) {
+    		fail("MAGVARが設定されていない");
+    	}
     }
 }
