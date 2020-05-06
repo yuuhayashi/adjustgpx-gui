@@ -3,7 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>osm.surveyor</groupId>
   <artifactId>AdjustTerra</artifactId>
-  <version>5.3-SNAPSHOT</version>
+  <version>5.3.1-SNAPSHOT</version>
+  <scm>
+    <connection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/AdjustTerra.git</connection>
+    <url>http://surveyor.mydns.jp/gitbucket/yuu/AdjustTerra/wiki</url>
+    <developerConnection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/AdjustTerra.git</developerConnection>
+  </scm>
     
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,6 +32,11 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>osm.surveyor</groupId>
+      <artifactId>AdjustTime</artifactId>
+      <version>5.3.3</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-imaging</artifactId>
@@ -77,6 +87,18 @@
         <version>3.1.0</version>
         <configuration>
           <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      
+      <!-- mvn release:prepare -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+        <configuration>
+          <releaseProfiles>install</releaseProfiles>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
 
