@@ -2,6 +2,9 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -26,7 +29,7 @@ import osm.jp.gpx.matchtime.gui.restamp.DialogCorectTime;
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public class ParameterPanelTime extends ParameterPanel {
+public class ParameterPanelTime extends ParameterPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = 1683226418990348336L;
 	SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
@@ -100,6 +103,16 @@ public class ParameterPanelTime extends ParameterPanel {
         return this.imageFile;
     }
 
+    /**
+     * Action : Update 'arg2_baseTime'
+     * 
+     */
+    class BaseTimeImgUpdateAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+	    	setText(getTimeStr());
+		}
+    }
     
     /**
      * [変更...]ボタンのアクション
@@ -140,36 +153,44 @@ public class ParameterPanelTime extends ParameterPanel {
      * @param param
      */
     void fileSelect_Action(ParameterPanelTime param) {
-        if (imageFile.isEnable()) {
-            File timeFile = imageFile.getImageFile();
+    	param.argField.setText(getTimeStr());
+    }
+    
+    String getTimeStr() {
+		if (!imageFile.isEnable()) {
+			return "Error : ImageFile is not selected.";
+		}
+		
+        File timeFile = imageFile.getImageFile();
 
-            // Radio Selecter
-            sdf.applyPattern(Restamp.TIME_PATTERN);
-            if ((exifBase != null) && exifBase.isSelected()) {
-                try {
-                    ImageMetadata meta = Imaging.getMetadata(timeFile);
-                    JpegImageMetadata jpegMetadata = (JpegImageMetadata)meta;
-                    if (jpegMetadata != null) {
-                        TiffImageMetadata exif = jpegMetadata.getExif();
-                        if (exif != null) {
-                            String dateTimeOriginal = exif.getFieldValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL)[0];
-                            long lastModifyTime = sdf.parse(dateTimeOriginal).getTime();
-                            param.argField.setText(dfjp.format(new Date(lastModifyTime)));
-                        }
-                        else {
-                            param.argField.setText("exif == null");
-                        }
+        // Radio Selector
+        sdf.applyPattern(Restamp.TIME_PATTERN);
+        if ((exifBase != null) && exifBase.isSelected()) {
+            try {
+                ImageMetadata meta = Imaging.getMetadata(timeFile);
+                JpegImageMetadata jpegMetadata = (JpegImageMetadata)meta;
+                if (jpegMetadata != null) {
+                    TiffImageMetadata exif = jpegMetadata.getExif();
+                    if (exif != null) {
+                        String dateTimeOriginal = exif.getFieldValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL)[0];
+                        long lastModifyTime = sdf.parse(dateTimeOriginal).getTime();
+                        return (dfjp.format(new Date(lastModifyTime)));
+                    }
+                    else {
+                        return ("Error : 'ExIF is null!'");
                     }
                 }
-                catch (IOException | ParseException | ImageReadException ex) {}
+                else {
+                	return "Error : ";
+                }
             }
-            else {
-                long lastModified = timeFile.lastModified();
-                param.argField.setText(sdf.format(new Date(lastModified)));
+            catch (IOException | ParseException | ImageReadException ex) {
+            	return "Error : "+ ex.toString();
             }
         }
         else {
-            param.argField.setText("");
+            long lastModified = timeFile.lastModified();
+            return (sdf.format(new Date(lastModified)));
         }
     }
     
@@ -190,4 +211,26 @@ public class ParameterPanelTime extends ParameterPanel {
         }
         return false;
     }
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		Object eventTriggerObject = evt.getSource();
+		String propertyName = evt.getPropertyName();
+		String newValue = (String) evt.getNewValue();
+		
+		// TODO Auto-generated method stub
+		
+	}
 }

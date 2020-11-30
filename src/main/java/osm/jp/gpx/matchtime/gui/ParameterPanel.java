@@ -1,6 +1,8 @@
 package osm.jp.gpx.matchtime.gui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
@@ -20,8 +22,8 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
 
     public ParameterPanel(String label, String text) {
         this();
-        this.argLabel.setText(label);
-        this.argField.setText(text);
+        this.setName(label);
+        this.setText(text);
     }
 
     public ParameterPanel() {
@@ -35,12 +37,30 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
         this.add(argLabel);
         this.add(argField);
     }
-    
+
     public ParameterPanel setLabel(String label) {
-        this.argLabel.setText(label);
+        this.setName(label);
         return this;
     }
+
+    public void addActionListener(ActionListener l) {
+    	this.argField.addActionListener(l);
+    }
+
+    public abstract void addPropertyChangeListener(PropertyChangeListener listener);
+
+    public abstract void removePropertyChangeListener(PropertyChangeListener listener);
     
+    @Override
+    public void setName(String name) {
+    	this.argLabel.setText(name);
+    }
+    
+    @Override
+    public String getName() {
+        return this.argLabel.getText();
+    }
+
     @Override
     public void setText(String text) {
         this.argField.setText(text);

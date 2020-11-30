@@ -1,8 +1,14 @@
 package osm.jp.gpx.matchtime.gui;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Comparator;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -26,6 +32,70 @@ public class ParameterPanelImageFile extends ParameterPanel {
         
         //Create a file chooser
         this.paramDir = paramDir;
+        this.paramDir.argField.addActionListener(new BaseTimeImgUpdateAction());
+        this.paramDir.addPropertyChangeListener(new SourceFolderChangeListener());
+    }
+    
+    /**
+     * Action : Update 'arg2_baseTimeImg'
+     * 
+     */
+    class SourceFolderChangeListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(PropertyChangeEvent arg0) {
+			if (paramDir.isEnable()) {
+				try {
+					File dir = paramDir.getDirectory();
+					File[] files = dir.listFiles(new ImageFileFilter());
+					if (files != null) {
+						Arrays.sort(files, new Comparator<File>() {
+							public int compare(File file1, File file2){
+							    return file1.getName().compareTo(file2.getName());
+							}
+					    });
+						if (files.length > 0) {
+				            argField.setText(files[0].getName());
+				            fc = new JFileChooser(dir);
+				            fc.setSelectedFile(files[0]);
+				            return;
+						}
+					}
+				} catch (FileNotFoundException e) {}
+			}
+            fc = new JFileChooser();
+            fc.setSelectedFile(null);
+		}    	
+    }
+    
+    /**
+     * Action : Update 'arg2_baseTimeImg'
+     * 
+     */
+    class BaseTimeImgUpdateAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (paramDir.isEnable()) {
+				try {
+					File dir = paramDir.getDirectory();
+					File[] files = dir.listFiles(new ImageFileFilter());
+					if (files != null) {
+						Arrays.sort(files, new Comparator<File>() {
+							public int compare(File file1, File file2){
+							    return file1.getName().compareTo(file2.getName());
+							}
+					    });
+						if (files.length > 0) {
+				            argField.setText(files[0].getName());
+				            fc = new JFileChooser(dir);
+				            fc.setSelectedFile(files[0]);
+				            return;
+						}
+					}
+				} catch (FileNotFoundException e) {}
+			}
+            fc = new JFileChooser();
+            fc.setSelectedFile(null);
+		}    	
     }
     
     class SelectButtonAction implements java.awt.event.ActionListener
@@ -56,7 +126,9 @@ public class ParameterPanelImageFile extends ParameterPanel {
             File file = fc.getSelectedFile();
             this.argField.setText(file.getName());
         }
-        fc.setSelectedFile(null);
+        else {
+            fc.setSelectedFile(null);
+        }
     }
     
     public File getImageFile() {
@@ -104,4 +176,16 @@ public class ParameterPanelImageFile extends ParameterPanel {
         }
         return false;
     }
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
 }

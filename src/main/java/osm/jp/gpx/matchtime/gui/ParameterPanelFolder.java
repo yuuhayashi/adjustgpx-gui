@@ -2,6 +2,8 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.JButton;
@@ -13,7 +15,8 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
     JFileChooser fc;
     JButton selectButton;
     int chooser;
-
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    
     /**
      * コンストラクタ
      * ディレクトリのみ選択可能なダイアログ
@@ -38,7 +41,7 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
         selectButton.addActionListener(this);
         this.add(selectButton);
     }
-
+    
     public void setEnable(boolean f) {
         super.setEnabled(f);
         selectButton.setEnabled(f);
@@ -81,7 +84,9 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = this.fc.getSelectedFile();
-                this.argField.setText(file.getAbsolutePath());
+                String text = file.getAbsolutePath();
+                this.argField.setText(text);
+                //firePropertyChange(text);
             }
         }
     }
@@ -104,4 +109,18 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
             return false;
         }
     }
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		this.pcs.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.pcs.removePropertyChangeListener(listener);
+	}
+	
+	void firePropertyChange(String text) {
+		this.pcs.firePropertyChange(getName(), "", text);
+	}
 }

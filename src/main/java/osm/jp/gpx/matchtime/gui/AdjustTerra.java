@@ -2,6 +2,8 @@ package osm.jp.gpx.matchtime.gui;
 
 import osm.jp.gpx.matchtime.gui.restamp.RestampDialog;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
@@ -91,6 +93,28 @@ public class AdjustTerra extends JFrame
     }
     
     /**
+     * Action : Changed 'arg1'
+     * 
+     */
+    class Arg1ChangedAction implements java.awt.event.ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			toEnable(0, arg1_srcFolder.isEnable());
+		}
+    }
+    
+    /**
+     * Action : Changed 'arg2'
+     * 
+     */
+    class Arg2ChangedAction implements java.awt.event.ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+            toEnable(1, arg2_basetime.isEnable());
+		}
+    }
+    
+    /**
      * データベース内のテーブルを一覧で表示するFrame
      * @throws IOException 
      */
@@ -139,17 +163,21 @@ public class AdjustTerra extends JFrame
                     i18n.getString("label.110") +": ", 
                     params.getProperty(AppParameters.IMG_SOURCE_FOLDER)
             );
-            arg1_srcFolder.argField
-                .getDocument()
-                .addDocumentListener(
-                    new SimpleDocumentListener() {
-                        @Override
-                        public void update(DocumentEvent e) {
+            arg1_srcFolder.argField.getDocument().addDocumentListener(
+                new SimpleDocumentListener() {
+                    @Override
+                    public void update(DocumentEvent e) {
+                    	try {
+                    		File f = arg1_srcFolder.getDirectory();
+                    		String text = f.getAbsolutePath();
+                        	arg1_srcFolder.firePropertyChange(text);
                             toEnable(0, arg1_srcFolder.isEnable());
-                        }
+                    	}
+                    	catch (Exception ex) {}
                     }
-                );
-
+                }
+            );
+            
             Card card = new CardSourceFolder(cardPanel, arg1_srcFolder);
             cardPanel.addTab(card.getTitle(), card);
             cardPanel.setEnabledAt(cardNo, true);
