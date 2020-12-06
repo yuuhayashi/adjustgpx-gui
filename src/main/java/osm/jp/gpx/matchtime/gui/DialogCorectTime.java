@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui.restamp;
+package osm.jp.gpx.matchtime.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
@@ -13,11 +13,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import osm.jp.gpx.matchtime.gui.AdjustTerra;
+
+import osm.jp.gpx.AppParameters;
+
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.createImageIcon;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
-import osm.jp.gpx.matchtime.gui.PanelAction;
-import osm.jp.gpx.matchtime.gui.ParameterPanelTime;
 
 /**
  * [基準画像（開始）]選択パネル
@@ -68,6 +68,7 @@ public class DialogCorectTime extends JDialog implements PanelAction {
         argsPanel.add(label3);
 
         basetime = new ParameterPanelTime(
+        		AppParameters.IMG_TIME,
                 arg_basetime.argLabel.getText(),
                 "",
                 arg_basetime.getImageFile()

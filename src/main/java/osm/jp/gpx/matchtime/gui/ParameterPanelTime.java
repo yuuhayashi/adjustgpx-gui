@@ -26,8 +26,6 @@ import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.Restamp;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
 
-import osm.jp.gpx.matchtime.gui.restamp.DialogCorectTime;
-
 /**
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
