@@ -22,8 +22,8 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
      * @param label
      * @param text 
      */
-    public ParameterPanelGpx(String label, String text) {
-        super(label, text);
+    public ParameterPanelGpx(String name, String label, String text) {
+        super(name, label, text);
 
         // "選択..."
         selectButton = new JButton(

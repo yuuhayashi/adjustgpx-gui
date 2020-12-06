@@ -1,9 +1,9 @@
 package osm.jp.gpx.matchtime.gui;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -11,18 +11,21 @@ import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
 
 @SuppressWarnings("serial")
-public class ParameterPanelImageFile extends ParameterPanel {
+public class ParameterPanelImageFile extends ParameterPanel implements PropertyChangeListener {
     JFileChooser fc;
     public JButton openButton;
     public ParameterPanelFolder paramDir;
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public ParameterPanelImageFile(
-            String label, String text, 
+            String name, String label, String text, 
             ParameterPanelFolder paramDir
     ) {
-        super(label, text);
+        super(name, label, text);
 
         // "選択..."
         SelectButtonAction buttonAction = new SelectButtonAction();
@@ -32,8 +35,17 @@ public class ParameterPanelImageFile extends ParameterPanel {
         
         //Create a file chooser
         this.paramDir = paramDir;
-        this.paramDir.argField.addActionListener(new BaseTimeImgUpdateAction());
         this.paramDir.addPropertyChangeListener(new SourceFolderChangeListener());
+        
+        // 'argField' ’が変更されたら、「update イベントを発火させる
+        this.argField.getDocument().addDocumentListener(
+            new SimpleDocumentListener() {
+                @Override
+                public void update(DocumentEvent e) {
+                	pcs.firePropertyChange(getName(), "", argField.getText());
+                }
+            }
+        );
     }
     
     /**
@@ -62,37 +74,7 @@ public class ParameterPanelImageFile extends ParameterPanel {
 					}
 				} catch (FileNotFoundException e) {}
 			}
-            fc = new JFileChooser();
-            fc.setSelectedFile(null);
-		}    	
-    }
-    
-    /**
-     * Action : Update 'arg2_baseTimeImg'
-     * 
-     */
-    class BaseTimeImgUpdateAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			if (paramDir.isEnable()) {
-				try {
-					File dir = paramDir.getDirectory();
-					File[] files = dir.listFiles(new ImageFileFilter());
-					if (files != null) {
-						Arrays.sort(files, new Comparator<File>() {
-							public int compare(File file1, File file2){
-							    return file1.getName().compareTo(file2.getName());
-							}
-					    });
-						if (files.length > 0) {
-				            argField.setText(files[0].getName());
-				            fc = new JFileChooser(dir);
-				            fc.setSelectedFile(files[0]);
-				            return;
-						}
-					}
-				} catch (FileNotFoundException e) {}
-			}
+			argField.setText("");
             fc = new JFileChooser();
             fc.setSelectedFile(null);
 		}    	
@@ -101,36 +83,32 @@ public class ParameterPanelImageFile extends ParameterPanel {
     class SelectButtonAction implements java.awt.event.ActionListener
     {
         public void actionPerformed(ActionEvent e) {
-            selectImage_Action(e);
+            File sdir = new File(paramDir.getText());
+            System.out.println(sdir.toPath());
+            if (sdir.isDirectory()) {
+                fc = new JFileChooser(sdir);
+            }
+            else {
+                fc = new JFileChooser();
+            }
+
+            fc.addChoosableFileFilter(new ImageFilter());
+            fc.setAcceptAllFileFilterUsed(false);
+            fc.setFileView(new ImageFileView());
+            fc.setAccessory(new ImagePreview(fc));
+
+            //Show it.　"選択"
+            int returnVal = fc.showDialog(ParameterPanelImageFile.this, i18n.getString("dialog.select"));
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                argField.setText(file.getName());
+            }
+            else {
+                fc.setSelectedFile(null);
+            }
         }
     }
 
-    public void selectImage_Action(ActionEvent ev) {
-        File sdir = new File(paramDir.getText());
-        System.out.println(sdir.toPath());
-        if (sdir.isDirectory()) {
-            fc = new JFileChooser(sdir);
-        }
-        else {
-            fc = new JFileChooser();
-        }
-
-        fc.addChoosableFileFilter(new ImageFilter());
-        fc.setAcceptAllFileFilterUsed(false);
-        fc.setFileView(new ImageFileView());
-        fc.setAccessory(new ImagePreview(fc));
-
-        //Show it.　"選択"
-        int returnVal = fc.showDialog(ParameterPanelImageFile.this, i18n.getString("dialog.select"));
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            this.argField.setText(file.getName());
-        }
-        else {
-            fc.setSelectedFile(null);
-        }
-    }
-    
     public File getImageFile() {
         if (this.paramDir.isEnable()) {
             String text = this.argField.getText();
@@ -150,10 +128,6 @@ public class ParameterPanelImageFile extends ParameterPanel {
         return null;
     }
     
-    /**
-     * 
-     * @return 
-     */
     @Override
     public boolean isEnable() {
         if (this.paramDir.isEnable()) {
@@ -179,13 +153,26 @@ public class ParameterPanelImageFile extends ParameterPanel {
 
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		// TODO Auto-generated method stub
-		
+		this.pcs.addPropertyChangeListener(listener);
 	}
 
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		// TODO Auto-generated method stub
+		this.pcs.removePropertyChangeListener(listener);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
 		
+		// TODO Nothing to do.
+		
+		Object eventTriggerObject = evt.getSource();
+        String propertyName = evt.getPropertyName();
+        if (JTextField.class.isInstance(eventTriggerObject)) {
+            if (propertyName.equals(getName())) {
+                String newValue = (String) evt.getNewValue();
+                System.out.println("["+ propertyName +"] propertyChanged() newValue:" + newValue);
+            }
+        }
 	}
 }

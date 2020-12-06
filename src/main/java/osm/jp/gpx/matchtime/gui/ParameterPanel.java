@@ -16,19 +16,21 @@ import javax.swing.JTextField;
  */
 public abstract class ParameterPanel extends JPanel implements ParamAction {
     private static final long serialVersionUID = 4629824800747170556L;
+    public String propertyName;
     public JTextField argField;
     public JLabel argLabel;
     public ResourceBundle i18n = ResourceBundle.getBundle("i18n");
 
-    public ParameterPanel(String label, String text) {
+    public ParameterPanel(String name, String label, String text) {
         this();
-        this.setName(label);
+        this.setName(name);
+        this.setLabel(label);
         this.setText(text);
     }
 
-    public ParameterPanel() {
+    ParameterPanel() {
         super();
-
+        propertyName = "";
         argLabel = new JLabel();
         argField = new JTextField();
 		
@@ -39,7 +41,7 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
     }
 
     public ParameterPanel setLabel(String label) {
-        this.setName(label);
+    	this.argLabel.setText(label);
         return this;
     }
 
@@ -53,12 +55,12 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
     
     @Override
     public void setName(String name) {
-    	this.argLabel.setText(name);
+    	this.propertyName = name;
     }
     
     @Override
     public String getName() {
-        return this.argLabel.getText();
+        return this.propertyName;
     }
 
     @Override

@@ -2,8 +2,8 @@ package osm.jp.gpx.matchtime.gui;
 
 import osm.jp.gpx.matchtime.gui.restamp.RestampDialog;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
@@ -39,7 +39,7 @@ public class AdjustTerra extends JFrame
     //}}
 
     //---入力フィールド----------------------------------------------------
-    ParameterPanelFolder arg1_srcFolder;    // 対象フォルダ
+    ParameterPanelSourceFolder arg1_srcFolder;    // 対象フォルダ
     ParameterPanelImageFile arg2_baseTimeImg;   // 開始画像ファイルパス
     ParameterPanelTime arg2_basetime;       // 開始画像の基準時刻:
     ParameterPanelGpx arg3_gpxFile;         // GPX file or Folder
@@ -91,26 +91,25 @@ public class AdjustTerra extends JFrame
             }
         }
     }
-    
-    /**
-     * Action : Changed 'arg1'
-     * 
-     */
-    class Arg1ChangedAction implements java.awt.event.ActionListener {
+
+    class SimpleCardListener implements PropertyChangeListener {
+    	int cardNo;
+    	ParameterPanel param;
+    	
+    	SimpleCardListener(int cardNo, ParameterPanel param) {
+    		this.cardNo = cardNo;
+    		this.param = param;
+    	}
+    	
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			toEnable(0, arg1_srcFolder.isEnable());
-		}
-    }
-    
-    /**
-     * Action : Changed 'arg2'
-     * 
-     */
-    class Arg2ChangedAction implements java.awt.event.ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-            toEnable(1, arg2_basetime.isEnable());
+		public void propertyChange(PropertyChangeEvent evt) {
+			String propertyName = evt.getPropertyName();
+	        if (propertyName.equals(AppParameters.IMG_SOURCE_FOLDER)) {
+	            toEnable(cardNo, param.isEnable());
+	        }
+	        else {
+	            toEnable(cardNo, param.isEnable());
+	        }
 		}
     }
     
@@ -159,24 +158,12 @@ public class AdjustTerra extends JFrame
         //---------------------------------------------------------------------
         // 1.[対象フォルダ]設定パネル
         {
-            arg1_srcFolder = new ParameterPanelFolder(
+            arg1_srcFolder = new ParameterPanelSourceFolder(
+            		AppParameters.IMG_SOURCE_FOLDER,
                     i18n.getString("label.110") +": ", 
                     params.getProperty(AppParameters.IMG_SOURCE_FOLDER)
             );
-            arg1_srcFolder.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                    	try {
-                    		File f = arg1_srcFolder.getDirectory();
-                    		String text = f.getAbsolutePath();
-                        	arg1_srcFolder.firePropertyChange(text);
-                            toEnable(0, arg1_srcFolder.isEnable());
-                    	}
-                    	catch (Exception ex) {}
-                    }
-                }
-            );
+            arg1_srcFolder.addPropertyChangeListener(new SimpleCardListener(0, arg1_srcFolder));
             
             Card card = new CardSourceFolder(cardPanel, arg1_srcFolder);
             cardPanel.addTab(card.getTitle(), card);
@@ -186,11 +173,13 @@ public class AdjustTerra extends JFrame
         }
         
         //---------------------------------------------------------------------
-        // 2.[基準時刻画像]設定パネル
-        // 2a.基準時刻の入力画面
+        // 2.[基準時刻]パネル
+        // 2a.基準画像を選択フィールド
+        // 2b.基準時刻の入力フィールド
         {
-            // 基準時刻画像
+            // 2a. 基準時刻画像
             arg2_baseTimeImg = new ParameterPanelImageFile(
+        		AppParameters.IMG_BASE_FILE,
                 i18n.getString("label.210") +": ", 
                 null, 
                 arg1_srcFolder
@@ -198,18 +187,12 @@ public class AdjustTerra extends JFrame
 
             // 2a. 基準時刻:
             arg2_basetime = new ParameterPanelTime(
+            		AppParameters.GPX_BASETIME,
                     i18n.getString("label.310"), 
                     null, 
                     arg2_baseTimeImg
             );
-            arg2_basetime.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                        toEnable(1, arg2_basetime.isEnable());
-                    }
-                }
-            );
+            arg2_basetime.addPropertyChangeListener(new SimpleCardListener(1, arg2_basetime));
             
             // EXIFの日時を基準にする
             arg2_basetime.addExifBase(i18n.getString("label.220"), params);
@@ -231,6 +214,7 @@ public class AdjustTerra extends JFrame
         {
             // 3. GPXファイル選択パラメータ
             arg3_gpxFile = new ParameterPanelGpx(
+            		AppParameters.GPX_SOURCE_FOLDER,
                 i18n.getString("label.410") + ": ", 
                 params.getProperty(AppParameters.GPX_SOURCE_FOLDER)
             );
@@ -262,6 +246,7 @@ public class AdjustTerra extends JFrame
             // 4. ファイル変換・実行パラメータ
             // "出力フォルダ: "
             arg4_output = new ParameterPanelOutput(
+        		AppParameters.IMG_OUTPUT_FOLDER,
                 i18n.getString("label.530") + ": ", 
                 params.getProperty(AppParameters.IMG_OUTPUT_FOLDER)
             );

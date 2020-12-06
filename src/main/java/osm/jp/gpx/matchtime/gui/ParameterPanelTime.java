@@ -2,9 +2,9 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -14,6 +14,8 @@ import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import javax.swing.event.DocumentEvent;
+
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
@@ -23,14 +25,16 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.Restamp;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
+
 import osm.jp.gpx.matchtime.gui.restamp.DialogCorectTime;
 
 /**
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public class ParameterPanelTime extends ParameterPanel implements PropertyChangeListener {
+public class ParameterPanelTime extends ParameterPanel {
 	private static final long serialVersionUID = 1683226418990348336L;
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
     
@@ -45,12 +49,14 @@ public class ParameterPanelTime extends ParameterPanel implements PropertyChange
     Window owner;
 
     public ParameterPanelTime(
+    		String name,
             String label, 
             String text, 
             ParameterPanelImageFile imageFile
     ) {
-        super(label, text);
+        super(name, label, text);
         this.imageFile = imageFile;
+        this.imageFile.addPropertyChangeListener(new BaseTimeImgUpdateAction());
         
         // "ボタン[変更...]"
         UpdateButtonAction buttonAction = new UpdateButtonAction(this);
@@ -64,13 +70,23 @@ public class ParameterPanelTime extends ParameterPanel implements PropertyChange
         resetButton.addActionListener(resetAction);
         resetButton.setVisible(false);
         this.add(resetButton);
+
+        // 'argField' ’が変更されたら、「update イベントを発火させる
+        this.argField.getDocument().addDocumentListener(
+            new SimpleDocumentListener() {
+                @Override
+                public void update(DocumentEvent e) {
+                	pcs.firePropertyChange(getName(), "", argField.getText());
+                }
+            }
+        );
     }
     
     public ParameterPanelTime setOwner(Window owner) {
         this.owner = owner;
         return this;
     }
-    
+
     /**
      * 「EXIFの日時を基準にする」
      * @param label         テキスト
@@ -104,13 +120,18 @@ public class ParameterPanelTime extends ParameterPanel implements PropertyChange
     }
 
     /**
-     * Action : Update 'arg2_baseTime'
+     * Action : Update 'arg2_baseTimeImg'
      * 
      */
-    class BaseTimeImgUpdateAction implements ActionListener {
+    class BaseTimeImgUpdateAction implements PropertyChangeListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-	    	setText(getTimeStr());
+		public void propertyChange(PropertyChangeEvent arg0) {
+			try {
+				String timeStr = getTimeStr();
+				argField.setText(timeStr);
+			} catch (Exception e) {
+				argField.setText("Error : "+ e.toString());
+			}
 		}
     }
     
@@ -196,41 +217,32 @@ public class ParameterPanelTime extends ParameterPanel implements PropertyChange
     
     @Override
     public boolean isEnable() {
-        if (this.imageFile.isEnable()) {
-            String text = this.argField.getText();
-            if (text != null) {
-                try {
-                    sdf.applyPattern(Restamp.TIME_PATTERN);
-                    sdf.parse(text);
-                    return true;
-                }
-                catch (ParseException e) {
-                    return false;
-                }
-            }
+		if (!this.imageFile.isEnable()) {
+			return false;
+		}
+		
+    	String text = this.argField.getText();
+        if (text == null) {
+        	return false;
         }
-        return false;
+
+        try {
+            sdf.applyPattern(Restamp.TIME_PATTERN);
+            sdf.parse(text);
+            return true;
+        }
+        catch (ParseException e) {
+            return false;
+        }
     }
 
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		// TODO Auto-generated method stub
-		
+		this.pcs.addPropertyChangeListener(listener);
 	}
 
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		Object eventTriggerObject = evt.getSource();
-		String propertyName = evt.getPropertyName();
-		String newValue = (String) evt.getNewValue();
-		
-		// TODO Auto-generated method stub
-		
+		this.pcs.removePropertyChangeListener(listener);
 	}
 }

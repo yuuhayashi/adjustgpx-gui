@@ -8,9 +8,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.event.DocumentEvent;
 
 @SuppressWarnings("serial")
-public class ParameterPanelFolder extends ParameterPanel implements ActionListener
+public abstract class ParameterPanelFolder extends ParameterPanel implements ActionListener
 {
     JFileChooser fc;
     JButton selectButton;
@@ -23,12 +24,12 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
      * @param label
      * @param text 
      */
-    public ParameterPanelFolder(String label, String text) {
-        this(label, text, JFileChooser.DIRECTORIES_ONLY);
+    public ParameterPanelFolder(String name, String label, String text) {
+        this(name, label, text, JFileChooser.DIRECTORIES_ONLY);
     }
 
-    public ParameterPanelFolder(String label, String text, int chooser) {
-        super(label, text);
+    public ParameterPanelFolder(String name, String label, String text, int chooser) {
+        super(name, label, text);
 
         // Create a file chooser
         this.chooser = chooser;
@@ -40,6 +41,16 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
         );
         selectButton.addActionListener(this);
         this.add(selectButton);
+        
+        // 'argField' ’が変更されたら、「update イベントを発火させる
+        this.argField.getDocument().addDocumentListener(
+            new SimpleDocumentListener() {
+                @Override
+                public void update(DocumentEvent e) {
+                	pcs.firePropertyChange(getName(), "", argField.getText());
+                }
+            }
+        );
     }
     
     public void setEnable(boolean f) {
@@ -86,7 +97,6 @@ public class ParameterPanelFolder extends ParameterPanel implements ActionListen
                 File file = this.fc.getSelectedFile();
                 String text = file.getAbsolutePath();
                 this.argField.setText(text);
-                //firePropertyChange(text);
             }
         }
     }

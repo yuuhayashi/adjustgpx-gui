@@ -19,8 +19,8 @@ public class ParameterPanelOutput extends ParameterPanelFolder
      * @param label
      * @param text 
      */
-    public ParameterPanelOutput(String label, String text) {
-        super(label, text, JFileChooser.DIRECTORIES_ONLY);
+    public ParameterPanelOutput(String name, String label, String text) {
+        super(name, label, text, JFileChooser.DIRECTORIES_ONLY);
     }
 
     /**
