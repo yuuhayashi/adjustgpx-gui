@@ -6,6 +6,8 @@ import javax.swing.event.DocumentEvent;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
 import osm.jp.gpx.matchtime.gui.Card;
+import osm.jp.gpx.matchtime.gui.CardImageFile;
+import osm.jp.gpx.matchtime.gui.CardSourceFolder;
 import osm.jp.gpx.matchtime.gui.ParameterPanelFolder;
 import osm.jp.gpx.matchtime.gui.ParameterPanelImageFile;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;

@@ -1,6 +1,5 @@
 package osm.jp.gpx.matchtime.gui;
 
-import osm.jp.gpx.matchtime.gui.restamp.RestampDialog;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -8,13 +7,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import osm.jp.gpx.*;
-import osm.jp.gpx.matchtime.gui.restamp.CardImageFile;
-import osm.jp.gpx.matchtime.gui.restamp.CardSourceFolder;
 
 /**
  * 本プログラムのメインクラス
@@ -78,13 +73,6 @@ public class AdjustTerra extends JFrame
             Object object = event.getSource();
             if (object == miAbout) {
                 miAbout_Action(event);
-            }
-            else if (object == miRestamp) {
-                try {
-                    miRestamp_Action(event);
-                } catch (IOException ex) {
-                    Logger.getLogger(AdjustTerra.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
             else if (object == miExit) {
                 miExit_Action(event);
@@ -386,10 +374,6 @@ public class AdjustTerra extends JFrame
     void miAbout_Action(java.awt.event.ActionEvent event) {
         // Action from About Create and show as modal
         (new AboutDialog(this, true)).setVisible(true);
-    }
-    
-    void miRestamp_Action(java.awt.event.ActionEvent event) throws IOException {
-        (new RestampDialog(this, false)).setVisible(true);
     }
     
     void miExit_Action(java.awt.event.ActionEvent event) {

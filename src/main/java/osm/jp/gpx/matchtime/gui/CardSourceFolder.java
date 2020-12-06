@@ -1,15 +1,12 @@
-package osm.jp.gpx.matchtime.gui.restamp;
+package osm.jp.gpx.matchtime.gui;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import osm.jp.gpx.matchtime.gui.AdjustTerra;
+
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
-import osm.jp.gpx.matchtime.gui.Card;
-import osm.jp.gpx.matchtime.gui.PanelAction;
-import osm.jp.gpx.matchtime.gui.ParameterPanelFolder;
 
 /**
  * [対象フォルダ]設定パネル
