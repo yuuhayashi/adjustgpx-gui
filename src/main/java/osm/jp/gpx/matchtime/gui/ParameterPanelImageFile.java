@@ -18,12 +18,12 @@ import javax.swing.event.DocumentEvent;
 public class ParameterPanelImageFile extends ParameterPanel implements PropertyChangeListener {
     JFileChooser fc;
     public JButton openButton;
-    public ParameterPanelFolder paramDir;
+    public ParameterPanelSourceFolder paramDir;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public ParameterPanelImageFile(
             String name, String label, String text, 
-            ParameterPanelFolder paramDir
+            ParameterPanelSourceFolder paramDir
     ) {
         super(name, label, text);
 

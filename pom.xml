@@ -13,7 +13,7 @@
     
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>11</java.version>
+    <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <gpg.skip>true</gpg.skip>
@@ -39,9 +39,16 @@
     <dependency>
       <groupId>osm.surveyor</groupId>
       <artifactId>AdjustTime</artifactId>
-      <version>5.3.9</version>
+      <version>5.3.10-SNAPSHOT</version>
     </dependency>
     
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+    <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-imaging -->
     <dependency>
       <groupId>org.apache.commons</groupId>

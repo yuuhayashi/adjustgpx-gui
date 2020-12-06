@@ -28,7 +28,11 @@ public class ParameterPanelSourceFolder extends ParameterPanelFolder
         }
         try {
             File dir = super.getDirectory();
-            return (dir.exists() && dir.isDirectory());
+			File[] files = dir.listFiles(new ImageFileFilter());
+			if ((files == null) || (files.length < 1)) {
+				return false;
+			}
+			return true;
         }
         catch (Exception e) {
             return false;
@@ -39,9 +43,8 @@ public class ParameterPanelSourceFolder extends ParameterPanelFolder
     public File getDirectory() throws FileNotFoundException {
         File dir = super.getDirectory();
         if (dir.exists() && dir.isDirectory()) {
-        	
+        	return dir;
         }
-        return dir;
+        throw new FileNotFoundException();
     }
-
 }
