@@ -47,8 +47,6 @@ public class AdjustTerra extends JFrame
     java.awt.MenuItem miDoDirSize;
     java.awt.MenuItem miDoReadXML;
     java.awt.MenuItem miExit;
-    java.awt.Menu menu2;
-    java.awt.MenuItem miRestamp;
     java.awt.Menu menu3;
     java.awt.MenuItem miAbout;
     //}}
@@ -281,13 +279,6 @@ public class AdjustTerra extends JFrame
         miExit.setFont(new Font("Dialog", Font.PLAIN, 12));
         menu1.add(miExit);
 
-        miRestamp = new java.awt.MenuItem(i18n.getString("menu.restamp") + "...");
-        miRestamp.setFont(new Font("Dialog", Font.PLAIN, 12));
-        
-        menu2 = new java.awt.Menu(i18n.getString("menu.tools"));
-        menu2.setFont(new Font("Dialog", Font.PLAIN, 12));
-        menu2.add(miRestamp);
-
         miAbout = new java.awt.MenuItem("About...");
         miAbout.setFont(new Font("Dialog", Font.PLAIN, 12));
 
@@ -298,7 +289,6 @@ public class AdjustTerra extends JFrame
         mainMenuBar = new java.awt.MenuBar();
         mainMenuBar.setHelpMenu(menu3);
         mainMenuBar.add(menu1);
-        mainMenuBar.add(menu2);
         mainMenuBar.add(menu3);
         setMenuBar(mainMenuBar);
 
@@ -307,7 +297,6 @@ public class AdjustTerra extends JFrame
         this.addWindowListener(aSymWindow);
         SymAction lSymAction = new SymAction();
         miAbout.addActionListener(lSymAction);
-        miRestamp.addActionListener(lSymAction);
         miExit.addActionListener(lSymAction);
         arg2_baseTimeImg.openButton.addActionListener(lSymAction);
         //}}
