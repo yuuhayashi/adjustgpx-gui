@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -25,9 +25,9 @@ public abstract class ParameterPanel extends JPanel implements PropertyChangeLis
     public ResourceBundle i18n = ResourceBundle.getBundle("i18n");
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-    public ParameterPanel(String name, String label, String text) {
+    public ParameterPanel(String propertyName, String label, String text) {
         this();
-        this.setName(name);
+        this.setName(propertyName);
         this.setLabel(label);
         this.setText(text);
     }

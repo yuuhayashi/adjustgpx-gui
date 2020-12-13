@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

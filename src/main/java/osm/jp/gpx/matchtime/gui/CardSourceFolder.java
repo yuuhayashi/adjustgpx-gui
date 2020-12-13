@@ -6,6 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import osm.jp.gpx.matchtime.gui.parameters.PanelAction;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelFolder;
+
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 /**

@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -23,6 +23,7 @@ import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.Restamp;
+
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
 
 /**

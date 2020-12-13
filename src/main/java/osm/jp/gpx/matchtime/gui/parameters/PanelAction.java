@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 public interface PanelAction {
     void openAction();

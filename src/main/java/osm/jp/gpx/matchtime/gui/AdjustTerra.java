@@ -7,6 +7,11 @@ import java.util.ResourceBundle;
 import java.util.TimeZone;
 import javax.swing.*;
 import osm.jp.gpx.*;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelGpx;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelImageFile;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelOutput;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelSourceFolder;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
 
 /**
  * 本プログラムのメインクラス
@@ -210,21 +215,6 @@ public class AdjustTerra extends JFrame
             arg4_output.addPropertyChangeListener(
         		new SimpleCardListener(cards, cardPanel, 3, arg4_output)
     		);
-
-            // "IMGの変換をする"
-            arg4_output.addCheckChangeImage(i18n.getString("label.510"), params);
-
-            // "GPXファイル時間外のファイルもコピーする"
-            arg4_output.addCheckOutofGpxTime(i18n.getString("label.520"), params);
-
-            // "EXIFの変換をする"
-            arg4_output.addCheckOutputExif(i18n.getString("label.540"), params);
-
-            // "ソースGPXの<MAGVAR>を無視する"
-            arg4_output.addCheckIgnoreMagvar(i18n.getString("label.560"), params);
-
-            // "出力GPXに[SPEED]を上書きする"
-            arg4_output.addCheckOutputSpeed(i18n.getString("label.570"), params);
 
             // パネル表示
             CardExifPerform card = new CardExifPerform(

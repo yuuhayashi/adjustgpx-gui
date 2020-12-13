@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import osm.jp.gpx.AppParameters;
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
+import osm.jp.gpx.matchtime.gui.GpxAndFolderFilter;
 
 @SuppressWarnings("serial")
 public class ParameterPanelGpx extends ParameterPanel implements ActionListener

@@ -1,7 +1,9 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
+import osm.jp.gpx.matchtime.gui.ImageFileFilter;
 
 @SuppressWarnings("serial")
 public class ParameterPanelSourceFolder extends ParameterPanelFolder

@@ -1,7 +1,6 @@
 package osm.jp.gpx.matchtime.gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -9,6 +8,13 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.ImportPicture;
+import osm.jp.gpx.matchtime.gui.parameters.PanelAction;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelFolder;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelGpx;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelImageFile;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelOutput;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
+
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
@@ -16,7 +22,7 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
  * 実行パネル
  * @author yuu
  */
-public class CardExifPerform extends Card  implements PanelAction {
+public class CardExifPerform extends Card implements PanelAction {
 	private static final long serialVersionUID = 8902284630791931118L;
 	ParameterPanelTime arg_basetime;        // 画像の基準時刻:
     ParameterPanelGpx arg_gpxFile;          // GPX file or Folder
@@ -65,34 +71,12 @@ public class CardExifPerform extends Card  implements PanelAction {
         argsPanel.add(packLine(label5, new JPanel()));
         
         // 出力フォルダ
-        //argsPanel.add(packLine(new JLabel(i18n.getString("label.530")), new JPanel()));
         argsPanel.add(arg_output);
-
-        // チェックボックス "IMGの変換をする"
-        if (arg_output.outputIMG != null) {
-            arg_output.outputIMG.addActionListener(lSymAction);
-            argsPanel.add(arg_output.outputIMG);
-        }
-
-        // チェックボックス "IMGの変換をする"
-        if (arg_output.outputIMG_all != null) {
-            argsPanel.add(arg_output.outputIMG_all);
-        }
-
-        // チェックボックス "EXIFの変換をする"
-        if (arg_output.exifON != null) {
-            argsPanel.add(arg_output.exifON);
-        }
-
-        // チェックボックス "ソースGPXの<MAGVAR>を無視する"
-        if (arg_output.gpxOverwriteMagvar != null) {
-            argsPanel.add(arg_output.gpxOverwriteMagvar);
-        }
-
-        // チェックボックス "出力GPXに[SPEED]を上書きする"
-        if (arg_output.gpxOutputSpeed != null) {
-            argsPanel.add(arg_output.gpxOutputSpeed);
-        }
+        argsPanel.add(arg_output.outputIMG);
+        argsPanel.add(arg_output.outputIMG_all);
+        argsPanel.add(arg_output.exifON);
+        argsPanel.add(arg_output.gpxOverwriteMagvar);
+        argsPanel.add(arg_output.gpxOutputSpeed);
 
         // [処理実行]ボタン
         doButton = new JButton(
@@ -115,20 +99,7 @@ public class CardExifPerform extends Card  implements PanelAction {
             if (object == doButton) {
             	doButton_Action(event);
             }
-            else if (object == arg_output.outputIMG) {
-                outputIMG_Action(event);
-            }
         }
-    }
-    
-    /**
-     * checkbox[IMG変換]を変更した場合のアクション
-     * 	ON ー＞ IMG出力フォルダのフィールドを有効にする
-     *  OFF -> IMG出力フォルダのフィールドを無効にする
-     * @param event
-     */
-    void outputIMG_Action (ActionEvent event) {
-        setEnabled(isEnabled());
     }
     
     /**
@@ -138,7 +109,7 @@ public class CardExifPerform extends Card  implements PanelAction {
     void doButton_Action(java.awt.event.ActionEvent event) {
     	doButton.setEnabled(false);
         
-        ParameterPanelImageFile arg_baseTimeImg = arg_basetime.imageFile;  // 基準時刻画像
+        ParameterPanelImageFile arg_baseTimeImg = arg_basetime.getImageFile();  // 基準時刻画像
         ParameterPanelFolder arg_srcFolder = arg_baseTimeImg.paramDir;
         
         try {
@@ -156,13 +127,13 @@ public class CardExifPerform extends Card  implements PanelAction {
             params.setProperty(AppParameters.IMG_BASE_FILE, arg_baseTimeImg.getText());
             params.setProperty(AppParameters.IMG_TIME, ImportPicture.toUTCString(dfjp.parse(arg_basetime.getText())));
             
-            params.setProperty(AppParameters.IMG_OUTPUT, String.valueOf(arg_output.outputIMG.isSelected()));
-            params.setProperty(AppParameters.IMG_OUTPUT_ALL, String.valueOf(arg_output.outputIMG_all.isSelected()));
+            params.setProperty(AppParameters.IMG_OUTPUT, String.valueOf(arg_output.isUpdateImages()));
+            params.setProperty(AppParameters.IMG_OUTPUT_ALL, String.valueOf(arg_output.isUpdateImagesAtAll()));
             params.setProperty(AppParameters.IMG_OUTPUT_FOLDER, arg_output.getText());
 
-            params.setProperty(AppParameters.IMG_OUTPUT_EXIF, String.valueOf(arg_output.exifON.isSelected()));
-            params.setProperty(AppParameters.GPX_OVERWRITE_MAGVAR, String.valueOf(arg_output.gpxOverwriteMagvar.isSelected()));
-            params.setProperty(AppParameters.GPX_OUTPUT_SPEED, String.valueOf(arg_output.gpxOutputSpeed.isSelected()));
+            params.setProperty(AppParameters.IMG_OUTPUT_EXIF, String.valueOf(arg_output.isUpdateExif()));
+            params.setProperty(AppParameters.GPX_OVERWRITE_MAGVAR, String.valueOf(arg_output.isUpdateMagvar()));
+            params.setProperty(AppParameters.GPX_OUTPUT_SPEED, String.valueOf(arg_output.isUpdateSpeed()));
             params.store();
         }
         catch(Exception e) {

@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import osm.jp.gpx.AppParameters;
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
 
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.createImageIcon;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;

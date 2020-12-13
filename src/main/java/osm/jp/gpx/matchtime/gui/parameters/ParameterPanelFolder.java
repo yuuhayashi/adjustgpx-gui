@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
 
 @SuppressWarnings("serial")
 public abstract class ParameterPanelFolder extends ParameterPanel implements ActionListener

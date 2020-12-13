@@ -7,6 +7,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import osm.jp.gpx.matchtime.gui.parameters.PanelAction;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelImageFile;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
+
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 /**

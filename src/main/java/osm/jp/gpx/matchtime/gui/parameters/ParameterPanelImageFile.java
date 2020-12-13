@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -10,6 +10,11 @@ import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+
+import osm.jp.gpx.matchtime.gui.ImageFileFilter;
+import osm.jp.gpx.matchtime.gui.ImageFileView;
+import osm.jp.gpx.matchtime.gui.ImageFilter;
+import osm.jp.gpx.matchtime.gui.ImagePreview;
 
 @SuppressWarnings("serial")
 public class ParameterPanelImageFile extends ParameterPanel {

@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.parameters;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

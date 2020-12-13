@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JTabbedPane;
 
 import osm.jp.gpx.AppParameters;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
 
 public class SimpleCardListener implements PropertyChangeListener {
 	int cardNo;
