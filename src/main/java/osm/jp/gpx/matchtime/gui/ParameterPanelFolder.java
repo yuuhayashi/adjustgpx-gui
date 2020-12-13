@@ -2,13 +2,11 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.event.DocumentEvent;
 
 @SuppressWarnings("serial")
 public abstract class ParameterPanelFolder extends ParameterPanel implements ActionListener
@@ -16,7 +14,6 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
     JFileChooser fc;
     JButton selectButton;
     int chooser;
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     
     /**
      * コンストラクタ
@@ -41,16 +38,6 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
         );
         selectButton.addActionListener(this);
         this.add(selectButton);
-        
-        // 'argField' ’が変更されたら、「update イベントを発火させる
-        this.argField.getDocument().addDocumentListener(
-            new SimpleDocumentListener() {
-                @Override
-                public void update(DocumentEvent e) {
-                	pcs.firePropertyChange(getName(), "", argField.getText());
-                }
-            }
-        );
     }
     
     public void setEnable(boolean f) {
@@ -73,7 +60,33 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
         return sdir;
     }
 	
+    /**
+     * 有効な値が設定されているかどうか
+     * 
+     * @return [folder.text=有効なディレクトリを示している]
+     */
     @Override
+    public boolean isEnable() {
+        String text = this.argField.getText();
+        if (text == null) {
+            return false;
+        }
+        try {
+            getDirectory();
+			return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+    
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton){
             File sdir;
@@ -100,37 +113,4 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
             }
         }
     }
-
-    /**
-     * 有効な値が設定されているかどうか
-     * @return 
-     */
-    @Override
-    public boolean isEnable() {
-        String text = this.argField.getText();
-        if (text == null) {
-            return false;
-        }
-        try {
-            File dir = new File(text);
-            return (dir.exists() && dir.isDirectory());
-        }
-        catch (Exception e) {
-            return false;
-        }
-    }
-
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.removePropertyChangeListener(listener);
-	}
-	
-	void firePropertyChange(String text) {
-		this.pcs.firePropertyChange(getName(), "", text);
-	}
 }

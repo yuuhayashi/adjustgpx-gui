@@ -3,7 +3,6 @@ package osm.jp.gpx.matchtime.gui;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -11,15 +10,12 @@ import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
 
 @SuppressWarnings("serial")
-public class ParameterPanelImageFile extends ParameterPanel implements PropertyChangeListener {
+public class ParameterPanelImageFile extends ParameterPanel {
     JFileChooser fc;
     public JButton openButton;
     public ParameterPanelSourceFolder paramDir;
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public ParameterPanelImageFile(
             String name, String label, String text, 
@@ -36,16 +32,6 @@ public class ParameterPanelImageFile extends ParameterPanel implements PropertyC
         //Create a file chooser
         this.paramDir = paramDir;
         this.paramDir.addPropertyChangeListener(new SourceFolderChangeListener());
-        
-        // 'argField' ’が変更されたら、「update イベントを発火させる
-        this.argField.getDocument().addDocumentListener(
-            new SimpleDocumentListener() {
-                @Override
-                public void update(DocumentEvent e) {
-                	pcs.firePropertyChange(getName(), "", argField.getText());
-                }
-            }
-        );
     }
     
     /**
@@ -150,29 +136,4 @@ public class ParameterPanelImageFile extends ParameterPanel implements PropertyC
         }
         return false;
     }
-
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.removePropertyChangeListener(listener);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		
-		// TODO Nothing to do.
-		
-		Object eventTriggerObject = evt.getSource();
-        String propertyName = evt.getPropertyName();
-        if (JTextField.class.isInstance(eventTriggerObject)) {
-            if (propertyName.equals(getName())) {
-                String newValue = (String) evt.getNewValue();
-                System.out.println("["+ propertyName +"] propertyChanged() newValue:" + newValue);
-            }
-        }
-	}
 }

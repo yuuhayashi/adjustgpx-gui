@@ -18,14 +18,13 @@ public class ParameterPanelSourceFolder extends ParameterPanelFolder
     
     /**
      * 有効な値が設定されているかどうか
+     * [argField.getText() = 有効なディレクトリを示している]
+     * AND [folder is not empty.]
+     * AND [Image file exist in the folder.]
      * @return 
      */
     @Override
     public boolean isEnable() {
-        String text = this.argField.getText();
-        if (text == null) {
-            return false;
-        }
         try {
             File dir = super.getDirectory();
 			File[] files = dir.listFiles(new ImageFileFilter());

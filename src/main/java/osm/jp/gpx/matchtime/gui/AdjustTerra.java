@@ -1,14 +1,11 @@
 package osm.jp.gpx.matchtime.gui;
 
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
 import osm.jp.gpx.*;
 
 /**
@@ -78,27 +75,6 @@ public class AdjustTerra extends JFrame
         }
     }
 
-    class SimpleCardListener implements PropertyChangeListener {
-    	int cardNo;
-    	ParameterPanel param;
-    	
-    	SimpleCardListener(int cardNo, ParameterPanel param) {
-    		this.cardNo = cardNo;
-    		this.param = param;
-    	}
-    	
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			String propertyName = evt.getPropertyName();
-	        if (propertyName.equals(AppParameters.IMG_SOURCE_FOLDER)) {
-	            toEnable(cardNo, param.isEnable());
-	        }
-	        else {
-	            toEnable(cardNo, param.isEnable());
-	        }
-		}
-    }
-    
     /**
      * データベース内のテーブルを一覧で表示するFrame
      * @throws IOException 
@@ -149,7 +125,7 @@ public class AdjustTerra extends JFrame
                     i18n.getString("label.110") +": ", 
                     params.getProperty(AppParameters.IMG_SOURCE_FOLDER)
             );
-            arg1_srcFolder.addPropertyChangeListener(new SimpleCardListener(0, arg1_srcFolder));
+            arg1_srcFolder.addPropertyChangeListener(new SimpleCardListener(cards, cardPanel, 0, arg1_srcFolder));
             
             Card card = new CardSourceFolder(cardPanel, arg1_srcFolder);
             cardPanel.addTab(card.getTitle(), card);
@@ -178,7 +154,7 @@ public class AdjustTerra extends JFrame
                     null, 
                     arg2_baseTimeImg
             );
-            arg2_basetime.addPropertyChangeListener(new SimpleCardListener(1, arg2_basetime));
+            arg2_basetime.addPropertyChangeListener(new SimpleCardListener(cards, cardPanel, 1, arg2_basetime));
             
             // EXIFの日時を基準にする
             arg2_basetime.addExifBase(i18n.getString("label.220"), params);
@@ -204,14 +180,9 @@ public class AdjustTerra extends JFrame
                 i18n.getString("label.410") + ": ", 
                 params.getProperty(AppParameters.GPX_SOURCE_FOLDER)
             );
-            arg3_gpxFile.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                        toEnable(2, arg3_gpxFile.isEnable());
-                    }
-                }
-            );
+            arg3_gpxFile.addPropertyChangeListener(
+        		new SimpleCardListener(cards, cardPanel, 2, arg3_gpxFile)
+    		);
 
             // "セグメント'trkseg'の最初の１ノードは無視する。"
             arg3_gpxFile.addNoFirstNode(i18n.getString("label.420"), params);
@@ -236,14 +207,9 @@ public class AdjustTerra extends JFrame
                 i18n.getString("label.530") + ": ", 
                 params.getProperty(AppParameters.IMG_OUTPUT_FOLDER)
             );
-            arg4_output.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                        toEnable(3, arg4_output.isEnable());
-                    }
-                }
-            );
+            arg4_output.addPropertyChangeListener(
+        		new SimpleCardListener(cards, cardPanel, 3, arg4_output)
+    		);
 
             // "IMGの変換をする"
             arg4_output.addCheckChangeImage(i18n.getString("label.510"), params);
@@ -371,20 +337,6 @@ public class AdjustTerra extends JFrame
         (new QuitDialog(this, true)).setVisible(true);
     }
     
-    void toEnable(final int cardNo, final boolean enable) {
-        if ((cardNo >= 0) && (cardNo < cards.length)) {
-            cardPanel.setEnabledAt(cardNo, enable);
-            if ((cardNo -1) >= 0) {
-                cards[cardNo -1].nextButton.setEnabled(enable);
-            }
-            if ((cardNo +1) < cards.length) {
-                cardPanel.setEnabledAt(cardNo+1, enable);
-                cards[cardNo +1].backButton.setEnabled(enable);
-                cards[cardNo].nextButton.setEnabled(enable);
-            }
-        }
-    }
-
     //ImageIcon refImage;
     
     /** Returns an ImageIcon, or null if the path was invalid.

@@ -2,7 +2,7 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -84,6 +84,9 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
     
     /**
      * このフィールドに有効な値が設定されているかどうか
+     * [
+     * 		()
+     * ]
      * @return 
      */
     @Override
@@ -107,13 +110,7 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
     }
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
 		
 	}

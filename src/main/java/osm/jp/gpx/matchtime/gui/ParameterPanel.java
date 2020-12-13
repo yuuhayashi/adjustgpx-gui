@@ -2,24 +2,28 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
 
 /**
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public abstract class ParameterPanel extends JPanel implements ParamAction {
+public abstract class ParameterPanel extends JPanel implements PropertyChangeListener {
     private static final long serialVersionUID = 4629824800747170556L;
     public String propertyName;
     public JTextField argField;
     public JLabel argLabel;
     public ResourceBundle i18n = ResourceBundle.getBundle("i18n");
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public ParameterPanel(String name, String label, String text) {
         this();
@@ -38,6 +42,16 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
         this.setMaximumSize(new Dimension(1920, 40));
         this.add(argLabel);
         this.add(argField);
+        
+        // 'argField' ’が変更されたら、「update イベントを発火させる
+        this.argField.getDocument().addDocumentListener(
+            new SimpleDocumentListener() {
+                @Override
+                public void update(DocumentEvent e) {
+                	pcs.firePropertyChange(getName(), "", argField.getText());
+                }
+            }
+        );
     }
 
     public ParameterPanel setLabel(String label) {
@@ -49,9 +63,17 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
     	this.argField.addActionListener(l);
     }
 
-    public abstract void addPropertyChangeListener(PropertyChangeListener listener);
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		this.pcs.addPropertyChangeListener(listener);
+	}
 
-    public abstract void removePropertyChangeListener(PropertyChangeListener listener);
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.pcs.removePropertyChangeListener(listener);
+	}
+    
+    public abstract boolean isEnable();
     
     @Override
     public void setName(String name) {
@@ -63,13 +85,17 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
         return this.propertyName;
     }
 
-    @Override
     public void setText(String text) {
         this.argField.setText(text);
     }
     
-    @Override
     public String getText() {
         return this.argField.getText();
     }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
+	}
 }

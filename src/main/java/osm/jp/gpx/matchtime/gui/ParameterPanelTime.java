@@ -2,9 +2,9 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -14,7 +14,6 @@ import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
-import javax.swing.event.DocumentEvent;
 
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
@@ -30,9 +29,8 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public class ParameterPanelTime extends ParameterPanel {
+public class ParameterPanelTime extends ParameterPanel implements ActionListener {
 	private static final long serialVersionUID = 1683226418990348336L;
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
     
@@ -68,16 +66,6 @@ public class ParameterPanelTime extends ParameterPanel {
         resetButton.addActionListener(resetAction);
         resetButton.setVisible(false);
         this.add(resetButton);
-
-        // 'argField' ’が変更されたら、「update イベントを発火させる
-        this.argField.getDocument().addDocumentListener(
-            new SimpleDocumentListener() {
-                @Override
-                public void update(DocumentEvent e) {
-                	pcs.firePropertyChange(getName(), "", argField.getText());
-                }
-            }
-        );
     }
     
     public ParameterPanelTime setOwner(Window owner) {
@@ -235,12 +223,14 @@ public class ParameterPanelTime extends ParameterPanel {
     }
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.addPropertyChangeListener(listener);
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.removePropertyChangeListener(listener);
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 }
