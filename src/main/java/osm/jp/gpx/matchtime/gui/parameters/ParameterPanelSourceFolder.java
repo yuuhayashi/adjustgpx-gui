@@ -3,6 +3,7 @@ package osm.jp.gpx.matchtime.gui.parameters;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
 import osm.jp.gpx.matchtime.gui.ImageFileFilter;
 
 @SuppressWarnings("serial")
@@ -29,6 +30,8 @@ public class ParameterPanelSourceFolder extends ParameterPanelFolder
     public boolean isEnable() {
         try {
             File dir = super.getDirectory();
+            AdjustTerra.logger.info("ParameterPanelSourceFolder.isEnable("+ dir.getAbsolutePath() +")");
+
 			File[] files = dir.listFiles(new ImageFileFilter());
 			if ((files == null) || (files.length < 1)) {
 				return false;
@@ -36,6 +39,7 @@ public class ParameterPanelSourceFolder extends ParameterPanelFolder
 			return true;
         }
         catch (Exception e) {
+        	AdjustTerra.logger.severe("ERROR: ParameterPanelSourceFolder.isEnable("+ e.toString() +")");
             return false;
         }
     }

@@ -39,7 +39,7 @@
     <dependency>
       <groupId>osm.surveyor</groupId>
       <artifactId>AdjustTime</artifactId>
-      <version>5.3.10-SNAPSHOT</version>
+      <version>5.3.12</version>
     </dependency>
     
     <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->

@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
+import java.util.logging.Logger;
+
 import javax.swing.*;
+
+import osm.jp.hayashi.tools.log.LoggerFactory;
 import osm.jp.gpx.*;
 import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelGpx;
 import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelImageFile;
@@ -22,6 +26,8 @@ public class AdjustTerra extends JFrame
     public static final String PROGRAM_NAME = "AdjustTerra for JOSM";
     public static final String PROGRAM_VARSION = "5.2";
     public static final String PROGRAM_UPDATE = "2020/02/02";
+    public static Logger logger = LoggerFactory.getInstance();
+
 
     AppParameters params;
     public static SimpleDateFormat dfjp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
@@ -84,8 +90,9 @@ public class AdjustTerra extends JFrame
      * データベース内のテーブルを一覧で表示するFrame
      * @throws IOException 
      */
-    public AdjustTerra() throws IOException
+    public AdjustTerra() throws Exception
     {
+    	logger.info("start!");
         dfjp.setTimeZone(TimeZone.getTimeZone("JST"));
 
         // INIT_CONTROLS
@@ -285,7 +292,7 @@ public class AdjustTerra extends JFrame
             }
         });
     }
-    private static void createAndShowGUI() throws IOException {
+    private static void createAndShowGUI() throws Exception {
     	(new AdjustTerra()).setVisible(true);
     }
 

@@ -5,10 +5,14 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
+import osm.jp.hayashi.tools.files.Directory;
 
 @SuppressWarnings("serial")
 public abstract class ParameterPanelFolder extends ParameterPanel implements ActionListener
@@ -85,7 +89,7 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
-		
+		AdjustTerra.logger.warning("ParameterPanelFolder.propertyChange()");
 	}
 
 	@Override
@@ -95,8 +99,14 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
             try {
                 sdir = getDirectory();
             } catch (FileNotFoundException ex) {
-                sdir = new File(".");
-                this.argField.setText(sdir.getAbsolutePath());
+            	Path p;
+                try {
+                	p = Directory.getCurrentDirectory();
+	                this.argField.setText(p.toAbsolutePath().toString());
+				} catch (URISyntaxException e1) {
+	                this.argField.setText(".");
+				}
+                sdir = new File(this.argField.getText());
             }
             if (sdir.exists()) {
                 this.fc = new JFileChooser(sdir);
