@@ -2,7 +2,6 @@ package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -30,7 +29,7 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public class ParameterPanelTime extends ParameterPanel implements ActionListener {
+public class ParameterPanelTime extends ParameterPanel {
 	private static final long serialVersionUID = 1683226418990348336L;
 	SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
@@ -222,16 +221,4 @@ public class ParameterPanelTime extends ParameterPanel implements ActionListener
             return false;
         }
     }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
-		
-	}
 }

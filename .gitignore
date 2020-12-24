@@ -2,6 +2,7 @@
 .project
 .settings/
 *.class
+*.log
 *.zip
 *.jar
 *.tar.gz

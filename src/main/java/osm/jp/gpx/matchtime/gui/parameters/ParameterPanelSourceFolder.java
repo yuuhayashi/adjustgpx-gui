@@ -3,6 +3,8 @@ package osm.jp.gpx.matchtime.gui.parameters;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import javax.swing.JFileChooser;
+
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
 import osm.jp.gpx.matchtime.gui.ImageFileFilter;
 
@@ -16,7 +18,7 @@ public class ParameterPanelSourceFolder extends ParameterPanelFolder
      * @param text 
      */
     public ParameterPanelSourceFolder(String name, String label, String text) {
-        super(name, label, text);
+        super(name, label, text, JFileChooser.FILES_AND_DIRECTORIES);
     }
     
     /**

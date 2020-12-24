@@ -61,7 +61,7 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
             throw new FileNotFoundException(String.format("Folder '%s' is Not exists.", path));
         }
         if (!sdir.isDirectory()) {
-            throw new FileNotFoundException(String.format("Folder '%s' is Not directory.", path));
+        	sdir = sdir.getParentFile();
         }
         return sdir;
     }
@@ -120,6 +120,9 @@ public abstract class ParameterPanelFolder extends ParameterPanel implements Act
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = this.fc.getSelectedFile();
+                if (!file.isDirectory()) {
+                	file = file.getParentFile();
+                }
                 String text = file.getAbsolutePath();
                 this.argField.setText(text);
             }
