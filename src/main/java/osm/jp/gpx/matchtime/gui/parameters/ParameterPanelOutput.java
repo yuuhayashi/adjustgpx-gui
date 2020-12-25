@@ -4,9 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 import osm.jp.gpx.AppParameters;
-import osm.jp.gpx.matchtime.gui.Card;
 
 @SuppressWarnings("serial")
 public class ParameterPanelOutput extends ParameterPanelFolder
