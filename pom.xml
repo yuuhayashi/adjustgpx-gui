@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>osm.surveyor</groupId>
   <artifactId>adjustgpx-gui</artifactId>
-  <version>5.4.3-SNAPSHOT</version>
+  <version>5.4.3</version>
   <scm>
     <connection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/adjustgpx-gui.git</connection>
     <url>http://surveyor.mydns.jp/gitbucket/yuu/adjustgpx-gui/wiki</url>
     <developerConnection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/adjustgpx-gui.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>v5.4.3</tag>
   </scm>
     
   <properties>
