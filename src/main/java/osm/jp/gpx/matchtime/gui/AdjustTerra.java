@@ -23,9 +23,7 @@ import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
 @SuppressWarnings("serial")
 public class AdjustTerra extends JFrame
 {
-    public static final String PROGRAM_NAME = "AdjustTerra for JOSM";
-    public static final String PROGRAM_VARSION = "5.2";
-    public static final String PROGRAM_UPDATE = "2020/02/02";
+    public static final String PROGRAM_NAME = "AdjustGpx";
     public static Logger logger = LoggerFactory.getInstance();
 
 
@@ -102,7 +100,7 @@ public class AdjustTerra extends JFrame
             getInsets().left + getInsets().right + 720,
             getInsets().top + getInsets().bottom + 480
         );
-        setTitle(AdjustTerra.PROGRAM_NAME +" v"+ AdjustTerra.PROGRAM_VARSION);
+        setTitle(AdjustTerra.PROGRAM_NAME);
         
         //---- CENTER -----
         JPanel mainPanel = new JPanel();
