@@ -49,7 +49,7 @@ public class AboutDialog extends Dialog
         setLayout(null);
         setVisible(false);
         setSize(360,114);
-        label1 = new java.awt.Label(AdjustTerra.PROGRAM_NAME +" Version "+ AdjustTerra.PROGRAM_VARSION +" ("+ AdjustTerra.PROGRAM_UPDATE +")", Label.CENTER);
+        label1 = new java.awt.Label(AdjustTerra.PROGRAM_NAME, Label.CENTER);
         label1.setBounds(10,10,340,20);
         add(label1);
         okButton = new java.awt.Button();
