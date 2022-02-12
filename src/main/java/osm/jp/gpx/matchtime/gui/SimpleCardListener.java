@@ -2,6 +2,12 @@ package osm.jp.gpx.matchtime.gui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JTabbedPane;
 
@@ -25,11 +31,37 @@ public class SimpleCardListener implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		String propertyName = evt.getPropertyName();
         if (propertyName.equals(AppParameters.IMG_SOURCE_FOLDER)) {
-            toEnable(cardNo, param.isEnable());
+            toEnable(cardNo, checkImgSource(param.argField.getText()));
         }
-        else {
-            toEnable(cardNo, param.isEnable());
-        }
+	}
+	
+	/**
+	 * "IMG_SOURCE_FOLDER"の設定内容が有効かどうかを判別する
+	 * @param str
+	 * @return
+	 */
+	boolean checkImgSource(String str) {
+		if (str != null) {
+			Path p = Paths.get(str);
+			if (p != null) {
+				if (Files.exists(p)) {
+					if (Files.isDirectory(p)) {
+						List<Path> entries;
+						try {
+							entries = Files.list(p).collect(Collectors.toList());
+							for (Path file : entries) {
+								if (file.toString().toLowerCase().endsWith(".jpeg") || file.toString().toLowerCase().endsWith(".jpg")) {
+									return true;
+								}
+							}
+						} catch (IOException e) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
     void toEnable(final int cardNo, final boolean enable) {
