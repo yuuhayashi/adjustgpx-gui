@@ -31,7 +31,7 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
  */
 public class ParameterPanelTime extends ParameterPanel {
 	private static final long serialVersionUID = 1683226418990348336L;
-	SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
+	static SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
     
     
@@ -211,14 +211,25 @@ public class ParameterPanelTime extends ParameterPanel {
         if (text == null) {
         	return false;
         }
-
-        try {
-            sdf.applyPattern(Restamp.TIME_PATTERN);
-            sdf.parse(text);
-            return true;
-        }
-        catch (ParseException e) {
-            return false;
-        }
+        return isValid(text);
+    }
+    
+    /**
+     * 時刻フォーマットに適合しているか判定する
+     * @param str
+     * @return
+     */
+    public static boolean isValid(String str) {
+		if (str != null) {
+            try {
+                sdf.applyPattern(Restamp.TIME_PATTERN);
+                sdf.parse(str);
+                return true;
+            }
+            catch (ParseException ex) {
+            	return false;
+            }
+		}
+		return false;
     }
 }

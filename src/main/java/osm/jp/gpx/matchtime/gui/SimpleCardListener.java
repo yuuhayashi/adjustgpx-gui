@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
 
 public class SimpleCardListener implements PropertyChangeListener {
 	int cardNo;
@@ -32,6 +33,9 @@ public class SimpleCardListener implements PropertyChangeListener {
 		String propertyName = evt.getPropertyName();
         if (propertyName.equals(AppParameters.IMG_SOURCE_FOLDER)) {
             toEnable(cardNo, checkImgSource(param.argField.getText()));
+        }
+        else if (propertyName.equals(AppParameters.GPX_BASETIME)) {
+            toEnable(cardNo, checkBasetime(param.argField.getText()));
         }
 	}
 	
@@ -64,7 +68,18 @@ public class SimpleCardListener implements PropertyChangeListener {
 		return false;
 	}
 	
-    void toEnable(final int cardNo, final boolean enable) {
+	
+	/**
+	 * "GPX_BASETIME"の設定内容が有効かどうかを判別する
+	 * ・時刻フォーマット
+	 * @param str
+	 * @return
+	 */
+	boolean checkBasetime(String str) {
+		return ParameterPanelTime.isValid(str);
+	}
+
+	void toEnable(final int cardNo, final boolean enable) {
         if ((cardNo >= 0) && (cardNo < cards.length)) {
             cardPanel.setEnabledAt(cardNo, enable);
             if ((cardNo -1) >= 0) {
