@@ -37,6 +37,9 @@ public class SimpleCardListener implements PropertyChangeListener {
         else if (propertyName.equals(AppParameters.GPX_BASETIME)) {
             toEnable(cardNo, checkBasetime(param.argField.getText()));
         }
+        else if (propertyName.equals(AppParameters.GPX_SOURCE_FOLDER)) {
+            toEnable(cardNo, checkGpxFolder(param.argField.getText()));
+        }
 	}
 	
 	/**
@@ -55,6 +58,35 @@ public class SimpleCardListener implements PropertyChangeListener {
 							entries = Files.list(p).collect(Collectors.toList());
 							for (Path file : entries) {
 								if (file.toString().toLowerCase().endsWith(".jpeg") || file.toString().toLowerCase().endsWith(".jpg")) {
+									return true;
+								}
+							}
+						} catch (IOException e) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * "GPX_SOURCE_FOLDER"の設定内容が有効かどうかを判別する
+	 * @param str
+	 * @return
+	 */
+	boolean checkGpxFolder(String str) {
+		if (str != null) {
+			Path p = Paths.get(str);
+			if (p != null) {
+				if (Files.exists(p)) {
+					if (Files.isDirectory(p)) {
+						List<Path> entries;
+						try {
+							entries = Files.list(p).collect(Collectors.toList());
+							for (Path file : entries) {
+								if (file.toString().toLowerCase().endsWith(".gpx")) {
 									return true;
 								}
 							}
