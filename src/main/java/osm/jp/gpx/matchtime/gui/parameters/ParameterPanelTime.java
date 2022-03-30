@@ -32,6 +32,7 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
 public class ParameterPanelTime extends ParameterPanel {
 	private static final long serialVersionUID = 1683226418990348336L;
 	static SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
+    public static SimpleDateFormat exifDateTime = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
     ParameterPanelImageFile imageFile;  // 基準時刻画像
     
     
@@ -180,7 +181,7 @@ public class ParameterPanelTime extends ParameterPanel {
                     TiffImageMetadata exif = jpegMetadata.getExif();
                     if (exif != null) {
                         String dateTimeOriginal = exif.getFieldValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL)[0];
-                        long lastModifyTime = sdf.parse(dateTimeOriginal).getTime();
+                        long lastModifyTime = exifDateTime.parse(dateTimeOriginal).getTime();
                         return (dfjp.format(new Date(lastModifyTime)));
                     }
                     else {
