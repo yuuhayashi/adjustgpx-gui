@@ -5,9 +5,9 @@
   <artifactId>adjustgpx-gui</artifactId>
   <version>5.5.0</version>
   <scm>
-    <connection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/adjustgpx-gui.git</connection>
-    <url>http://surveyor.mydns.jp/gitbucket/yuu/adjustgpx-gui/wiki</url>
-    <developerConnection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/adjustgpx-gui.git</developerConnection>
+    <connection>scm:https://github.com/yuuhayashi/adjustgpx-gui.git</connection>
+    <url>https://github.com/yuuhayashi/adjustgpx-gui/wiki</url>
+    <developerConnection>scm:git:https://github.com/yuuhayashi/adjustgpx-gui.git</developerConnection>
     <tag>v5.5.0</tag>
   </scm>
     
