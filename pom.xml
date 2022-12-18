@@ -8,7 +8,7 @@
     <connection>scm:https://github.com/yuuhayashi/adjustgpx-gui.git</connection>
     <url>https://github.com/yuuhayashi/adjustgpx-gui/wiki</url>
     <developerConnection>scm:git:https://github.com/yuuhayashi/adjustgpx-gui.git</developerConnection>
-    <tag>v5.5.0</tag>
+    <tag>v${java.version}</tag>
   </scm>
     
   <properties>
