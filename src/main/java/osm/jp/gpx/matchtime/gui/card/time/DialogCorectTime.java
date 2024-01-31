@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui.parameters;
+package osm.jp.gpx.matchtime.gui.card.time;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
@@ -14,8 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
+import osm.jp.gpx.matchtime.gui.parameters.PanelAction;
 
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.createImageIcon;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
@@ -68,12 +68,7 @@ public class DialogCorectTime extends JDialog implements PanelAction {
         label3.setText(i18n.getString("label.300"));
         argsPanel.add(label3);
 
-        basetime = new ParameterPanelTime(
-        		AppParameters.IMG_TIME,
-                arg_basetime.argLabel.getText(),
-                "",
-                arg_basetime.getImageFile()
-        );
+        basetime = new ParameterPanelTime("", arg_basetime.getImageFile());
         basetime.updateButton.setVisible(false);
         basetime.resetButton.setVisible(true);
         argsPanel.add(basetime);

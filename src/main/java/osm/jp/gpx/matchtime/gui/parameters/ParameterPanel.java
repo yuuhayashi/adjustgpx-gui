@@ -2,28 +2,24 @@ package osm.jp.gpx.matchtime.gui.parameters;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
 
 /**
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public abstract class ParameterPanel extends JPanel implements PropertyChangeListener {
+public abstract class ParameterPanel extends JPanel {
     private static final long serialVersionUID = 4629824800747170556L;
     public String propertyName;
     public JTextField argField;
     public JLabel argLabel;
-    public ResourceBundle i18n = ResourceBundle.getBundle("i18n");
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public ParameterPanel(String propertyName, String label, String text) {
         this();
@@ -34,24 +30,14 @@ public abstract class ParameterPanel extends JPanel implements PropertyChangeLis
 
     ParameterPanel() {
         super();
-        propertyName = "";
-        argLabel = new JLabel();
-        argField = new JTextField();
+        this.propertyName = "";
+        this.argLabel = new JLabel();
+        this.argField = new JTextField();
 		
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setMaximumSize(new Dimension(1920, 40));
         this.add(argLabel);
         this.add(argField);
-        
-        // 'argField' ’が変更されたら、「update イベントを発火させる
-        this.argField.getDocument().addDocumentListener(
-            new SimpleDocumentListener() {
-                @Override
-                public void update(DocumentEvent e) {
-                	pcs.firePropertyChange(getName(), "", argField.getText());
-                }
-            }
-        );
     }
 
     public ParameterPanel setLabel(String label) {
@@ -63,17 +49,28 @@ public abstract class ParameterPanel extends JPanel implements PropertyChangeLis
     	this.argField.addActionListener(l);
     }
 
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.addPropertyChangeListener(listener);
-	}
+    public JPanel packLine(JComponent[] components, JPanel panel) {
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        int max = 0;
+        for (JComponent component : components) {
+            panel.add(component);
+            Dimension size = component.getMaximumSize();
+            if (max < size.height) {
+                max = size.height;
+            }
+        }
+        Dimension size = new Dimension();
+        size.width = Short.MAX_VALUE;
+        size.height = max;
+        panel.setMaximumSize(size);
+        return panel;
+    }
 
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.removePropertyChangeListener(listener);
-	}
-    
-    public abstract boolean isEnable();
+    public JPanel packLine(JComponent component, JPanel panel) {
+        List<JComponent> array = new ArrayList<>();
+        array.add(component);
+        return packLine(array.toArray(new JComponent[array.size()]), panel);
+    }
     
     @Override
     public void setName(String name) {
@@ -85,17 +82,15 @@ public abstract class ParameterPanel extends JPanel implements PropertyChangeLis
         return this.propertyName;
     }
 
-    public void setText(String text) {
-        this.argField.setText(text);
-    }
+    public abstract boolean isEnable();
     
-    public String getText() {
-        return this.argField.getText();
-    }
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * 'argField' ’が変更されたら、「update イベントを発火させる
+     * 		pcs.firePropertyChange(this.propertyName, old, text);
+     * 
+     * @param text
+     */
+    public abstract void setText(String text);
+    
+    public abstract String getText();
 }

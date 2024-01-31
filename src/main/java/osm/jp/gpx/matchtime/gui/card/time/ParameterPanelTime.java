@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui.parameters;
+package osm.jp.gpx.matchtime.gui.card.time;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -21,8 +21,11 @@ import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import osm.jp.gpx.AppParameters;
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
 
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
+import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 /**
  * パラメータを設定する為のパネル。
@@ -43,13 +46,9 @@ public class ParameterPanelTime extends ParameterPanel {
     public JButton resetButton;
     Window owner;
 
-    public ParameterPanelTime(
-    		String name,
-            String label, 
-            String text, 
-            ParameterPanelImageFile imageFile
-    ) {
-        super(name, label, text);
+    public ParameterPanelTime(String text, ParameterPanelImageFile imageFile) {
+        super(AppParameters.GPX_BASETIME, i18n.getString("label.310"), text);
+        
         this.imageFile = imageFile;
         this.imageFile.addPropertyChangeListener(new BaseTimeImgUpdateAction());
         
@@ -77,9 +76,9 @@ public class ParameterPanelTime extends ParameterPanel {
      * @param label         テキスト
      * @param params        プロパティ
      */
-    public void addExifBase(String label, AppParameters params) {
+    public void addExifBase(String label) {
         boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_BASETIME).equals("EXIF_TIME")) {
+        if (AdjustTerra.params.getProperty(AppParameters.GPX_BASETIME).equals("EXIF_TIME")) {
             selected = true;
         }
         exifBase = new JRadioButton(label, selected);
@@ -91,9 +90,9 @@ public class ParameterPanelTime extends ParameterPanel {
      * @param label         テキスト
      * @param params        プロパティ
      */
-    public void addFileUpdate(String label, AppParameters params) {
+    public void addFileUpdate(String label) {
         boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_BASETIME).equals("FILE_UPDATE")) {
+        if (AdjustTerra.params.getProperty(AppParameters.GPX_BASETIME).equals("FILE_UPDATE")) {
             selected = true;
         }
         fupdateBase = new JRadioButton(label, selected);
@@ -231,4 +230,14 @@ public class ParameterPanelTime extends ParameterPanel {
 		}
 		return false;
     }
+
+	@Override
+	public void setText(String text) {
+        this.argField.setText(text);
+	}
+
+	@Override
+	public String getText() {
+        return this.argField.getText();
+	}
 }

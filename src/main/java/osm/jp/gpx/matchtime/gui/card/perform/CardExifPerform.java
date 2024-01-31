@@ -1,6 +1,9 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.card.perform;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -8,12 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.ImportPicture;
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
+import osm.jp.gpx.matchtime.gui.Card;
+import osm.jp.gpx.matchtime.gui.card.gpxfolder.ParameterPanelGpx;
+import osm.jp.gpx.matchtime.gui.card.source.ParameterPanelSourceFolder;
+import osm.jp.gpx.matchtime.gui.card.time.ParameterPanelImageFile;
+import osm.jp.gpx.matchtime.gui.card.time.ParameterPanelTime;
 import osm.jp.gpx.matchtime.gui.parameters.PanelAction;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelFolder;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelGpx;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelImageFile;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelOutput;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
 
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
@@ -22,7 +26,7 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
  * 実行パネル
  * @author yuu
  */
-public class CardExifPerform extends Card implements PanelAction {
+public class CardExifPerform extends Card implements PanelAction, PropertyChangeListener {
 	private static final long serialVersionUID = 8902284630791931118L;
 	ParameterPanelTime arg_basetime;        // 画像の基準時刻:
     ParameterPanelGpx arg_gpxFile;          // GPX file or Folder
@@ -32,30 +36,28 @@ public class CardExifPerform extends Card implements PanelAction {
     /**
      * コンストラクタ
      * @param tabbe parent panel
-     * @param arg_basetime         	// 開始画像の基準時刻:
-     * @param arg_gpxFile         	// GPX file or Folder:
-     * @param arg_output                // EXIF & 書き出しフォルダ
-     * @param text
      * @param pre
      * @param next
+     * @param arg_basetime         	// 開始画像の基準時刻:
+     * @param arg_gpxFile         	// GPX file or Folder:
      */
-    public CardExifPerform(
-            JTabbedPane tabbe,
-            ParameterPanelTime arg_basetime, 
-            ParameterPanelGpx arg_gpxFile, 
-            ParameterPanelOutput arg_output,
-            String text,
-            int pre, int next
-    ) {
-        super(tabbe, text, pre, next);
+    public CardExifPerform(JTabbedPane tabbe, int pre, int next,
+            ParameterPanelTime arg_basetime, ParameterPanelGpx arg_gpxFile)
+    {
+        super(tabbe, AdjustTerra.i18n.getString("tab.500"), pre, next);
         this.arg_basetime = arg_basetime;
         this.arg_gpxFile = arg_gpxFile;
-        this.arg_output = arg_output;
         
         SymAction lSymAction = new SymAction();
         JPanel argsPanel = new JPanel();
         argsPanel.setLayout(new BoxLayout(argsPanel, BoxLayout.PAGE_AXIS));
-        
+
+        // 4. ファイル変換・実行パラメータ
+        // "出力フォルダ: "
+        arg_output = new ParameterPanelOutput(AdjustTerra.params.getProperty(AppParameters.IMG_OUTPUT_FOLDER));
+        arg_output.addPropertyChangeListener(this);
+
+
         // 5. EXIF変換を行うかどうかを選択してください。
         //    - EXIF変換を行う場合には、変換ファイルを出力するフォルダも指定する必要があります。
         //    - 出力フォルダには、書き込み権限と、十分な空き容量が必要です。
@@ -108,7 +110,7 @@ public class CardExifPerform extends Card implements PanelAction {
     	doButton.setEnabled(false);
         
         ParameterPanelImageFile arg_baseTimeImg = arg_basetime.getImageFile();  // 基準時刻画像
-        ParameterPanelFolder arg_srcFolder = arg_baseTimeImg.paramDir;
+        ParameterPanelSourceFolder arg_srcFolder = arg_baseTimeImg.paramDir;
         
         try {
             AppParameters params = new AppParameters();
@@ -154,4 +156,19 @@ public class CardExifPerform extends Card implements PanelAction {
     public void openAction() {
        ; // 何もしない
     }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+        Object eventTriggerObject = evt.getSource();
+        String propertyName = evt.getPropertyName();
+
+        if (ParameterPanelOutput.class.isInstance(eventTriggerObject)) {
+            if (propertyName.equals(AppParameters.IMG_OUTPUT_FOLDER)) {
+                Integer oldValue = (Integer) evt.getOldValue();
+                Integer newValue = (Integer) evt.getNewValue();
+                System.out.println("[IMG_OUTPUT_FOLDER] oldValue:" + oldValue + " -> newValue:" + newValue);
+            	this.firePropertyChange(AppParameters.IMG_OUTPUT_FOLDER, evt.getNewValue(), evt.getNewValue());
+            }
+        }
+	}
 }

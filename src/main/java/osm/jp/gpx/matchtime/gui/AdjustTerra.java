@@ -1,6 +1,8 @@
 package osm.jp.gpx.matchtime.gui;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
@@ -9,22 +11,23 @@ import java.util.TimeZone;
 import javax.swing.*;
 
 import osm.jp.gpx.*;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelGpx;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelImageFile;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelOutput;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelSourceFolder;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelTime;
+import osm.jp.gpx.matchtime.gui.card.gpxfolder.ParameterPanelGpx;
+import osm.jp.gpx.matchtime.gui.card.source.ParameterPanelSourceFolder;
+import osm.jp.gpx.matchtime.gui.card.gpxfolder.CardGpxFile;
+import osm.jp.gpx.matchtime.gui.card.perform.CardExifPerform;
+import osm.jp.gpx.matchtime.gui.card.source.CardSourceFolder;
+import osm.jp.gpx.matchtime.gui.card.time.CardImageFile;
 
 /**
  * 本プログラムのメインクラス
  */
 @SuppressWarnings("serial")
-public class AdjustTerra extends JFrame
+public class AdjustTerra extends JFrame implements PropertyChangeListener
 {
     public static final String PROGRAM_NAME = "AdjustGpx";
 
-
-    AppParameters params;
+    public static AppParameters params;
+    
     public static SimpleDateFormat dfjp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
 
     // Used for addNotify check.
@@ -35,13 +38,6 @@ public class AdjustTerra extends JFrame
     JTabbedPane cardPanel;       // ウィザード形式パネル（タブ型）
     Card[] cards;
     //}}
-
-    //---入力フィールド----------------------------------------------------
-    ParameterPanelSourceFolder arg1_srcFolder;    // 対象フォルダ
-    ParameterPanelImageFile arg2_baseTimeImg;   // 開始画像ファイルパス
-    ParameterPanelTime arg2_basetime;       // 開始画像の基準時刻:
-    ParameterPanelGpx arg3_gpxFile;         // GPX file or Folder
-    ParameterPanelOutput arg4_output;       // EXIF & 書き出しフォルダ
 
     //{{DECLARE_MENUS
     java.awt.MenuBar mainMenuBar;
@@ -121,112 +117,56 @@ public class AdjustTerra extends JFrame
         mainPanel.add(cardPanel, BorderLayout.CENTER);
         
         cards = new Card[4];
+        CardGpxFile card0;
+        CardSourceFolder card1;
+        CardImageFile card2;
+        CardExifPerform card3;
         int cardNo = 0;
 
         //---------------------------------------------------------------------
-        // 1.[対象フォルダ]設定パネル
+        // 1.GPXファイル設定画面
         {
-            arg1_srcFolder = new ParameterPanelSourceFolder(
-            		AppParameters.IMG_SOURCE_FOLDER,
-                    i18n.getString("label.110") +": ", 
-                    params.getProperty(AppParameters.IMG_SOURCE_FOLDER)
-            );
-            arg1_srcFolder.addPropertyChangeListener(new SimpleCardListener(cards, cardPanel, 0, arg1_srcFolder));
-            
-            Card card = new CardSourceFolder(cardPanel, arg1_srcFolder);
-            cardPanel.addTab(card.getTitle(), card);
+            // 1. GPXファイルを選択
+            card0 = new CardGpxFile(cardPanel, cardNo, cardNo+1);
+            cardPanel.addTab(card0.getTitle(), card0);
             cardPanel.setEnabledAt(cardNo, true);
-            cards[cardNo] = card;
+            card0.addPropertyChangeListener(this);
+            cards[cardNo] = card0;
             cardNo++;
         }
         
         //---------------------------------------------------------------------
-        // 2.[基準時刻]パネル
-        // 2a.基準画像を選択フィールド
-        // 2b.基準時刻の入力フィールド
+        // 2.[対象フォルダ]設定パネル
         {
-            // 2a. 基準時刻画像
-            arg2_baseTimeImg = new ParameterPanelImageFile(
-        		AppParameters.IMG_BASE_FILE,
-                i18n.getString("label.210") +": ", 
-                null, 
-                arg1_srcFolder
-            );
-
-            // 2a. 基準時刻:
-            arg2_basetime = new ParameterPanelTime(
-            		AppParameters.GPX_BASETIME,
-                    i18n.getString("label.310"), 
-                    null, 
-                    arg2_baseTimeImg
-            );
-            arg2_basetime.addPropertyChangeListener(new SimpleCardListener(cards, cardPanel, 1, arg2_basetime));
-            
-            // EXIFの日時を基準にする
-            arg2_basetime.addExifBase(i18n.getString("label.220"), params);
-
-            // ファイル更新日時を基準にする
-            arg2_basetime.addFileUpdate(i18n.getString("label.230"), params);
-
-            CardImageFile card = new CardImageFile(
-                    cardPanel, arg2_basetime, (Window)this, 
-                    AdjustTerra.i18n.getString("tab.300"), 0, 2);
-            cardPanel.addTab(card.getTitle(), card);
-            cardPanel.setEnabledAt(cardNo, false);
-            cards[cardNo] = card;
+            card1 = new CardSourceFolder(cardPanel, cardNo-1, cardNo+1);
+            cardPanel.addTab(card1.getTitle(), card1);
+            cardPanel.setEnabledAt(cardNo, true);
+            card1.addPropertyChangeListener(this);
+            cards[cardNo] = card1;
             cardNo++;
         }
         
         //---------------------------------------------------------------------
-        // 3.GPXファイル設定画面
+        // 3.[基準時刻]パネル
+        // 3a.基準画像を選択フィールド
+        // 3b.基準時刻の入力フィールド
         {
-            // 3. GPXファイル選択パラメータ
-            arg3_gpxFile = new ParameterPanelGpx(
-            		AppParameters.GPX_SOURCE_FOLDER,
-                i18n.getString("label.410") + ": ", 
-                params.getProperty(AppParameters.GPX_SOURCE_FOLDER)
-            );
-            arg3_gpxFile.addPropertyChangeListener(
-        		new SimpleCardListener(cards, cardPanel, 2, arg3_gpxFile)
-    		);
-
-            // "セグメント'trkseg'の最初の１ノードは無視する。"
-            arg3_gpxFile.addNoFirstNode(i18n.getString("label.420"), params);
-
-            // 3. GPXファイルを選択
-            CardGpxFile card = new CardGpxFile(
-                    cardPanel, arg3_gpxFile,
-                     AdjustTerra.i18n.getString("tab.400"), 1, 3);
-            cardPanel.addTab(card.getTitle(), card);
+            card2 = new CardImageFile(cardPanel, cardNo-1, cardNo+1, card1.getSourceFolder(), (Window)this);
+            cardPanel.addTab(card2.getTitle(), card2);
             cardPanel.setEnabledAt(cardNo, false);
-            cards[cardNo] = card;
+            card2.addPropertyChangeListener(this);
+            cards[cardNo] = card2;
             cardNo++;
         }
         
         //---------------------------------------------------------------------
         // 4.EXIF更新設定画面 & 実行画面
         {
-            // 4. ファイル変換・実行パラメータ
-            // "出力フォルダ: "
-            arg4_output = new ParameterPanelOutput(
-        		AppParameters.IMG_OUTPUT_FOLDER,
-                i18n.getString("label.530") + ": ", 
-                params.getProperty(AppParameters.IMG_OUTPUT_FOLDER)
-            );
-            arg4_output.addPropertyChangeListener(
-        		new SimpleCardListener(cards, cardPanel, 3, arg4_output)
-    		);
-
             // パネル表示
-            CardExifPerform card = new CardExifPerform(
-                cardPanel, 
-                arg2_basetime, arg3_gpxFile, arg4_output,
-                AdjustTerra.i18n.getString("tab.500"),
-                2, -1
-            );
-            cardPanel.addTab(card.getTitle(), card);
+            card3 = new CardExifPerform(cardPanel, 2, -1,card2.getBaseTime(), card0.getGpxFile());
+            cardPanel.addTab(card3.getTitle(), card3);
             cardPanel.setEnabledAt(cardNo, false);
-            cards[cardNo] = card;
+            cards[cardNo] = card3;
         }
 
         //---------------------------------------------------------------------
@@ -255,7 +195,6 @@ public class AdjustTerra extends JFrame
         SymAction lSymAction = new SymAction();
         miAbout.addActionListener(lSymAction);
         miExit.addActionListener(lSymAction);
-        arg2_baseTimeImg.openButton.addActionListener(lSymAction);
         //}}
     }
     
@@ -340,6 +279,53 @@ public class AdjustTerra extends JFrame
         } else {
             System.err.println("Couldn't find file: " + path);
             return null;
+        }
+    }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+        Object eventTriggerObject = evt.getSource();
+        String propertyName = evt.getPropertyName();
+
+        if (ParameterPanelGpx.class.isInstance(eventTriggerObject)) {
+            // [Next]ボタンを有効にする
+            ParameterPanelGpx ins = (ParameterPanelGpx) eventTriggerObject;
+            System.out.println("[Next] button 0 --> "+ ins.isEnable());
+        	toEnable(0, ins.isEnable());
+        }
+        else if (ParameterPanelSourceFolder.class.isInstance(eventTriggerObject)) {
+            // [Next]ボタンを有効にする
+        	ParameterPanelSourceFolder ins = (ParameterPanelSourceFolder) eventTriggerObject;
+            System.out.println("[Next] button 1 --> "+ ins.isEnable());
+        	toEnable(1, ins.isEnable());
+        }
+        else if (CardImageFile.class.isInstance(eventTriggerObject)) {
+            // [Next]ボタンを有効にする
+        	CardImageFile ins = (CardImageFile) eventTriggerObject;
+        	toEnable(2, ins.isEnable());
+            System.out.println("[Next] button 2 --> "+ ins.isEnable());
+        }
+        else if (CardExifPerform.class.isInstance(eventTriggerObject)) {
+            if (propertyName.equals(AppParameters.GPX_BASETIME)) {
+                // [実行]ボタンを有効にする
+            	CardExifPerform ins = (CardExifPerform) eventTriggerObject;
+            	toEnable(3, ins.isEnable());
+                System.out.println("[Perform] button 3 --> "+ ins.isEnable());
+            }
+        }
+	}
+	
+	void toEnable(final int cardNo, final boolean enable) {
+        if ((cardNo >= 0) && (cardNo < cards.length)) {
+            cardPanel.setEnabledAt(cardNo, enable);
+            if ((cardNo -1) >= 0) {
+                cards[cardNo -1].nextButton.setEnabled(enable);
+            }
+            if ((cardNo +1) < cards.length) {
+                cardPanel.setEnabledAt(cardNo+1, enable);
+                cards[cardNo +1].backButton.setEnabled(enable);
+                cards[cardNo].nextButton.setEnabled(enable);
+            }
         }
     }
 }

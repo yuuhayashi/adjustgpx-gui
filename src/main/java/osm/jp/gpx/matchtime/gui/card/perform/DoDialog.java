@@ -1,4 +1,4 @@
-package osm.jp.gpx.matchtime.gui;
+package osm.jp.gpx.matchtime.gui.card.perform;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -8,6 +8,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
+
+import osm.jp.gpx.matchtime.gui.Command;
 
 /**
  *	処理 

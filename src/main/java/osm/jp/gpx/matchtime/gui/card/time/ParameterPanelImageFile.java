@@ -1,79 +1,53 @@
-package osm.jp.gpx.matchtime.gui.parameters;
+package osm.jp.gpx.matchtime.gui.card.time;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-import osm.jp.gpx.matchtime.gui.ImageFileFilter;
+import osm.jp.gpx.AppParameters;
+import osm.jp.gpx.matchtime.gui.AdjustTerra;
 import osm.jp.gpx.matchtime.gui.ImageFileView;
 import osm.jp.gpx.matchtime.gui.ImageFilter;
 import osm.jp.gpx.matchtime.gui.ImagePreview;
+import osm.jp.gpx.matchtime.gui.card.source.ParameterPanelSourceFolder;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+
+import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 @SuppressWarnings("serial")
-public class ParameterPanelImageFile extends ParameterPanel {
+public class ParameterPanelImageFile extends ParameterPanel implements ActionListener {
     JFileChooser fc;
     public JButton openButton;
     public ParameterPanelSourceFolder paramDir;
+    
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    public ParameterPanelImageFile(
-            String name, String label, String text, 
-            ParameterPanelSourceFolder paramDir
-    ) {
-        super(name, label, text);
+    public ParameterPanelImageFile(String text, ParameterPanelSourceFolder paramDir) {
+        super(AppParameters.IMG_BASE_FILE, i18n.getString("label.210") +": ", text);
 
-        // "選択..."
-        SelectButtonAction buttonAction = new SelectButtonAction();
-        openButton = new JButton(i18n.getString("button.select"));
-        openButton.addActionListener(buttonAction);
+        // [選択...]ボタン
+        openButton = new JButton(
+            i18n.getString("button.select"),
+            AdjustTerra.createImageIcon("/images/Open16.gif")
+        );
+        openButton.addActionListener(this);
         this.add(openButton);
         
         //Create a file chooser
         this.paramDir = paramDir;
-        this.paramDir.addPropertyChangeListener(new SourceFolderChangeListener());
     }
     
-    /**
-     * Action : Update 'arg2_baseTimeImg'
-     * 
-     */
-    class SourceFolderChangeListener implements PropertyChangeListener {
-		@Override
-		public void propertyChange(PropertyChangeEvent arg0) {
-			if (paramDir.isEnable()) {
-				try {
-					File dir = paramDir.getDirectory();
-					File[] files = dir.listFiles(new ImageFileFilter());
-					if (files != null) {
-						Arrays.sort(files, new Comparator<File>() {
-							public int compare(File file1, File file2){
-							    return file1.getName().compareTo(file2.getName());
-							}
-					    });
-						if (files.length > 0) {
-				            argField.setText(files[0].getName());
-				            fc = new JFileChooser(dir);
-				            fc.setSelectedFile(files[0]);
-				            return;
-						}
-					}
-				} catch (FileNotFoundException e) {}
-			}
-			argField.setText("");
-            fc = new JFileChooser();
-            fc.setSelectedFile(null);
-		}    	
-    }
-    
-    class SelectButtonAction implements java.awt.event.ActionListener
-    {
-        public void actionPerformed(ActionEvent e) {
+	/**
+	 * [選択...]ボタンのアクション
+	 */
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == openButton) {
             File sdir = new File(paramDir.getText());
             System.out.println(sdir.toPath());
             if (sdir.isDirectory()) {
@@ -92,11 +66,22 @@ public class ParameterPanelImageFile extends ParameterPanel {
             int returnVal = fc.showDialog(ParameterPanelImageFile.this, i18n.getString("dialog.select"));
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                argField.setText(file.getName());
+                String text = file.getName();
+                argField.setText(text);
+                
+                // 「update イベントを発火させる
+            	this.propertyChangeSupport.firePropertyChange(getName(), null, text);
             }
             else {
                 fc.setSelectedFile(null);
             }
+        }
+        else if (e.getSource() == this.argField) {
+            String text = this.getText();
+            System.out.println(String.format("%s: '%s'", getName(), text));
+            
+            // 「update イベント」を発火させる
+        	this.propertyChangeSupport.firePropertyChange(getName(), null, text);
         }
     }
 
@@ -141,4 +126,22 @@ public class ParameterPanelImageFile extends ParameterPanel {
         }
         return false;
     }
+
+	@Override
+	public void setText(String text) {
+        this.argField.setText(text);
+	}
+
+	@Override
+	public String getText() {
+        return this.argField.getText();
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
+	}
 }

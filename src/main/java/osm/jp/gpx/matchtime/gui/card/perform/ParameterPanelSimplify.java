@@ -1,4 +1,6 @@
-package osm.jp.gpx.matchtime.gui.parameters;
+package osm.jp.gpx.matchtime.gui.card.perform;
+
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
 
 /**
  * 『単純化(m)」パラメータを設定する為のパネル。正の整数
@@ -45,5 +47,15 @@ public class ParameterPanelSimplify extends ParameterPanel
         catch (Exception e) {
             return false;
         }
+	}
+
+	@Override
+	public void setText(String text) {
+        this.argField.setText(text);
+	}
+
+	@Override
+	public String getText() {
+        return this.argField.getText();
 	}
 }
