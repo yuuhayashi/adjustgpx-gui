@@ -8,24 +8,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelWithComment;
 import osm.jp.hayashi.tools.files.Directory;
 
 @SuppressWarnings("serial")
-public class ParameterPanelOutput extends ParameterPanel implements ActionListener
+public class ParameterPanelOutput extends ParameterPanelWithComment implements ActionListener
 {
-    public JCheckBox gpxOverwriteMagvar;	// ソースGPXの<MAGVAR>を無視する
-    public JCheckBox gpxOutputSpeed;	// GPXに<SPEED>を書き出す
-    public ParameterPanelSimplify simplifyMeters;	// 「単純化(m)」正の整数 TEXT
-    
     JFileChooser fc;
     JButton selectButton;
     int chooser;
@@ -38,9 +35,13 @@ public class ParameterPanelOutput extends ParameterPanel implements ActionListen
      * @throws IOException 
      * @throws FileNotFoundException 
      */
-    public ParameterPanelOutput(String text) {
-        super(AppParameters.IMG_OUTPUT_FOLDER, i18n.getString("label.530") + ": ", text);
+    public ParameterPanelOutput() {
+        super(AppParameters.IMG_OUTPUT_FOLDER, i18n.getString("label.530") + ": ", "");
         
+    	String text = AdjustTerra.params.getProperty(AppParameters.IMG_OUTPUT_FOLDER);
+    	this.setText(text);
+    	this.setEnabled(true);
+    	
         // Create a file chooser
         this.chooser = JFileChooser.DIRECTORIES_ONLY;
 
@@ -50,59 +51,10 @@ public class ParameterPanelOutput extends ParameterPanel implements ActionListen
             AdjustTerra.createImageIcon("/images/Open16.gif")
         );
         selectButton.addActionListener(this);
-        this.add(selectButton);
+        this.getInnerPanel().add(selectButton);
 
-        //---- CENTER -----
-        this.gpxOverwriteMagvar = new JCheckBox(i18n.getString("label.560"), false);
-        this.gpxOutputSpeed = new JCheckBox(i18n.getString("label.570"), false);
-        this.simplifyMeters = new ParameterPanelSimplify("simplify", i18n.getString("label.580"), "3");
-
-        try {
-            AppParameters params = new AppParameters();
-            
-            // チェックボックス "ソースGPXの<MAGVAR>を無視する"
-            if (params.getProperty(AppParameters.GPX_OVERWRITE_MAGVAR).equals("true")) {
-            	this.gpxOverwriteMagvar.setEnabled(true);
-            }
-
-            // チェックボックス "出力GPXに[SPEED]を上書きする"
-            if (params.getProperty(AppParameters.GPX_OUTPUT_SPEED).equals("true")) {
-            	this.gpxOutputSpeed.setEnabled(true);
-            }
-
-            // TEXTボックス "単純化(m)"
-            if (params.getProperty(AppParameters.SIMPLIFY_METERS) != null) {
-            	String str = params.getProperty(AppParameters.SIMPLIFY_METERS);
-                if (str.isEmpty()) {
-                	this.simplifyMeters.setText("3");
-                	this.simplifyMeters.setEnabled(true);
-                }
-                else {
-                	this.simplifyMeters.setText(str);
-                	this.simplifyMeters.setEnabled(true);
-                }
-            }
-        }
-        catch (Exception e) {}
     }
     
-    public boolean isUpdateMagvar() {
-    	return gpxOverwriteMagvar.isSelected();
-    }
-    
-    public boolean isUpdateSpeed() {
-    	return gpxOutputSpeed.isSelected();
-    }
-    
-    public int getSimplify() {
-    	try {
-    		return this.simplifyMeters.getSimplify();
-    	}
-    	catch (NumberFormatException e) {
-    		return 0;
-    	}
-    }
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton){
@@ -156,9 +108,42 @@ public class ParameterPanelOutput extends ParameterPanel implements ActionListen
         return sdir;
     }
 
+    public void setEnable(boolean f) {
+        super.setEnabled(f);
+        selectButton.setEnabled(f);
+    }
+
 	@Override
 	public boolean isEnable() {
-		// TODO Auto-generated method stub
+        String str = this.argField.getText();
+		if (str != null) {
+			Path p = Paths.get(str);
+			if (p != null) {
+				if (Files.exists(p)) {
+					if (Files.isDirectory(p)) {
+						// 'output Folder' is Enable.
+						this.setComment(i18n.getString("msg.505"), true);
+						return true;
+					}
+					else {
+						// 'output Folder' is not directory.
+						this.setComment(i18n.getString("msg.501"), false);
+					}
+				}
+				else {
+					// 'output Folder' is not exists.
+					this.setComment(i18n.getString("msg.502"), false);
+				}
+			}
+			else {
+				// 'output Folder' is not directory.
+				this.setComment(i18n.getString("msg.502"), false);
+			}
+		}
+		else {
+			// 'output Folder' is null.
+			this.setComment(i18n.getString("msg.500"), false);
+		}
 		return false;
 	}
 

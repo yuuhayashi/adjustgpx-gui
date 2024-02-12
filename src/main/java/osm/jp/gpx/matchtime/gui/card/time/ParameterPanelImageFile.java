@@ -16,12 +16,12 @@ import osm.jp.gpx.matchtime.gui.ImageFileView;
 import osm.jp.gpx.matchtime.gui.ImageFilter;
 import osm.jp.gpx.matchtime.gui.ImagePreview;
 import osm.jp.gpx.matchtime.gui.card.source.ParameterPanelSourceFolder;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelWithComment;
 
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
 
 @SuppressWarnings("serial")
-public class ParameterPanelImageFile extends ParameterPanel implements ActionListener {
+public class ParameterPanelImageFile extends ParameterPanelWithComment implements ActionListener {
     JFileChooser fc;
     public JButton openButton;
     public ParameterPanelSourceFolder paramDir;
@@ -37,7 +37,7 @@ public class ParameterPanelImageFile extends ParameterPanel implements ActionLis
             AdjustTerra.createImageIcon("/images/Open16.gif")
         );
         openButton.addActionListener(this);
-        this.add(openButton);
+        this.getInnerPanel().add(openButton);
         
         //Create a file chooser
         this.paramDir = paramDir;
@@ -115,15 +115,33 @@ public class ParameterPanelImageFile extends ParameterPanel implements ActionLis
                     if (file.exists() && file.isFile()) {
                         String name = file.getName().toUpperCase();
                         if (name.endsWith(".JPG") || name.endsWith(".JPEG")) {
+        					// 'Based image' is enable.
+        					this.setComment(i18n.getString("msg.214"), true);
                             return true;
                         }
+                        else {
+        					// 'Based image' is not JPEG file.
+        					this.setComment(i18n.getString("msg.213"), false);
+                        }
+                    }
+                    else {
+    					// 'Based image' is not file.
+    					this.setComment(i18n.getString("msg.212"), false);
                     }
                 }
                 catch (FileNotFoundException e) {
+					// 'Based image' file is not exists.
+					this.setComment(i18n.getString("msg.210"), false);
                     return false;
                 }
             }
+            else {
+				// 'Based image' is empty.
+				this.setComment(i18n.getString("msg.211"), false);
+            }
         }
+		// 'Image Folder'　is not enable.
+		this.setComment(i18n.getString("msg.126"), false);
         return false;
     }
 

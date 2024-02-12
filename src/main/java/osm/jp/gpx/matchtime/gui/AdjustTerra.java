@@ -32,7 +32,7 @@ public class AdjustTerra extends JFrame implements PropertyChangeListener
 
     // Used for addNotify check.
     boolean fComponentsAdjusted = false;
-    public static ResourceBundle i18n = ResourceBundle.getBundle("i18n");
+    public static ResourceBundle i18n = ResourceBundle.getBundle("gui-i18n");
     
     //{{DECLARE_CONTROLS
     JTabbedPane cardPanel;       // ウィザード形式パネル（タブ型）

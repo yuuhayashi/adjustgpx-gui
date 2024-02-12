@@ -11,6 +11,8 @@
     <tag>v${version}</tag>
   </scm>
     
+  <!-- mvn release:prepare -->
+  <!-- mvn release:perform -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>

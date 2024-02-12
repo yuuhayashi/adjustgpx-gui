@@ -14,12 +14,33 @@ import javax.swing.JTextField;
 /**
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
+ * このパネルはパラメータを表す縦配列 Y_AXIS のパネルの中に、
+ * パラメータを示す横配列 X_AXIS のパネルを追加する。
  */
 public abstract class ParameterPanel extends JPanel {
-    private static final long serialVersionUID = 4629824800747170556L;
-    public String propertyName;
+	private static final long serialVersionUID = 2L;
+
+	public String propertyName;
     public JTextField argField;
     public JLabel argLabel;
+    
+    protected JPanel xPanel;    // パラメータ設定パネル(横配列)
+
+    ParameterPanel() {
+        super();
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.propertyName = "";
+        this.argLabel = new JLabel();
+        this.argField = new JTextField();
+		
+        this.xPanel = new JPanel();    // パラメータ設定パネル	(横配列)
+        this.xPanel.setLayout(new BoxLayout(xPanel, BoxLayout.X_AXIS));
+        this.xPanel.add(argLabel);
+        this.xPanel.add(argField);
+        this.xPanel.setMaximumSize(new Dimension(1920, 40));
+
+        this.add(xPanel);
+    }
 
     public ParameterPanel(String propertyName, String label, String text) {
         this();
@@ -27,17 +48,9 @@ public abstract class ParameterPanel extends JPanel {
         this.setLabel(label);
         this.setText(text);
     }
-
-    ParameterPanel() {
-        super();
-        this.propertyName = "";
-        this.argLabel = new JLabel();
-        this.argField = new JTextField();
-		
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        this.setMaximumSize(new Dimension(1920, 40));
-        this.add(argLabel);
-        this.add(argField);
+    
+    public JPanel getInnerPanel() {
+    	return this.xPanel;
     }
 
     public ParameterPanel setLabel(String label) {

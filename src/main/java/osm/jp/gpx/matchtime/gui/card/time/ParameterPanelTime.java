@@ -22,7 +22,7 @@ import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelWithComment;
 
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.dfjp;
 import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
@@ -31,7 +31,7 @@ import static osm.jp.gpx.matchtime.gui.AdjustTerra.i18n;
  * パラメータを設定する為のパネル。
  * この１インスタンスで、１パラメータをあらわす。
  */
-public class ParameterPanelTime extends ParameterPanel {
+public class ParameterPanelTime extends ParameterPanelWithComment {
 	private static final long serialVersionUID = 1683226418990348336L;
 	static SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     public static SimpleDateFormat exifDateTime = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
@@ -56,14 +56,14 @@ public class ParameterPanelTime extends ParameterPanel {
         UpdateButtonAction buttonAction = new UpdateButtonAction(this);
         updateButton = new JButton(i18n.getString("button.update"));
         updateButton.addActionListener(buttonAction);
-        this.add(updateButton);
+        this.getInnerPanel().add(updateButton);
         
         // "ボタン[再設定...]"
         ResetButtonAction resetAction = new ResetButtonAction(this);
         resetButton = new JButton(i18n.getString("button.reset"));
         resetButton.addActionListener(resetAction);
         resetButton.setVisible(false);
-        this.add(resetButton);
+        this.getInnerPanel().add(resetButton);
     }
     
     public ParameterPanelTime setOwner(Window owner) {
@@ -163,7 +163,7 @@ public class ParameterPanelTime extends ParameterPanel {
     
     String getTimeStr() {
 		if (!imageFile.isEnable()) {
-			return "Error : ImageFile is not selected.";
+			return "";
 		}
 		
         File timeFile = imageFile.getImageFile();
@@ -202,14 +202,11 @@ public class ParameterPanelTime extends ParameterPanel {
     @Override
     public boolean isEnable() {
 		if (!this.imageFile.isEnable()) {
+			// 'Reference time image' is not enable.
+			this.setComment(i18n.getString("msg.215"), false);
 			return false;
 		}
-		
-    	String text = this.argField.getText();
-        if (text == null) {
-        	return false;
-        }
-        return isValid(text);
+        return isValid(this.argField.getText());
     }
     
     /**
@@ -217,17 +214,24 @@ public class ParameterPanelTime extends ParameterPanel {
      * @param str
      * @return
      */
-    public static boolean isValid(String str) {
+    public boolean isValid(String str) {
 		if (str != null) {
             try {
                 sdf.applyPattern("yyyy-MM-dd HH:mm:ss z");
                 sdf.parse(str);
+                
+				// 'Reference time' is enable.
+				this.setComment(i18n.getString("msg.314"), true);
                 return true;
             }
             catch (ParseException ex) {
+				// 'Reference time' is irregularity time format.
+				this.setComment(i18n.getString("msg.315"), false);
             	return false;
             }
 		}
+		// 'Reference time' is empty.
+		this.setComment(i18n.getString("msg.311"), false);
 		return false;
     }
 

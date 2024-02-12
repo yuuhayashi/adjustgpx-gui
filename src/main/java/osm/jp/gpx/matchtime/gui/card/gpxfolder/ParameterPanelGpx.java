@@ -21,17 +21,18 @@ import javax.swing.JFileChooser;
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
 import osm.jp.gpx.matchtime.gui.GpxAndFolderFilter;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelWithComment;
 
 @SuppressWarnings("serial")
-public class ParameterPanelGpx extends ParameterPanel implements ActionListener
+public class ParameterPanelGpx extends ParameterPanelWithComment implements ActionListener
 {
     JFileChooser fc;
     JButton selectButton;
     public JCheckBox noFirstNode;      // CheckBox: "セグメント'trkseg'の最初の１ノードは無視する。"
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     
-    /**
+
+	/**
      * コンストラクタ
      * [ヒモ付を行うGPXファイルを選択してください。]
      * @param label
@@ -40,12 +41,12 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
     public ParameterPanelGpx(String text) {
         super(AppParameters.GPX_SOURCE_FOLDER, i18n.getString("label.410") + ": ", text);
         
+
         // 1-2. ヒモ付を行うGPXファイルを選択してください。
         //    - フォルダを指定すると、フォルダ内のすべてのGPXファイルを対象とします。
         
         // "セグメント'trkseg'の最初の１ノードは無視する。"
         this.setNoFirstNode(i18n.getString("label.420"), AdjustTerra.params);
-        //this.add(this.noFirstNode);
         
         if (!isEnable()) {
             Path path = Paths.get(".");
@@ -58,7 +59,7 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
                 AdjustTerra.createImageIcon("/images/Open16.gif")
         );
         selectButton.addActionListener(this);
-        this.add(selectButton);
+        this.getInnerPanel().add(selectButton);
         this.addActionListener(this);
     }
 
@@ -152,15 +153,36 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
 							entries = Files.list(p).collect(Collectors.toList());
 							for (Path file : entries) {
 								if (file.toString().toLowerCase().endsWith(".gpx")) {
+									// 'GPX Folder' is Enable.
+									this.setComment(i18n.getString("msg.415"), true);
 									return true;
 								}
 							}
+							// Not exists GPX file in the 'GPX Folder'.
+							this.setComment(i18n.getString("msg.414"), false);
 						} catch (IOException e) {
+							this.setComment(e.getCause().toString(), false);
 							return false;
 						}
 					}
+					else {
+						// 'GPX Folder' is not directory.
+						this.setComment(i18n.getString("msg.413"), false);
+					}
+				}
+				else {
+					// 'GPX Folder' is not exists.
+					this.setComment(i18n.getString("msg.412"), false);
 				}
 			}
+			else {
+				// 'GPX Folder' is not directory.
+				this.setComment(i18n.getString("msg.411"), false);
+			}
+		}
+		else {
+			// 'GPX Folder' is null.
+			this.setComment(i18n.getString("msg.410"), false);
 		}
 		return false;
 	}

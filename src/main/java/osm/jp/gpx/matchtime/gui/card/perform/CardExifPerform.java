@@ -31,6 +31,8 @@ public class CardExifPerform extends Card implements PanelAction, PropertyChange
 	ParameterPanelTime arg_basetime;        // 画像の基準時刻:
     ParameterPanelGpx arg_gpxFile;          // GPX file or Folder
     ParameterPanelOutput arg_output;        // EXIF & 書き出しフォルダ
+    ParameterPanelSimplify arg_simplify;	// 5-2. その他のパラメータ
+    
     JButton doButton;       // [処理実行]ボタン
     
     /**
@@ -52,9 +54,9 @@ public class CardExifPerform extends Card implements PanelAction, PropertyChange
         JPanel argsPanel = new JPanel();
         argsPanel.setLayout(new BoxLayout(argsPanel, BoxLayout.PAGE_AXIS));
 
-        // 4. ファイル変換・実行パラメータ
-        // "出力フォルダ: "
-        arg_output = new ParameterPanelOutput(AdjustTerra.params.getProperty(AppParameters.IMG_OUTPUT_FOLDER));
+        // . ファイル変換・実行パラメータ
+        // 5-1. "出力フォルダ: "
+        arg_output = new ParameterPanelOutput();
         arg_output.addPropertyChangeListener(this);
 
 
@@ -64,28 +66,47 @@ public class CardExifPerform extends Card implements PanelAction, PropertyChange
         JLabel label5 = new JLabel();
         label5.setText(
             String.format(
-                "<html><p>5. %s</p><ul><li>%s</li><li>%s</li></ul>",
+                "<html><p>5-1. %s</p><ul><li>%s</li><li>%s</li></ul>",
                 i18n.getString("label.500"),
                 i18n.getString("label.501"),
                 i18n.getString("label.502")
             )
         );
         argsPanel.add(packLine(label5, new JPanel()));
-        
-        // 出力フォルダ
         argsPanel.add(arg_output);
-        argsPanel.add(arg_output.gpxOverwriteMagvar);
-        argsPanel.add(arg_output.gpxOutputSpeed);
-        argsPanel.add(arg_output.simplifyMeters);
+        this.mainPanel.add(argsPanel, BorderLayout.NORTH);
+        
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
+        
+        JLabel label6 = new JLabel();
+        label6.setText(
+            String.format(
+                "<html><p>5-2. Simplify distance</p><ul><li>%s</li><li>%s</li></ul>",
+                i18n.getString("label.500"),
+                i18n.getString("label.501"),
+                i18n.getString("label.502")
+            )
+        );
+        argsPanel.add(packLine(label5, new JPanel()));
+        argsPanel.add(arg_output);
 
+        // 5-2. その他のパラメータ
+        arg_simplify = new ParameterPanelSimplify();
+        arg_simplify.addPropertyChangeListener(this);
+        centerPanel.add(arg_simplify);
+        centerPanel.add(arg_simplify.gpxOverwriteMagvar);
+        centerPanel.add(arg_simplify.gpxOutputSpeed);
+        this.mainPanel.add(centerPanel, BorderLayout.CENTER);
+        
         // [処理実行]ボタン
         doButton = new JButton(
             i18n.getString("button.execute"),
             AdjustTerra.createImageIcon("/images/media_playback_start.png")
         );
-        argsPanel.add(doButton);
-                
-        this.mainPanel.add(argsPanel, BorderLayout.CENTER);
+        JPanel bPanel = new JPanel();
+        bPanel.add(doButton, BorderLayout.CENTER);
+        this.mainPanel.add(bPanel, BorderLayout.SOUTH);
 
         //{{REGISTER_LISTENERS
         doButton.addActionListener(lSymAction);
@@ -129,9 +150,9 @@ public class CardExifPerform extends Card implements PanelAction, PropertyChange
             
             params.setProperty(AppParameters.IMG_OUTPUT_FOLDER, arg_output.getText());
 
-            params.setProperty(AppParameters.GPX_OVERWRITE_MAGVAR, String.valueOf(arg_output.isUpdateMagvar()));
-            params.setProperty(AppParameters.GPX_OUTPUT_SPEED, String.valueOf(arg_output.isUpdateSpeed()));
-            params.setProperty(AppParameters.SIMPLIFY_METERS, String.valueOf(arg_output.getSimplify()));
+            params.setProperty(AppParameters.GPX_OVERWRITE_MAGVAR, String.valueOf(arg_simplify.isUpdateMagvar()));
+            params.setProperty(AppParameters.GPX_OUTPUT_SPEED, String.valueOf(arg_simplify.isUpdateSpeed()));
+            params.setProperty(AppParameters.SIMPLIFY_METERS, String.valueOf(arg_simplify.getSimplify()));
             params.store();
         }
         catch(Exception e) {

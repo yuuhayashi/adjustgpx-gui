@@ -21,11 +21,11 @@ import javax.swing.JFileChooser;
 
 import osm.jp.gpx.AppParameters;
 import osm.jp.gpx.matchtime.gui.AdjustTerra;
-import osm.jp.gpx.matchtime.gui.parameters.ParameterPanel;
+import osm.jp.gpx.matchtime.gui.parameters.ParameterPanelWithComment;
 import osm.jp.hayashi.tools.files.Directory;
 
 @SuppressWarnings("serial")
-public class ParameterPanelSourceFolder extends ParameterPanel implements ActionListener
+public class ParameterPanelSourceFolder extends ParameterPanelWithComment implements ActionListener
 {
     JFileChooser fc;
     JButton selectButton;
@@ -51,7 +51,7 @@ public class ParameterPanelSourceFolder extends ParameterPanel implements Action
             AdjustTerra.createImageIcon("/images/Open16.gif")
         );
         selectButton.addActionListener(this);
-        this.add(selectButton);
+        this.getInnerPanel().add(selectButton);
     }
     
     public void setEnable(boolean f) {
@@ -93,7 +93,7 @@ public class ParameterPanelSourceFolder extends ParameterPanel implements Action
 	 * @param str
 	 * @return
 	 */
-	public static boolean checkImgSource(String str) {
+	public boolean checkImgSource(String str) {
 		if (str != null) {
 			Path p = Paths.get(str);
 			if (p != null) {
@@ -104,15 +104,36 @@ public class ParameterPanelSourceFolder extends ParameterPanel implements Action
 							entries = Files.list(p).collect(Collectors.toList());
 							for (Path file : entries) {
 								if (file.toString().toLowerCase().endsWith(".jpeg") || file.toString().toLowerCase().endsWith(".jpg")) {
+									// 'Image Folder' is Enable.
+									this.setComment(i18n.getString("msg.125"), true);
 									return true;
 								}
 							}
+							// Not exists JPEG file in the 'Image Folder'.
+							this.setComment(i18n.getString("msg.124"), false);
 						} catch (IOException e) {
+							this.setComment(e.getCause().toString(), false);
 							return false;
 						}
 					}
+					else {
+						// 'Image Folder' is not directory.
+						this.setComment(i18n.getString("msg.123"), false);
+					}
+				}
+				else {
+					// 'Image Folder' is not exists.
+					this.setComment(i18n.getString("msg.122"), false);
 				}
 			}
+			else {
+				// 'Image Folder' is not directory.
+				this.setComment(i18n.getString("msg.121"), false);
+			}
+		}
+		else {
+			// 'Image Folder' is null.
+			this.setComment(i18n.getString("msg.120"), false);
 		}
 		return false;
 	}
