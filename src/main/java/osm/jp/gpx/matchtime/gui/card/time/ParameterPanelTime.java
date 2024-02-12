@@ -51,6 +51,10 @@ public class ParameterPanelTime extends ParameterPanelWithComment {
         
         this.imageFile = imageFile;
         this.imageFile.addPropertyChangeListener(new BaseTimeImgUpdateAction());
+
+        
+        // EXIFの日時を基準にする
+        this.addExifBase();
         
         // "ボタン[変更...]"
         UpdateButtonAction buttonAction = new UpdateButtonAction(this);
@@ -76,29 +80,17 @@ public class ParameterPanelTime extends ParameterPanelWithComment {
      * @param label         テキスト
      * @param params        プロパティ
      */
-    public void addExifBase(String label) {
+    private void addExifBase() {
         boolean selected = false;
         if (AdjustTerra.params.getProperty(AppParameters.GPX_BASETIME).equals("EXIF_TIME")) {
             selected = true;
         }
-        exifBase = new JRadioButton(label, selected);
-        baseTimeGroup.add(exifBase);
+        this.exifBase = new JRadioButton(i18n.getString("label.220"), selected);
+        this.fupdateBase = new JRadioButton(i18n.getString("label.230"), !selected);
+        this.baseTimeGroup.add(this.exifBase);
+        this.baseTimeGroup.add(this.fupdateBase);
     }
 
-    /**
-     * 「File更新日時を基準にする」
-     * @param label         テキスト
-     * @param params        プロパティ
-     */
-    public void addFileUpdate(String label) {
-        boolean selected = false;
-        if (AdjustTerra.params.getProperty(AppParameters.GPX_BASETIME).equals("FILE_UPDATE")) {
-            selected = true;
-        }
-        fupdateBase = new JRadioButton(label, selected);
-        baseTimeGroup.add(fupdateBase);
-    }
-    
     public ParameterPanelImageFile getImageFile() {
         return this.imageFile;
     }
@@ -131,8 +123,8 @@ public class ParameterPanelTime extends ParameterPanelWithComment {
         }
         
         public void actionPerformed(ActionEvent e) {
-            fileSelect_Action(param);
-            (new DialogCorectTime(param, owner)).setVisible(true);
+            fileSelect_Action(this.param);
+            (new DialogCorectTime(this.param, owner)).setVisible(true);
         }
     }
     

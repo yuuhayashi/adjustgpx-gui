@@ -51,12 +51,6 @@ public class CardImageFile extends Card  implements PanelAction, PropertyChangeL
         // b. 基準時刻:
         this.arg_basetime = new ParameterPanelTime(null, arg_baseTimeImg);
         this.arg_basetime.setOwner(owner);
-        
-        // EXIFの日時を基準にする
-        this.arg_basetime.addExifBase(i18n.getString("label.220"));
-
-        // ファイル更新日時を基準にする
-        this.arg_basetime.addFileUpdate(i18n.getString("label.230"));
 
         JPanel argsPanel = new JPanel();
         argsPanel.setLayout(new BoxLayout(argsPanel, BoxLayout.PAGE_AXIS));

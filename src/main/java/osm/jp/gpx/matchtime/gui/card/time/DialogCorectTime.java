@@ -99,6 +99,9 @@ public class DialogCorectTime extends JDialog implements PanelAction {
         add(closeButton, BorderLayout.SOUTH);
 
         // 選択された画像ファイルを表示する
+        String path = basetime.getImageFile().getImageFile().getAbsolutePath();
+        this.refImage = new ImageIcon(path);
+
         imageView_Action();
         
         //{{REGISTER_LISTENERS
@@ -132,7 +135,7 @@ public class DialogCorectTime extends JDialog implements PanelAction {
                 dialog_WindowClosing();
             }
             else if (object == expandButton) {
-            	imageView_Action();
+            	fit_Action();
             }
             else if (object == zoomInButton) {
             	zoomin_Action();
@@ -144,6 +147,7 @@ public class DialogCorectTime extends JDialog implements PanelAction {
     }
     
     ImageIcon refImage;
+    Image image;
 
     /**
      * 選択された画像ファイルを表示する
@@ -151,16 +155,12 @@ public class DialogCorectTime extends JDialog implements PanelAction {
      */
     public void imageView_Action() {
         try {
-            String path = basetime.getImageFile().getImageFile().getAbsolutePath();
-
             // View Image File
-            int size_x = imageSPane.getWidth() - 8;
-            ImageIcon tmpIcon = new ImageIcon(path);
-            refImage = tmpIcon;
-            if (tmpIcon.getIconWidth() > size_x) {
-                refImage = new ImageIcon(tmpIcon.getImage().getScaledInstance(size_x, -1, Image.SCALE_DEFAULT));
-            }
-            imageLabel.setIcon(refImage);
+            //int size_x = imageSPane.getWidth() - 8;
+            String path = basetime.getImageFile().getImageFile().getAbsolutePath();
+            this.refImage = new ImageIcon(path);
+            this.imageLabel.setIcon(this.refImage);
+            repaint();
         }
         catch(NullPointerException e) {
             // 何もしない
@@ -168,23 +168,35 @@ public class DialogCorectTime extends JDialog implements PanelAction {
         repaint();
     }
     
+    public void fit_Action() {
+    	if (this.refImage != null) {
+            int size_x = this.imageSPane.getWidth() - 8;
+            this.refImage = new ImageIcon(this.refImage.getImage()
+            		.getScaledInstance(size_x, -1, Image.SCALE_DEFAULT));
+            this.imageLabel.setIcon(this.refImage);
+            repaint();
+    	}
+    }
+
     public void zoomin_Action() {
-    	if (refImage != null) {
-            int size_x = imageLabel.getWidth();
+    	if (this.refImage != null) {
+            int size_x = this.imageLabel.getWidth();
             String path = basetime.getImageFile().getImageFile().getAbsolutePath();
             ImageIcon tmpIcon = new ImageIcon(path);
-            refImage = new ImageIcon(tmpIcon.getImage().getScaledInstance(size_x * 2, -1, Image.SCALE_DEFAULT));
-            imageLabel.setIcon(refImage);
+            this.refImage = new ImageIcon(tmpIcon.getImage()
+            		.getScaledInstance(size_x * 2, -1, Image.SCALE_DEFAULT));
+            this.imageLabel.setIcon(this.refImage);
             repaint();
     	}
     }
 
     public void zoomout_Action() {
-    	if (refImage != null) {
-            int size_x = imageLabel.getWidth();
-            ImageIcon tmpIcon = refImage;
-            refImage = new ImageIcon(tmpIcon.getImage().getScaledInstance(size_x / 2, -1, Image.SCALE_DEFAULT));
-            imageLabel.setIcon(refImage);
+    	if (this.refImage != null) {
+            int size_x = this.imageLabel.getWidth();
+            ImageIcon tmpIcon = this.refImage;
+            this.refImage = new ImageIcon(tmpIcon.getImage()
+            		.getScaledInstance(size_x / 2, -1, Image.SCALE_DEFAULT));
+            this.imageLabel.setIcon(this.refImage);
             repaint();
     	}
     }
